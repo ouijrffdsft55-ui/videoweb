@@ -1013,7 +1013,8 @@
         }
 
         // ========================================
-        // 2. ĐĂNG NHẬP / ĐĂNG KÝ        // ========================================
+        // 2. ĐĂNG NHẬP / ĐĂNG KÝ
+        // ========================================
 
         const authBox = document.getElementById('authBox');
         const mainContent = document.getElementById('mainContent');
@@ -1167,6 +1168,7 @@
             });
         }
 
+        // ===== ĐÃ FIX: TẤT CẢ USER ĐỀU XEM ĐƯỢC VIDEO CỦA NHAU =====
         async function getVideosFromDB() {
             const db = await openDB();
             return new Promise((resolve, reject) => {
@@ -1175,15 +1177,13 @@
                 const req = store.getAll();
                 req.onsuccess = function() {
                     const all = req.result || [];
-                    const currentUser = getCurrentUser();
-                    if (isAdmin(currentUser)) {
-                        resolve(all);
-                    } else {
-                        const filtered = all.filter(v => v.username === currentUser);
-                        resolve(filtered);
-                    }
+                    // ✅ FIX: Trả về tất cả video, không phân biệt người đăng
+                    resolve(all);
                 };
-                req.onerror = function() { resolve([]); };
+                req.onerror = function() {
+                    console.error('Lỗi lấy video:', req.error);
+                    resolve([]);
+                };
             });
         }
 
@@ -1268,7 +1268,6 @@
         const closeVideoBtn = document.getElementById('closeVideoBtn');
         const videoTitleOverlay = document.getElementById('videoTitleOverlay');
 
-        // Cache blob URLs để tránh memory leak
         const blobCache = new Map();
 
         function formatFileSize(bytes) {
@@ -1301,15 +1300,12 @@
             return created.toLocaleDateString('vi-VN');
         }
 
-        // Chuyển base64 thành Blob URL
         function base64ToBlobURL(base64Data, mimeType = 'video/mp4') {
-            // Kiểm tra cache
             if (blobCache.has(base64Data)) {
                 return blobCache.get(base64Data);
             }
 
             try {
-                // Tách phần data: "data:video/mp4;base64,XXXXX"
                 const base64 = base64Data.split(',')[1] || base64Data;
                 const byteCharacters = atob(base64);
                 const byteArrays = [];
@@ -1330,14 +1326,13 @@
                 return url;
             } catch (e) {
                 console.error('Lỗi chuyển đổi video:', e);
-                return base64Data; // fallback
+                return base64Data;
             }
         }
 
         function openVideoModal(videoData) {
             let videoSrc = videoData.data;
 
-            // Nếu là base64, chuyển thành blob URL
             if (typeof videoSrc === 'string' && videoSrc.startsWith('data:video')) {
                 const mimeType = videoData.type || 'video/mp4';
                 videoSrc = base64ToBlobURL(videoSrc, mimeType);
@@ -1352,7 +1347,6 @@
         function closeVideoModal() {
             videoModal.classList.remove('show');
             videoPlayer.pause();
-            // Không revoke URL ngay vì có thể dùng lại
         }
 
         closeVideoBtn.addEventListener('click', closeVideoModal);
@@ -1365,7 +1359,6 @@
             const currentUser = getCurrentUser();
             const isAdminUser = isAdmin(currentUser);
 
-            // Sắp xếp: mới nhất lên trước
             videos.sort((a, b) => {
                 const timeA = new Date(a.createdAt || 0).getTime();
                 const timeB = new Date(b.createdAt || 0).getTime();
@@ -1376,7 +1369,7 @@
 
             if (videos.length === 0) {
                 videoGrid.innerHTML =
-                    `<div class="empty-state"><span class="icon">🎥</span><h3>Chưa có video nào</h3><p>${isAdminUser ? 'Hãy đăng video đầu tiên' : 'Chưa có video, hãy đăng video mới'}</p></div>`;
+                    `<div class="empty-state"><span class="icon">🎥</span><h3>Chưa có video nào</h3><p>Hãy đăng video đầu tiên nhé!</p></div>`;
                 return;
             }
 
@@ -1396,7 +1389,7 @@
                             <span class="duration">${typeof duration === 'number' ? formatTime(duration) : duration}</span>
                             <span class="hd-badge">HD</span>
                             <span class="play-icon">▶️</span>
-                            ${isAdminUser ? `<span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:0.6rem;">👤 ${uploaderName}</span>` : ''}
+                            <span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:0.6rem;">👤 ${uploaderName}</span>
                         </div>
                         <div class="info">
                             <div class="title">${video.title || 'Không có tiêu đề'}</div>
@@ -1412,14 +1405,12 @@
             }
             videoGrid.innerHTML = html;
 
-            // Sự kiện xóa (chỉ admin)
             document.querySelectorAll('.btn-delete-video').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     const id = parseInt(this.dataset.id);
                     if (confirm('Bạn có chắc muốn xóa video này?')) {
                         await deleteVideoFromDB(id);
-                        // Xóa cache nếu có
                         const videosList = await getVideosFromDB();
                         const videoToDelete = videosList.find(v => v.id === id);
                         if (videoToDelete && blobCache.has(videoToDelete.data)) {
@@ -1431,7 +1422,6 @@
                 });
             });
 
-            // Sự kiện click vào card để mở video
             document.querySelectorAll('.video-card').forEach((card) => {
                 card.addEventListener('click', function() {
                     const id = parseInt(this.dataset.id);
@@ -1534,7 +1524,6 @@
                     console.warn('Không tạo được thumbnail:', e);
                 }
 
-                // Chuyển video thành base64 để lưu vào IndexedDB
                 const reader = new FileReader();
                 const videoData = await new Promise((resolve, reject) => {
                     reader.onload = function(e) { resolve(e.target.result); };
@@ -1543,7 +1532,6 @@
                 });
                 progressBar.style.width = '80%';
 
-                // Lấy duration
                 const tempVideo = document.createElement('video');
                 const url = URL.createObjectURL(videoFile);
                 tempVideo.src = url;
