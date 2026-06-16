@@ -25,7 +25,6 @@
             margin: 0 auto;
         }
 
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -938,8 +937,7 @@
             <!-- BỘ LỌC -->
             <div class="filter-bar">
                 <span class="tag active">📹 Tất cả</span>
-                <span class="tag">🔥 Phổ biến</span>
-                <span class="tag">🆕 Mới nhất</span>
+                <span class="tag" onclick="sortVideos('newest')">🆕 Mới nhất</span>
                 <span class="video-count" id="videoCount">0 video</span>
             </div>
 
@@ -1071,7 +1069,6 @@
             const password = authPassword.value.trim();
             if (!username || !password) { showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.'); return; }
 
-            // Kiểm tra admin
             if (username === ADMIN_USER && password === ADMIN_PASS) {
                 setCurrentUser(username);
                 showSuccess('✅ Đăng nhập Admin thành công!');
@@ -1181,7 +1178,6 @@
                 req.onsuccess = function() {
                     const all = req.result || [];
                     const currentUser = getCurrentUser();
-                    // Admin xem được tất cả video, user thường chỉ xem video của mình
                     if (isAdmin(currentUser)) {
                         resolve(all);
                     } else {
@@ -1264,7 +1260,7 @@
         }
 
         // ========================================
-        // 5. HIỂN THỊ VIDEO
+        // 5. HIỂN THỊ VIDEO - SẮP XẾP MỚI NHẤT LÊN TRƯỚC
         // ========================================
 
         const videoGrid = document.getElementById('videoGrid');
@@ -1286,6 +1282,22 @@
             const m = Math.floor(seconds / 60);
             const s = Math.floor(seconds % 60);
             return m + ':' + (s < 10 ? '0' : '') + s;
+        }
+
+        function getTimeAgo(createdAt) {
+            if (!createdAt) return 'Vừa xong';
+            const created = new Date(createdAt);
+            const now = new Date();
+            const diffMs = now - created;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMins < 1) return 'Vừa xong';
+            if (diffMins < 60) return diffMins + ' phút trước';
+            if (diffHours < 24) return diffHours + ' giờ trước';
+            if (diffDays < 7) return diffDays + ' ngày trước';
+            return created.toLocaleDateString('vi-VN');
         }
 
         function openVideoModal(videoData) {
@@ -1310,6 +1322,14 @@
             const videos = await getVideosFromDB();
             const currentUser = getCurrentUser();
             const isAdminUser = isAdmin(currentUser);
+
+            // ===== SẮP XẾP: MỚI NHẤT LÊN TRƯỚC =====
+            videos.sort((a, b) => {
+                const timeA = new Date(a.createdAt || 0).getTime();
+                const timeB = new Date(b.createdAt || 0).getTime();
+                return timeB - timeA;
+            });
+
             videoCount.textContent = videos.length + ' video';
 
             if (videos.length === 0) {
@@ -1324,7 +1344,8 @@
                 const views = video.views || 0;
                 const thumb = video.thumbnail || '';
                 const uploaderName = video.username || 'Unknown';
-                const showDelete = isAdminUser; // Chỉ admin mới thấy nút xóa
+                const showDelete = isAdminUser;
+                const timeAgo = getTimeAgo(video.createdAt);
 
                 html += `
                     <div class="video-card" data-id="${video.id}">
@@ -1333,13 +1354,15 @@
                             <span class="duration">${typeof duration === 'number' ? formatTime(duration) : duration}</span>
                             <span class="hd-badge">HD</span>
                             <span class="play-icon">▶️</span>
+                            ${isAdminUser ? `<span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:0.6rem;">👤 ${uploaderName}</span>` : ''}
+                            <span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:0.6rem;">🕐 ${timeAgo}</span>
                         </div>
                         <div class="info">
                             <div class="title">${video.title || 'Không có tiêu đề'}</div>
                             <div class="meta">
                                 <span class="views">👁️ ${views}</span>
                                 <span class="time">📁 ${formatFileSize(video.size || 0)}</span>
-                                ${isAdminUser ? `<span class="uploader">👤 ${uploaderName}</span>` : ''}
+                                <span class="time" style="color:#555;">🕐 ${timeAgo}</span>
                             </div>
                             ${showDelete ? `<button class="btn-delete-video" data-id="${video.id}">🗑️ Xóa video</button>` : ''}
                         </div>
