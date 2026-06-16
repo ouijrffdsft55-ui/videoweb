@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kho Video</title>
+    <title>Kho Video - Có đăng nhập</title>
     <style>
         * {
             margin: 0;
@@ -21,6 +21,125 @@
             max-width: 900px;
             margin: auto;
         }
+
+        /* ===== Form đăng nhập / đăng ký ===== */
+        .auth-box {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px 24px;
+            max-width: 420px;
+            margin: 40px auto;
+            border: 1px solid #2a2a2a;
+        }
+        .auth-box h2 {
+            text-align: center;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+        .auth-box input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #111;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .auth-box input:focus {
+            border-color: #ff6b6b;
+        }
+        .auth-box .btn-auth {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 4px;
+        }
+        .btn-login {
+            background: #ff6b6b;
+            color: #fff;
+        }
+        .btn-login:hover {
+            background: #e55a5a;
+        }
+        .btn-register {
+            background: #2a2a2a;
+            color: #fff;
+        }
+        .btn-register:hover {
+            background: #3a3a3a;
+        }
+        .auth-box .switch-link {
+            text-align: center;
+            margin-top: 14px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .auth-box .switch-link span {
+            color: #ff6b6b;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .auth-box .error-msg {
+            color: #ff4444;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+        .auth-box .success-msg {
+            color: #4caf50;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+
+        /* ===== Phần chính (sau khi đăng nhập) ===== */
+        .main-content {
+            display: none;
+        }
+        .main-content.active {
+            display: block;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .header .user-info {
+            color: #888;
+            font-size: 0.95rem;
+        }
+        .header .user-info strong {
+            color: #ff6b6b;
+        }
+        .btn-logout {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+        .btn-logout:hover {
+            background: #ff4444;
+        }
+
         h1 {
             text-align: center;
             font-size: 2.2rem;
@@ -134,51 +253,257 @@
             font-size: 0.85rem;
             margin-top: 16px;
         }
-        /* Responsive cho mobile */
+
         @media (max-width: 600px) {
-            h1 { font-size: 1.6rem; }
-            .upload-area { padding: 24px 12px; }
-            .upload-area label { padding: 10px 20px; font-size: 0.9rem; }
-            .video-info { flex-direction: column; align-items: flex-start; }
-            .btn-delete { align-self: flex-end; }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .upload-area {
+                padding: 24px 12px;
+            }
+            .upload-area label {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .video-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .btn-delete {
+                align-self: flex-end;
+            }
+            .auth-box {
+                padding: 20px 16px;
+                margin: 20px 10px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🎬 Kho Video</h1>
-        <p class="sub">Tải video lên và xem lại bất cứ lúc nào</p>
 
-        <div class="upload-area" id="uploadArea">
-            <input type="file" id="fileInput" accept="video/*" multiple />
-            <label for="fileInput">📤 Chọn video để tải lên</label>
-            <p>Hỗ trợ: MP4, WebM, AVI, MOV, MKV...</p>
+        <!-- ====== FORM ĐĂNG NHẬP / ĐĂNG KÝ ====== -->
+        <div id="authBox" class="auth-box">
+            <h2 id="authTitle">🔐 Đăng nhập</h2>
+            <div id="authError" class="error-msg"></div>
+            <div id="authSuccess" class="success-msg"></div>
+
+            <input type="text" id="authUsername" placeholder="Tên đăng nhập" />
+            <input type="password" id="authPassword" placeholder="Mật khẩu" />
+
+            <button class="btn-auth btn-login" id="authMainBtn">Đăng nhập</button>
+            <button class="btn-auth btn-register" id="authSwitchBtn">Chưa có tài khoản? Đăng ký</button>
+
+            <div class="switch-link">
+                <span id="authSwitchText">Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span></span>
+            </div>
         </div>
 
-        <div id="videoList" class="video-list"></div>
+        <!-- ====== PHẦN CHÍNH SAU ĐĂNG NHẬP ====== -->
+        <div id="mainContent" class="main-content">
 
-        <div class="storage" id="storageInfo">Đã dùng: 0 MB</div>
+            <div class="header">
+                <div class="user-info">👤 Xin chào, <strong id="displayUsername">User</strong></div>
+                <button class="btn-logout" id="logoutBtn">🚪 Đăng xuất</button>
+            </div>
+
+            <h1>🎬 Kho Video</h1>
+            <p class="sub">Tải video lên và xem lại bất cứ lúc nào</p>
+
+            <div class="upload-area" id="uploadArea">
+                <input type="file" id="fileInput" accept="video/*" multiple />
+                <label for="fileInput">📤 Chọn video để tải lên</label>
+                <p>Hỗ trợ: MP4, WebM, AVI, MOV, MKV...</p>
+            </div>
+
+            <div id="videoList" class="video-list"></div>
+            <div class="storage" id="storageInfo">Đã dùng: 0 MB</div>
+        </div>
+
     </div>
 
     <script>
-        const MAX_STORAGE_MB = 500;
+        // ========================================
+        // 1. QUẢN LÝ TÀI KHOẢN (localStorage)
+        // ========================================
+
+        function getUsers() {
+            try {
+                return JSON.parse(localStorage.getItem('users')) || {};
+            } catch {
+                return {};
+            }
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        function getCurrentUser() {
+            return localStorage.getItem('currentUser') || null;
+        }
+
+        function setCurrentUser(username) {
+            if (username) {
+                localStorage.setItem('currentUser', username);
+            } else {
+                localStorage.removeItem('currentUser');
+            }
+        }
+
+        // ========================================
+        // 2. ĐĂNG KÝ / ĐĂNG NHẬP
+        // ========================================
+
+        const authBox = document.getElementById('authBox');
+        const mainContent = document.getElementById('mainContent');
+        const authTitle = document.getElementById('authTitle');
+        const authError = document.getElementById('authError');
+        const authSuccess = document.getElementById('authSuccess');
+        const authUsername = document.getElementById('authUsername');
+        const authPassword = document.getElementById('authPassword');
+        const authMainBtn = document.getElementById('authMainBtn');
+        const authSwitchBtn = document.getElementById('authSwitchBtn');
+        const authSwitchLink = document.getElementById('authSwitchLink');
+        const displayUsername = document.getElementById('displayUsername');
+
+        let isLoginMode = true;
+
+        function showError(msg) {
+            authError.textContent = msg;
+            authSuccess.textContent = '';
+        }
+
+        function showSuccess(msg) {
+            authSuccess.textContent = msg;
+            authError.textContent = '';
+        }
+
+        function clearMessages() {
+            authError.textContent = '';
+            authSuccess.textContent = '';
+        }
+
+        function switchMode() {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                authTitle.textContent = '🔐 Đăng nhập';
+                authMainBtn.textContent = 'Đăng nhập';
+                authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
+                authSwitchLink.textContent = 'Đăng ký';
+                clearMessages();
+            } else {
+                authTitle.textContent = '📝 Đăng ký';
+                authMainBtn.textContent = 'Đăng ký';
+                authSwitchBtn.textContent = 'Đã có tài khoản? Đăng nhập';
+                authSwitchLink.textContent = 'Đăng nhập';
+                clearMessages();
+            }
+        }
+
+        function handleAuth() {
+            const username = authUsername.value.trim();
+            const password = authPassword.value.trim();
+
+            if (!username || !password) {
+                showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.');
+                return;
+            }
+
+            const users = getUsers();
+
+            if (isLoginMode) {
+                // ĐĂNG NHẬP
+                if (users[username] && users[username] === password) {
+                    setCurrentUser(username);
+                    showSuccess('✅ Đăng nhập thành công!');
+                    setTimeout(() => {
+                        authBox.style.display = 'none';
+                        mainContent.classList.add('active');
+                        displayUsername.textContent = username;
+                        renderVideos(); // Load video của user
+                    }, 500);
+                } else {
+                    showError('❌ Sai tên đăng nhập hoặc mật khẩu.');
+                }
+            } else {
+                // ĐĂNG KÝ
+                if (users[username]) {
+                    showError('❌ Tên đăng nhập đã tồn tại.');
+                    return;
+                }
+                users[username] = password;
+                saveUsers(users);
+                showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
+                // Chuyển sang chế độ đăng nhập
+                isLoginMode = true;
+                authTitle.textContent = '🔐 Đăng nhập';
+                authMainBtn.textContent = 'Đăng nhập';
+                authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
+                authSwitchLink.textContent = 'Đăng ký';
+                authPassword.value = '';
+            }
+        }
+
+        function logout() {
+            setCurrentUser(null);
+            authBox.style.display = 'block';
+            mainContent.classList.remove('active');
+            authUsername.value = '';
+            authPassword.value = '';
+            isLoginMode = true;
+            authTitle.textContent = '🔐 Đăng nhập';
+            authMainBtn.textContent = 'Đăng nhập';
+            authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
+            authSwitchLink.textContent = 'Đăng ký';
+            clearMessages();
+            // Xóa video list khi logout
+            document.getElementById('videoList').innerHTML =
+            '<div class="empty">📭 Hãy đăng nhập để xem video của bạn.</div>';
+            document.getElementById('storageInfo').textContent = 'Đã dùng: 0 MB';
+        }
+
+        // ========================================
+        // 3. SỰ KIỆN ĐĂNG NHẬP / ĐĂNG KÝ
+        // ========================================
+
+        authMainBtn.addEventListener('click', handleAuth);
+        authSwitchBtn.addEventListener('click', switchMode);
+        authSwitchLink.addEventListener('click', switchMode);
+
+        // Enter key để submit
+        authPassword.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleAuth();
+        });
+        authUsername.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleAuth();
+        });
+
+        // ========================================
+        // 4. QUẢN LÝ VIDEO THEO USER
+        // ========================================
 
         const fileInput = document.getElementById('fileInput');
         const videoList = document.getElementById('videoList');
         const uploadArea = document.getElementById('uploadArea');
         const storageInfo = document.getElementById('storageInfo');
 
+        function getVideoKey() {
+            const user = getCurrentUser();
+            return user ? `videos_${user}` : 'videos_guest';
+        }
+
         function getVideos() {
             try {
-                return JSON.parse(localStorage.getItem('videos')) || [];
+                return JSON.parse(localStorage.getItem(getVideoKey())) || [];
             } catch {
                 return [];
             }
         }
 
         function saveVideos(videos) {
-            localStorage.setItem('videos', JSON.stringify(videos));
+            localStorage.setItem(getVideoKey(), JSON.stringify(videos));
         }
 
         function getTotalSizeMB(videos) {
@@ -196,7 +521,7 @@
             const videos = getVideos();
             const totalMB = getTotalSizeMB(videos);
 
-            storageInfo.textContent = `Đã dùng: ${totalMB.toFixed(1)} MB / ${MAX_STORAGE_MB} MB`;
+            storageInfo.textContent = `Đã dùng: ${totalMB.toFixed(1)} MB / 500 MB`;
 
             if (videos.length === 0) {
                 videoList.innerHTML = `<div class="empty">📭 Chưa có video nào. Hãy tải lên nhé!</div>`;
@@ -241,8 +566,8 @@
             const totalMB = getTotalSizeMB(videos);
             const fileMB = file.size / (1024 * 1024);
 
-            if (totalMB + fileMB > MAX_STORAGE_MB) {
-                alert(`❌ Vượt quá dung lượng cho phép ${MAX_STORAGE_MB} MB!\nHiện tại: ${totalMB.toFixed(1)} MB\nVideo này: ${fileMB.toFixed(1)} MB`);
+            if (totalMB + fileMB > 500) {
+                alert(`❌ Vượt quá dung lượng cho phép 500 MB!\nHiện tại: ${totalMB.toFixed(1)} MB\nVideo này: ${fileMB.toFixed(1)} MB`);
                 return false;
             }
 
@@ -277,6 +602,10 @@
             }
         }
 
+        // ========================================
+        // 5. SỰ KIỆN UPLOAD VIDEO
+        // ========================================
+
         fileInput.addEventListener('change', function() {
             handleFiles(this.files);
         });
@@ -300,7 +629,30 @@
             }
         });
 
-        renderVideos();
+        // ========================================
+        // 6. ĐĂNG XUẤT
+        // ========================================
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        // ========================================
+        // 7. KIỂM TRA ĐĂNG NHẬP KHI TẢI LẠI TRANG
+        // ========================================
+
+        (function init() {
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                authBox.style.display = 'none';
+                mainContent.classList.add('active');
+                displayUsername.textContent = currentUser;
+                renderVideos();
+            } else {
+                authBox.style.display = 'block';
+                mainContent.classList.remove('active');
+                document.getElementById('videoList').innerHTML =
+                    '<div class="empty">📭 Hãy đăng nhập để xem video của bạn.</div>';
+            }
+        })();
     </script>
 
 </body>
