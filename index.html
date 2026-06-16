@@ -79,10 +79,15 @@
             margin-bottom: 24px;
         }
 
-        .auth-box input {
+        .auth-box .input-group {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .auth-box .input-group input {
             width: 100%;
             padding: 14px 18px;
-            margin-bottom: 14px;
+            padding-right: 50px;
             border-radius: 14px;
             border: 1px solid #2a2a3e;
             background: #11111b;
@@ -93,13 +98,35 @@
             font-family: inherit;
         }
 
-        .auth-box input::placeholder {
+        .auth-box .input-group input::placeholder {
             color: #55556b;
         }
 
-        .auth-box input:focus {
+        .auth-box .input-group input:focus {
             border-color: #ff6b6b;
             box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
+        }
+
+        .auth-box .input-group .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666680;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.3s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-box .input-group .toggle-password:hover {
+            color: #fff;
         }
 
         .auth-box .btn-auth {
@@ -174,6 +201,40 @@
 
         .main-content.active {
             display: block;
+        }
+
+        /* VIP Theme */
+        .main-content.vip-theme {
+            background: linear-gradient(135deg, #0b0b0f, #1a0a0a);
+        }
+
+        .main-content.vip-theme .header .logo h1 {
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-content.vip-theme .video-card {
+            border-color: rgba(255, 215, 0, 0.15);
+        }
+
+        .main-content.vip-theme .video-card:hover {
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.1);
+        }
+
+        .main-content.vip-theme .btn-upload-header {
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            color: #1a1a2a;
+        }
+
+        .main-content.vip-theme .btn-upload-header:hover {
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.35);
+        }
+
+        .main-content.vip-theme .user-info .admin-badge {
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            color: #1a1a2a;
         }
 
         @keyframes fadeIn {
@@ -256,6 +317,11 @@
             color: #fff;
         }
 
+        .header .user-info.vip-avatar .avatar {
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
         .header .user-info .name {
             color: #eee;
             font-size: 0.9rem;
@@ -265,6 +331,17 @@
         .header .user-info .admin-badge {
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: #fff;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header .user-info .vip-badge {
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            color: #1a1a2a;
             padding: 2px 12px;
             border-radius: 20px;
             font-size: 0.6rem;
@@ -318,36 +395,73 @@
             color: #fff;
         }
 
-        /* ===== BỘ LỌC ===== */
+        /* ===== BỘ LỌC (TABS) ===== */
         .filter-bar {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             margin-bottom: 24px;
             align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
         }
 
-        .filter-bar .tag {
-            background: #16161f;
-            padding: 8px 20px;
+        .filter-bar .tab {
+            background: transparent;
+            padding: 8px 24px;
             border-radius: 40px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #8888a0;
             cursor: pointer;
             border: 1px solid transparent;
             transition: all 0.3s ease;
-            font-weight: 500;
+            font-weight: 600;
+            font-family: inherit;
         }
 
-        .filter-bar .tag.active {
+        .filter-bar .tab.active {
             border-color: #ff6b6b;
             color: #ff6b6b;
             background: rgba(255, 107, 107, 0.08);
         }
 
-        .filter-bar .tag:hover {
+        .filter-bar .tab:hover {
             border-color: #ff6b6b;
             color: #fff;
+        }
+
+        .filter-bar .tab.vip-tab {
+            color: #ffd700;
+        }
+
+        .filter-bar .tab.vip-tab.active {
+            border-color: #ffd700;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        .filter-bar .tab.vip-tab:hover {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        .filter-bar .tab.create-vip-tab {
+            color: #00d4ff;
+        }
+
+        .filter-bar .tab.create-vip-tab.active {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .filter-bar .tab.create-vip-tab:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .filter-bar .tab.hidden {
+            display: none;
         }
 
         .filter-bar .video-count {
@@ -357,6 +471,124 @@
             background: #16161f;
             padding: 6px 16px;
             border-radius: 40px;
+        }
+
+        /* ===== VIP CREATE PANEL ===== */
+        .vip-create-panel {
+            display: none;
+            padding: 30px 20px;
+            text-align: center;
+            background: rgba(0, 212, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.08);
+        }
+
+        .vip-create-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vip-create-panel .vip-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .vip-create-panel h3 {
+            color: #00d4ff;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .vip-create-panel .sub-text {
+            color: #8888a0;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .vip-create-panel .vip-account-box {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .vip-create-panel .vip-account-box.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-row span {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-row strong {
+            color: #00d4ff;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-random-vip {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-random-vip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-copy-vip {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .btn-copy-vip:hover {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .vip-create-panel .vip-success-msg {
+            color: #4caf50;
+            font-size: 0.9rem;
+            margin-top: 12px;
+            min-height: 24px;
         }
 
         /* ===== VIDEO GRID ===== */
@@ -380,6 +612,11 @@
             transform: translateY(-8px);
             border-color: rgba(255, 107, 107, 0.3);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-card.vip-card:hover {
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.1);
         }
 
         .video-card .thumbnail {
@@ -423,6 +660,19 @@
             left: 10px;
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: #fff;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .video-card .thumbnail .vip-badge-thumb {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            color: #1a1a2a;
             padding: 2px 10px;
             border-radius: 6px;
             font-size: 0.6rem;
@@ -509,24 +759,24 @@
         .empty-state {
             text-align: center;
             color: #55556b;
-            padding: 80px 20px;
+            padding: 60px 20px;
             grid-column: 1 / -1;
         }
 
         .empty-state .icon {
-            font-size: 4rem;
+            font-size: 3.5rem;
             display: block;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .empty-state h3 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: #8888a0;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .empty-state p {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         /* ===== MODAL UPLOAD ===== */
@@ -611,7 +861,8 @@
         }
 
         .modal input[type="text"],
-        .modal input[type="file"] {
+        .modal input[type="file"],
+        .modal select {
             width: 100%;
             padding: 12px 16px;
             border-radius: 12px;
@@ -624,9 +875,15 @@
             font-family: inherit;
         }
 
-        .modal input[type="text"]:focus {
+        .modal input[type="text"]:focus,
+        .modal select:focus {
             border-color: #ff6b6b;
             box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        .modal select option {
+            background: #1a1a28;
+            color: #fff;
         }
 
         .modal input[type="file"] {
@@ -877,14 +1134,29 @@
                 font-size: 0.8rem;
             }
 
-            .filter-bar .tag {
-                padding: 5px 12px;
-                font-size: 0.7rem;
+            .filter-bar .tab {
+                padding: 6px 16px;
+                font-size: 0.75rem;
             }
 
             .filter-bar .video-count {
                 font-size: 0.7rem;
                 padding: 4px 12px;
+            }
+
+            .vip-create-panel .vip-account-box .vip-creds .vip-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .auth-box .input-group input {
+                padding-right: 40px;
+                font-size: 0.85rem;
+            }
+
+            .auth-box .input-group .toggle-password {
+                font-size: 1rem;
+                right: 10px;
             }
         }
     </style>
@@ -901,8 +1173,18 @@
                 <p class="sub-title" id="authSub">Chào mừng bạn quay trở lại</p>
                 <div id="authError" class="error-msg"></div>
                 <div id="authSuccess" class="success-msg"></div>
-                <input type="text" id="authUsername" placeholder="Tên đăng nhập" />
-                <input type="password" id="authPassword" placeholder="Mật khẩu" />
+                
+                <div class="input-group">
+                    <input type="text" id="authUsername" placeholder="Tên đăng nhập" />
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="authPassword" placeholder="Mật khẩu" />
+                    <button class="toggle-password" id="togglePasswordBtn" type="button" aria-label="Hiển thị mật khẩu">
+                        👁️
+                    </button>
+                </div>
+                
                 <button class="btn-auth btn-login" id="authMainBtn">Đăng nhập</button>
                 <button class="btn-auth btn-register" id="authSwitchBtn">Chưa có tài khoản? Đăng ký</button>
                 <div class="switch-link">
@@ -922,10 +1204,11 @@
                     <span class="version">v2.0</span>
                 </div>
                 <div class="user-section">
-                    <div class="user-info">
+                    <div class="user-info" id="userInfoBox">
                         <div class="avatar" id="userAvatar">N</div>
                         <span class="name" id="displayUsername">User</span>
                         <span class="admin-badge" id="adminBadge" style="display:none;">👑 Admin</span>
+                        <span class="vip-badge" id="vipBadge" style="display:none;">⭐ VIP</span>
                     </div>
                     <div class="header-actions">
                         <button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button>
@@ -934,19 +1217,47 @@
                 </div>
             </header>
 
-            <!-- BỘ LỌC -->
-            <div class="filter-bar">
-                <span class="tag active">📹 Tất cả</span>
+            <!-- BỘ LỌC (TABS) -->
+            <div class="filter-bar" id="filterBar">
+                <button class="tab active" data-tab="normal">📹 Thường</button>
+                <button class="tab vip-tab hidden" data-tab="vip" id="vipTabBtn">⭐ VIP</button>
+                <button class="tab create-vip-tab hidden" data-tab="create-vip" id="createVipTabBtn">👑 Tạo VIP</button>
                 <span class="video-count" id="videoCount">0 video</span>
             </div>
 
             <!-- DANH SÁCH VIDEO -->
             <div class="video-grid" id="videoGrid">
                 <div class="empty-state">
-                    <span class="icon">🎥</span>
+                    <span class="icon">📹</span>
                     <h3>Chưa có video nào</h3>
-                    <p>Hãy đăng video đầu tiên của bạn nhé!</p>
+                    <p>Hãy đăng video đầu tiên nhé!</p>
                 </div>
+            </div>
+
+            <!-- VIP CREATE PANEL -->
+            <div class="vip-create-panel" id="vipCreatePanel">
+                <span class="vip-icon">👑</span>
+                <h3>Tạo tài khoản VIP</h3>
+                <p class="sub-text">Tạo tài khoản VIP ngẫu nhiên để cấp cho người dùng</p>
+                
+                <div class="vip-account-box" id="vipAccountDisplay">
+                    <div class="vip-creds">
+                        <div class="vip-row">
+                            <span>👤 Tài khoản:</span>
+                            <strong id="vipUsernameDisplay">---</strong>
+                        </div>
+                        <div class="vip-row">
+                            <span>🔑 Mật khẩu:</span>
+                            <strong id="vipPasswordDisplay">---</strong>
+                        </div>
+                        <div class="vip-row" style="justify-content:flex-end; margin-top:4px; background:transparent; padding:0;">
+                            <button class="btn-copy-vip" id="copyVipBtn">📋 Sao chép thông tin</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-random-vip" id="randomVipBtn">🎲 Tạo tài khoản VIP</button>
+                <div class="vip-success-msg" id="vipSuccessMsg"></div>
             </div>
         </div>
 
@@ -963,6 +1274,12 @@
 
                 <label>📝 Tiêu đề video</label>
                 <input type="text" id="videoTitleInput" placeholder="Nhập tiêu đề video..." />
+
+                <label>🏷️ Loại video</label>
+                <select id="videoTypeSelect">
+                    <option value="normal">📹 Video thường</option>
+                    <option value="vip">⭐ Video VIP</option>
+                </select>
 
                 <div class="file-info" id="fileInfo" style="display:none;">
                     📁 <strong id="fileName">video.mp4</strong> · <span id="fileSize">0 MB</span>
@@ -1012,8 +1329,32 @@
             return username === ADMIN_USER;
         }
 
+        function isVip(username) {
+            if (!username) return false;
+            const users = getUsers();
+            return users[username] && users[username].vip === true;
+        }
+
+        function canUploadVip(username) {
+            return isAdmin(username) || isVip(username);
+        }
+
         // ========================================
-        // 2. ĐĂNG NHẬP / ĐĂNG KÝ
+        // 2. TOGGLE PASSWORD
+        // ========================================
+
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const authPasswordInput = document.getElementById('authPassword');
+
+        togglePasswordBtn.addEventListener('click', function() {
+            const type = authPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            authPasswordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+            this.setAttribute('aria-label', type === 'password' ? 'Hiển thị mật khẩu' : 'Ẩn mật khẩu');
+        });
+
+        // ========================================
+        // 3. ĐĂNG NHẬP / ĐĂNG KÝ
         // ========================================
 
         const authBox = document.getElementById('authBox');
@@ -1023,7 +1364,6 @@
         const authError = document.getElementById('authError');
         const authSuccess = document.getElementById('authSuccess');
         const authUsername = document.getElementById('authUsername');
-        const authPassword = document.getElementById('authPassword');
         const authMainBtn = document.getElementById('authMainBtn');
         const authSwitchBtn = document.getElementById('authSwitchBtn');
         const authSwitchLink = document.getElementById('authSwitchLink');
@@ -1031,8 +1371,16 @@
         const displayUsername = document.getElementById('displayUsername');
         const userAvatar = document.getElementById('userAvatar');
         const adminBadge = document.getElementById('adminBadge');
+        const vipBadge = document.getElementById('vipBadge');
+        const userInfoBox = document.getElementById('userInfoBox');
+        const vipTabBtn = document.getElementById('vipTabBtn');
+        const createVipTabBtn = document.getElementById('createVipTabBtn');
+        const videoTypeSelect = document.getElementById('videoTypeSelect');
+        const vipCreatePanel = document.getElementById('vipCreatePanel');
 
         let isLoginMode = true;
+        let currentTab = 'normal';
+        let allVideos = [];
 
         function showError(msg) { authError.textContent = msg;
             authSuccess.textContent = ''; }
@@ -1065,15 +1413,17 @@
 
         function handleAuth() {
             const username = authUsername.value.trim();
-            const password = authPassword.value.trim();
+            const password = authPasswordInput.value.trim();
             if (!username || !password) { showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.'); return; }
 
+            // Check Admin
             if (username === ADMIN_USER && password === ADMIN_PASS) {
                 setCurrentUser(username);
                 showSuccess('✅ Đăng nhập Admin thành công!');
                 setTimeout(() => {
                     authBox.style.display = 'none';
                     mainContent.classList.add('active');
+                    mainContent.classList.remove('vip-theme');
                     updateUI(username);
                     renderVideos();
                 }, 500);
@@ -1082,12 +1432,18 @@
 
             const users = getUsers();
             if (isLoginMode) {
-                if (users[username] && users[username] === password) {
+                // Check normal user
+                if (users[username] && users[username].password === password) {
                     setCurrentUser(username);
                     showSuccess('✅ Đăng nhập thành công!');
                     setTimeout(() => {
                         authBox.style.display = 'none';
                         mainContent.classList.add('active');
+                        if (users[username].vip) {
+                            mainContent.classList.add('vip-theme');
+                        } else {
+                            mainContent.classList.remove('vip-theme');
+                        }
                         updateUI(username);
                         renderVideos();
                     }, 500);
@@ -1095,8 +1451,10 @@
                     showError('❌ Sai tên đăng nhập hoặc mật khẩu.');
                 }
             } else {
+                // Register - check if username exists
                 if (users[username]) { showError('❌ Tên đăng nhập đã tồn tại.'); return; }
-                users[username] = password;
+                // Normal user registration (not VIP)
+                users[username] = { password: password, vip: false };
                 saveUsers(users);
                 showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
                 isLoginMode = true;
@@ -1106,17 +1464,52 @@
                 authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
                 authSwitchText.innerHTML = 'Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
                 document.getElementById('authSwitchLink').addEventListener('click', switchMode);
-                authPassword.value = '';
+                authPasswordInput.value = '';
             }
         }
 
         function updateUI(username) {
             displayUsername.textContent = username;
             userAvatar.textContent = username.charAt(0).toUpperCase();
+            const users = getUsers();
+            const isVipUser = users[username] && users[username].vip === true;
+            
+            // Cập nhật dropdown loại video
+            if (canUploadVip(username)) {
+                videoTypeSelect.innerHTML = `
+                    <option value="normal">📹 Video thường</option>
+                    <option value="vip">⭐ Video VIP</option>
+                `;
+            } else {
+                videoTypeSelect.innerHTML = `
+                    <option value="normal">📹 Video thường</option>
+                `;
+            }
+            
             if (isAdmin(username)) {
                 adminBadge.style.display = 'inline-block';
+                vipBadge.style.display = 'none';
+                userInfoBox.classList.remove('vip-avatar');
+                vipTabBtn.classList.remove('hidden');
+                createVipTabBtn.classList.remove('hidden');
+            } else if (isVipUser) {
+                adminBadge.style.display = 'none';
+                vipBadge.style.display = 'inline-block';
+                userInfoBox.classList.add('vip-avatar');
+                vipTabBtn.classList.remove('hidden');
+                createVipTabBtn.classList.add('hidden');
             } else {
                 adminBadge.style.display = 'none';
+                vipBadge.style.display = 'none';
+                userInfoBox.classList.remove('vip-avatar');
+                vipTabBtn.classList.add('hidden');
+                createVipTabBtn.classList.add('hidden');
+                if (currentTab === 'vip' || currentTab === 'create-vip') {
+                    currentTab = 'normal';
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector('.tab[data-tab="normal"]').classList.add('active');
+                    vipCreatePanel.classList.remove('active');
+                }
             }
         }
 
@@ -1124,8 +1517,9 @@
             setCurrentUser(null);
             authBox.style.display = 'flex';
             mainContent.classList.remove('active');
+            mainContent.classList.remove('vip-theme');
             authUsername.value = '';
-            authPassword.value = '';
+            authPasswordInput.value = '';
             isLoginMode = true;
             authTitle.textContent = 'Đăng nhập';
             authSub.textContent = 'Chào mừng bạn quay trở lại';
@@ -1135,20 +1529,102 @@
             document.getElementById('authSwitchLink').addEventListener('click', switchMode);
             clearMessages();
             document.getElementById('videoGrid').innerHTML =
-                `<div class="empty-state"><span class="icon">🎥</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>`;
+                `<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>`;
             document.getElementById('videoCount').textContent = '0 video';
             adminBadge.style.display = 'none';
+            vipBadge.style.display = 'none';
+            userInfoBox.classList.remove('vip-avatar');
+            vipTabBtn.classList.add('hidden');
+            createVipTabBtn.classList.add('hidden');
+            vipCreatePanel.classList.remove('active');
+            currentTab = 'normal';
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.tab[data-tab="normal"]').classList.add('active');
+            // Reset password toggle
+            authPasswordInput.setAttribute('type', 'password');
+            togglePasswordBtn.textContent = '👁️';
         }
 
         authMainBtn.addEventListener('click', handleAuth);
         authSwitchBtn.addEventListener('click', switchMode);
         document.getElementById('authSwitchLink').addEventListener('click', switchMode);
-        authPassword.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
+        authPasswordInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
         authUsername.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
         document.getElementById('logoutBtn').addEventListener('click', logout);
 
         // ========================================
-        // 3. QUẢN LÝ VIDEO BẰNG IndexedDB
+        // 4. TẠO TÀI KHOẢN VIP NGẪU NHIÊN (Chỉ Admin)
+        // ========================================
+
+        function generateRandomNumber(length = 4) {
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += Math.floor(Math.random() * 10);
+            }
+            return result;
+        }
+
+        function createVipAccount() {
+            const users = getUsers();
+            let username, password;
+            let attempts = 0;
+            
+            do {
+                const number = generateRandomNumber(4);
+                username = 'VIP-' + number;
+                attempts++;
+            } while (users[username] && attempts < 100);
+            
+            const number = generateRandomNumber(4);
+            password = 'VIP-' + number;
+            
+            users[username] = { password: password, vip: true };
+            saveUsers(users);
+            
+            document.getElementById('vipUsernameDisplay').textContent = username;
+            document.getElementById('vipPasswordDisplay').textContent = password;
+            document.getElementById('vipAccountDisplay').classList.add('show');
+            
+            window._vipCreds = { username, password };
+            
+            const msg = document.getElementById('vipSuccessMsg');
+            msg.textContent = '✅ Tạo tài khoản VIP thành công!';
+            msg.style.color = '#4caf50';
+            
+            document.getElementById('vipAccountDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            return { username, password };
+        }
+
+        document.getElementById('randomVipBtn').addEventListener('click', function() {
+            createVipAccount();
+        });
+
+        document.getElementById('copyVipBtn').addEventListener('click', function() {
+            if (window._vipCreds) {
+                const text = `Tài khoản: ${window._vipCreds.username}\nMật khẩu: ${window._vipCreds.password}`;
+                navigator.clipboard.writeText(text).then(() => {
+                    const btn = this;
+                    const originalText = btn.textContent;
+                    btn.textContent = '✅ Đã sao chép!';
+                    setTimeout(() => { btn.textContent = originalText; }, 2000);
+                }).catch(() => {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    const btn = this;
+                    const originalText = btn.textContent;
+                    btn.textContent = '✅ Đã sao chép!';
+                    setTimeout(() => { btn.textContent = originalText; }, 2000);
+                });
+            }
+        });
+
+        // ========================================
+        // 5. QUẢN LÝ VIDEO BẰNG IndexedDB
         // ========================================
 
         const DB_NAME = 'VideoDB';
@@ -1156,7 +1632,7 @@
 
         function openDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 3);
+                const request = indexedDB.open(DB_NAME, 4);
                 request.onupgradeneeded = function(e) {
                     const d = e.target.result;
                     if (!d.objectStoreNames.contains(STORE_NAME)) {
@@ -1168,7 +1644,6 @@
             });
         }
 
-        // ===== ĐÃ FIX: TẤT CẢ USER ĐỀU XEM ĐƯỢC VIDEO CỦA NHAU =====
         async function getVideosFromDB() {
             const db = await openDB();
             return new Promise((resolve, reject) => {
@@ -1177,7 +1652,6 @@
                 const req = store.getAll();
                 req.onsuccess = function() {
                     const all = req.result || [];
-                    // ✅ FIX: Trả về tất cả video, không phân biệt người đăng
                     resolve(all);
                 };
                 req.onerror = function() {
@@ -1210,7 +1684,7 @@
         }
 
         // ========================================
-        // 4. TẠO THUMBNAIL TỪ VIDEO
+        // 6. TẠO THUMBNAIL TỪ VIDEO
         // ========================================
 
         function generateThumbnail(videoFile, time = 1.0) {
@@ -1258,7 +1732,7 @@
         }
 
         // ========================================
-        // 5. HIỂN THỊ VIDEO - SỬ DỤNG BLOB URL
+        // 7. HIỂN THỊ VIDEO - TABS
         // ========================================
 
         const videoGrid = document.getElementById('videoGrid');
@@ -1354,22 +1828,19 @@
             if (e.target === this) closeVideoModal();
         });
 
-        async function renderVideos() {
-            const videos = await getVideosFromDB();
-            const currentUser = getCurrentUser();
-            const isAdminUser = isAdmin(currentUser);
-
-            videos.sort((a, b) => {
-                const timeA = new Date(a.createdAt || 0).getTime();
-                const timeB = new Date(b.createdAt || 0).getTime();
-                return timeB - timeA;
-            });
-
-            videoCount.textContent = videos.length + ' video';
-
-            if (videos.length === 0) {
-                videoGrid.innerHTML =
-                    `<div class="empty-state"><span class="icon">🎥</span><h3>Chưa có video nào</h3><p>Hãy đăng video đầu tiên nhé!</p></div>`;
+        function renderVideoGrid(videos, showDelete) {
+            if (!videos || videos.length === 0) {
+                const isVip = currentTab === 'vip';
+                const icon = isVip ? '⭐' : '📹';
+                const title = isVip ? 'Chưa có video VIP' : 'Chưa có video nào';
+                const msg = isVip ? 'Video VIP sẽ được cập nhật sớm' : 'Hãy đăng video đầu tiên nhé!';
+                videoGrid.innerHTML = `
+                    <div class="empty-state">
+                        <span class="icon">${icon}</span>
+                        <h3>${title}</h3>
+                        <p>${msg}</p>
+                    </div>
+                `;
                 return;
             }
 
@@ -1379,15 +1850,18 @@
                 const views = video.views || 0;
                 const thumb = video.thumbnail || '';
                 const uploaderName = video.username || 'Unknown';
-                const showDelete = isAdminUser;
                 const timeAgo = getTimeAgo(video.createdAt);
+                const isVipVideo = video.videoType === 'vip';
+                const badgeClass = isVipVideo ? 'vip-badge-thumb' : 'hd-badge';
+                const badgeText = isVipVideo ? 'VIP' : 'HD';
+                const cardClass = isVipVideo ? 'vip-card' : '';
 
                 html += `
-                    <div class="video-card" data-id="${video.id}">
+                    <div class="video-card ${cardClass}" data-id="${video.id}">
                         <div class="thumbnail">
                             ${thumb ? `<img src="${thumb}" alt="${video.title || 'Video'}" loading="lazy" />` : '<div style="color:#555;font-size:0.8rem;">🎬</div>'}
                             <span class="duration">${typeof duration === 'number' ? formatTime(duration) : duration}</span>
-                            <span class="hd-badge">HD</span>
+                            <span class="${badgeClass}">${badgeText}</span>
                             <span class="play-icon">▶️</span>
                             <span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:0.6rem;">👤 ${uploaderName}</span>
                         </div>
@@ -1405,14 +1879,13 @@
             }
             videoGrid.innerHTML = html;
 
-            document.querySelectorAll('.btn-delete-video').forEach(btn => {
+            videoGrid.querySelectorAll('.btn-delete-video').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     const id = parseInt(this.dataset.id);
                     if (confirm('Bạn có chắc muốn xóa video này?')) {
                         await deleteVideoFromDB(id);
-                        const videosList = await getVideosFromDB();
-                        const videoToDelete = videosList.find(v => v.id === id);
+                        const videoToDelete = allVideos.find(v => v.id === id);
                         if (videoToDelete && blobCache.has(videoToDelete.data)) {
                             URL.revokeObjectURL(blobCache.get(videoToDelete.data));
                             blobCache.delete(videoToDelete.data);
@@ -1422,10 +1895,10 @@
                 });
             });
 
-            document.querySelectorAll('.video-card').forEach((card) => {
+            videoGrid.querySelectorAll('.video-card').forEach((card) => {
                 card.addEventListener('click', function() {
                     const id = parseInt(this.dataset.id);
-                    const video = videos.find(v => v.id === id);
+                    const video = allVideos.find(v => v.id === id);
                     if (video) {
                         openVideoModal(video);
                     }
@@ -1433,8 +1906,69 @@
             });
         }
 
+        async function renderVideos() {
+            allVideos = await getVideosFromDB();
+            const currentUser = getCurrentUser();
+            const isAdminUser = isAdmin(currentUser);
+            const isVipUser = isVip(currentUser);
+
+            if (currentTab === 'create-vip') {
+                videoGrid.style.display = 'none';
+                vipCreatePanel.classList.add('active');
+                videoCount.textContent = allVideos.length + ' video';
+                return;
+            } else {
+                videoGrid.style.display = 'grid';
+                vipCreatePanel.classList.remove('active');
+            }
+
+            let filteredVideos = [];
+            if (currentTab === 'normal') {
+                filteredVideos = allVideos.filter(v => v.videoType !== 'vip');
+            } else if (currentTab === 'vip') {
+                filteredVideos = allVideos.filter(v => v.videoType === 'vip');
+            }
+
+            filteredVideos.sort((a, b) => {
+                const timeA = new Date(a.createdAt || 0).getTime();
+                const timeB = new Date(b.createdAt || 0).getTime();
+                return timeB - timeA;
+            });
+
+            const totalVideos = allVideos.length;
+            videoCount.textContent = totalVideos + ' video';
+
+            const showDelete = isAdminUser;
+            renderVideoGrid(filteredVideos, showDelete);
+        }
+
         // ========================================
-        // 6. UPLOAD VIDEO
+        // 8. TAB SWITCHING
+        // ========================================
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                const currentUser = getCurrentUser();
+                const isAdminUser = isAdmin(currentUser);
+                const isVipUser = isVip(currentUser);
+
+                if (tabName === 'vip' && !isAdminUser && !isVipUser) {
+                    return;
+                }
+                if (tabName === 'create-vip' && !isAdminUser) {
+                    return;
+                }
+
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentTab = tabName;
+                renderVideos();
+            });
+        });
+
+        // ========================================
+        // 9. UPLOAD VIDEO
         // ========================================
 
         const uploadModal = document.getElementById('uploadModal');
@@ -1501,10 +2035,17 @@
         submitBtn.addEventListener('click', async function() {
             const videoFile = selectedVideoFile;
             const title = videoTitleInput.value.trim() || 'Video không tiêu đề';
+            const videoType = videoTypeSelect.value;
             const username = getCurrentUser();
 
             if (!videoFile) {
                 statusMsg.textContent = '⚠️ Vui lòng chọn video.';
+                statusMsg.className = 'status-msg error';
+                return;
+            }
+
+            if (videoType === 'vip' && !canUploadVip(username)) {
+                statusMsg.textContent = '❌ Bạn không có quyền đăng video VIP.';
                 statusMsg.className = 'status-msg error';
                 return;
             }
@@ -1555,6 +2096,7 @@
                     type: videoFile.type || 'video/mp4',
                     duration: duration || 0,
                     views: 0,
+                    videoType: videoType,
                     createdAt: new Date().toISOString()
                 };
 
@@ -1576,7 +2118,7 @@
         });
 
         // ========================================
-        // 7. KHỞI ĐỘNG
+        // 10. KHỞI ĐỘNG
         // ========================================
 
         (async function init() {
@@ -1584,14 +2126,21 @@
             if (currentUser) {
                 authBox.style.display = 'none';
                 mainContent.classList.add('active');
+                const users = getUsers();
+                if (users[currentUser] && users[currentUser].vip) {
+                    mainContent.classList.add('vip-theme');
+                }
                 updateUI(currentUser);
                 await renderVideos();
             } else {
                 authBox.style.display = 'flex';
                 mainContent.classList.remove('active');
                 document.getElementById('videoGrid').innerHTML =
-                    `<div class="empty-state"><span class="icon">🎥</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>`;
+                    `<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>`;
                 document.getElementById('videoCount').textContent = '0 video';
+                vipTabBtn.classList.add('hidden');
+                createVipTabBtn.classList.add('hidden');
+                vipCreatePanel.classList.remove('active');
             }
         })();
     </script>
