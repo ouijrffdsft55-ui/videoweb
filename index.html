@@ -3,109 +3,189 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kho Video Pro</title>
+    <title>VidHub - Kho Video Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
+
         body {
-            background: #0a0a0a;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0b0b0f;
             color: #fff;
-            padding: 12px;
             min-height: 100vh;
+            padding: 16px;
         }
+
         .container {
-            max-width: 1200px;
-            margin: auto;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a24;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border-radius: 10px;
         }
 
         /* ===== FORM ĐĂNG NHẬP ===== */
-        .auth-box {
-            background: #1a1a1a;
-            border-radius: 16px;
-            padding: 30px 24px;
-            max-width: 400px;
-            margin: 60px auto;
-            border: 1px solid #2a2a2a;
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
+
+        .auth-box {
+            background: linear-gradient(145deg, #16161f, #1e1e2a);
+            border-radius: 24px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 100%;
+            border: 1px solid rgba(255, 107, 107, 0.15);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-box .logo-icon {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 4px;
+        }
+
         .auth-box h2 {
             text-align: center;
-            color: #ff6b6b;
-            margin-bottom: 20px;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
         }
+
+        .auth-box .sub-title {
+            text-align: center;
+            color: #8888a0;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
         .auth-box input {
             width: 100%;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            background: #111;
+            padding: 14px 18px;
+            margin-bottom: 14px;
+            border-radius: 14px;
+            border: 1px solid #2a2a3e;
+            background: #11111b;
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
+
+        .auth-box input::placeholder {
+            color: #55556b;
+        }
+
         .auth-box input:focus {
             border-color: #ff6b6b;
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
         }
+
         .auth-box .btn-auth {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 30px;
+            border-radius: 14px;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             margin-top: 4px;
+            font-family: inherit;
         }
+
         .btn-login {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: #fff;
         }
+
         .btn-login:hover {
-            background: #e55a5a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.35);
         }
+
         .btn-register {
-            background: #2a2a2a;
+            background: #2a2a3e;
             color: #fff;
         }
+
         .btn-register:hover {
-            background: #3a3a3a;
+            background: #3a3a52;
         }
+
         .auth-box .switch-link {
             text-align: center;
-            margin-top: 14px;
-            color: #888;
+            margin-top: 16px;
+            color: #666680;
             font-size: 0.9rem;
         }
+
         .auth-box .switch-link span {
             color: #ff6b6b;
             cursor: pointer;
-            text-decoration: underline;
+            font-weight: 600;
+            transition: color 0.3s;
         }
+
+        .auth-box .switch-link span:hover {
+            color: #ee5a24;
+        }
+
         .auth-box .error-msg {
             color: #ff4444;
             font-size: 0.85rem;
             text-align: center;
-            min-height: 20px;
+            min-height: 22px;
         }
+
         .auth-box .success-msg {
             color: #4caf50;
             font-size: 0.85rem;
             text-align: center;
-            min-height: 20px;
+            min-height: 22px;
         }
 
-        /* ===== PHẦN CHÍNH ===== */
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
+
         .main-content.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ===== HEADER ===== */
@@ -114,53 +194,129 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 16px;
+            padding: 16px 0 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 24px;
         }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header .logo .icon {
+            font-size: 2rem;
+        }
+
         .header .logo h1 {
-            font-size: 1.6rem;
-            color: #ff6b6b;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
+        .header .logo .version {
+            font-size: 0.6rem;
+            color: #555;
+            background: #1a1a2a;
+            padding: 2px 8px;
+            border-radius: 10px;
+            -webkit-text-fill-color: #666;
+        }
+
+        .header .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
         .header .user-info {
-            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #16161f;
+            padding: 6px 16px 6px 12px;
+            border-radius: 40px;
+            border: 1px solid #2a2a3e;
+        }
+
+        .header .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff;
         }
-        .header .user-info strong {
-            color: #ff6b6b;
+
+        .header .user-info .name {
+            color: #eee;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
+
+        .header .user-info .admin-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .header-actions {
             display: flex;
             gap: 10px;
             align-items: center;
-            flex-wrap: wrap;
         }
+
         .btn-upload-header {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: #fff;
             border: none;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-weight: bold;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
         .btn-upload-header:hover {
-            background: #e55a5a;
-            transform: scale(1.03);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.35);
         }
+
         .btn-logout {
-            background: #333;
-            color: #fff;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 30px;
+            background: transparent;
+            color: #8888a0;
+            border: 1px solid #2a2a3e;
+            padding: 10px 20px;
+            border-radius: 40px;
             cursor: pointer;
-            font-size: 0.8rem;
-            transition: 0.3s;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
+
         .btn-logout:hover {
             background: #ff4444;
+            border-color: #ff4444;
+            color: #fff;
         }
 
         /* ===== BỘ LỌC ===== */
@@ -168,194 +324,210 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
             align-items: center;
         }
+
         .filter-bar .tag {
-            background: #1a1a1a;
-            padding: 6px 16px;
-            border-radius: 20px;
+            background: #16161f;
+            padding: 8px 20px;
+            border-radius: 40px;
             font-size: 0.8rem;
-            color: #aaa;
+            color: #8888a0;
             cursor: pointer;
             border: 1px solid transparent;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
+
         .filter-bar .tag.active {
             border-color: #ff6b6b;
             color: #ff6b6b;
-        }
-        .filter-bar .tag:hover {
-            border-color: #ff6b6b;
-        }
-        .filter-bar .video-count {
-            color: #666;
-            font-size: 0.8rem;
-            margin-left: auto;
+            background: rgba(255, 107, 107, 0.08);
         }
 
-        /* ===== DANH SÁCH VIDEO DẠNG LƯỚI ===== */
+        .filter-bar .tag:hover {
+            border-color: #ff6b6b;
+            color: #fff;
+        }
+
+        .filter-bar .video-count {
+            color: #55556b;
+            font-size: 0.85rem;
+            margin-left: auto;
+            background: #16161f;
+            padding: 6px 16px;
+            border-radius: 40px;
+        }
+
+        /* ===== VIDEO GRID ===== */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 16px;
-            margin-top: 8px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
         }
 
         .video-card {
-            background: #141414;
-            border-radius: 12px;
+            background: #13131e;
+            border-radius: 16px;
             overflow: hidden;
-            transition: 0.3s;
-            border: 1px solid #1a1a1a;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+            position: relative;
         }
+
         .video-card:hover {
-            border-color: #ff6b6b;
-            transform: translateY(-4px);
+            transform: translateY(-8px);
+            border-color: rgba(255, 107, 107, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         .video-card .thumbnail {
             width: 100%;
             aspect-ratio: 16/9;
-            background: #1a1a1a;
+            background: #0b0b12;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
         }
+
         .video-card .thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
         }
+
+        .video-card:hover .thumbnail img {
+            transform: scale(1.05);
+        }
+
         .video-card .thumbnail .duration {
             position: absolute;
-            bottom: 8px;
-            right: 8px;
-            background: rgba(0, 0, 0, 0.8);
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.85);
             color: #fff;
-            padding: 2px 8px;
-            border-radius: 4px;
+            padding: 3px 10px;
+            border-radius: 6px;
             font-size: 0.7rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
         }
+
         .video-card .thumbnail .hd-badge {
             position: absolute;
-            top: 8px;
-            left: 8px;
-            background: rgba(255, 107, 107, 0.9);
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: #fff;
-            padding: 2px 8px;
-            border-radius: 4px;
+            padding: 2px 10px;
+            border-radius: 6px;
             font-size: 0.6rem;
-            font-weight: bold;
+            font-weight: 700;
+            text-transform: uppercase;
         }
+
         .video-card .thumbnail .play-icon {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3rem;
-            opacity: 0.7;
-            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            font-size: 3.5rem;
+            opacity: 0;
+            transition: all 0.4s ease;
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
             pointer-events: none;
         }
 
-        .video-card .info {
-            padding: 10px 12px 12px;
+        .video-card:hover .play-icon {
+            opacity: 0.9;
         }
+
+        .video-card .info {
+            padding: 14px 16px 16px;
+        }
+
         .video-card .info .title {
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #eee;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            line-height: 1.3;
-            margin-bottom: 4px;
+            line-height: 1.4;
+            margin-bottom: 6px;
         }
+
         .video-card .info .meta {
             font-size: 0.75rem;
-            color: #888;
+            color: #666680;
             display: flex;
-            gap: 12px;
+            gap: 14px;
             align-items: center;
             flex-wrap: wrap;
         }
+
         .video-card .info .meta .views {
-            color: #666;
-        }
-        .video-card .info .meta .time {
-            color: #666;
-        }
-        .video-card .btn-delete-video {
-            background: transparent;
-            color: #666;
-            border: none;
-            font-size: 0.7rem;
-            cursor: pointer;
-            padding: 4px 10px;
-            border-radius: 4px;
-            transition: 0.3s;
-            margin-top: 4px;
-        }
-        .video-card .btn-delete-video:hover {
-            color: #ff4444;
-            background: rgba(255, 68, 68, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        /* Modal xem video */
-        .video-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .video-modal-overlay.show {
+        .video-card .info .meta .time {
             display: flex;
+            align-items: center;
+            gap: 4px;
         }
-        .video-modal-overlay video {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: 8px;
-            background: #000;
+
+        .video-card .info .meta .uploader {
+            color: #8888a0;
+            font-size: 0.7rem;
         }
-        .video-modal-overlay .close-video {
-            position: fixed;
-            top: 20px;
-            right: 30px;
-            font-size: 2.5rem;
-            color: #fff;
+
+        .video-card .btn-delete-video {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.15);
+            font-size: 0.7rem;
             cursor: pointer;
-            z-index: 2001;
-            background: none;
-            border: none;
+            padding: 4px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            margin-top: 8px;
         }
-        .video-modal-overlay .close-video:hover {
-            color: #ff6b6b;
+
+        .video-card .btn-delete-video:hover {
+            background: rgba(255, 68, 68, 0.2);
+            border-color: #ff4444;
         }
 
         .empty-state {
             text-align: center;
-            color: #666;
-            padding: 60px 20px;
+            color: #55556b;
+            padding: 80px 20px;
             grid-column: 1 / -1;
         }
+
         .empty-state .icon {
-            font-size: 3rem;
+            font-size: 4rem;
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            color: #8888a0;
+            margin-bottom: 6px;
+        }
+
         .empty-state p {
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         /* ===== MODAL UPLOAD ===== */
@@ -371,165 +543,349 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            backdrop-filter: blur(8px);
         }
+
         .modal-overlay.show {
             display: flex;
+            animation: fadeIn 0.3s ease;
         }
+
         .modal {
-            background: #1a1a1a;
-            border-radius: 16px;
-            padding: 30px 24px;
+            background: linear-gradient(145deg, #1a1a28, #222236);
+            border-radius: 24px;
+            padding: 32px 28px;
             max-width: 520px;
             width: 100%;
-            border: 1px solid #2a2a2a;
-            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
             max-height: 90vh;
             overflow-y: auto;
         }
-        .modal h2 {
-            color: #ff6b6b;
-            margin-bottom: 16px;
-            font-size: 1.4rem;
+
+        .modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
+
+        .modal .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .modal .close-modal {
-            position: absolute;
-            top: 12px;
-            right: 18px;
-            background: none;
+            background: rgba(255, 255, 255, 0.05);
             border: none;
-            color: #888;
+            color: #8888a0;
             font-size: 1.5rem;
             cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .modal .close-modal:hover {
+            background: rgba(255, 68, 68, 0.15);
             color: #fff;
         }
+
         .modal label {
             display: block;
-            color: #aaa;
+            color: #8888a0;
             font-size: 0.85rem;
-            margin-bottom: 4px;
-            margin-top: 12px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            margin-top: 16px;
         }
+
+        .modal label:first-of-type {
+            margin-top: 0;
+        }
+
         .modal input[type="text"],
         .modal input[type="file"] {
             width: 100%;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            background: #111;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #2a2a3e;
+            background: #11111b;
             color: #fff;
             font-size: 0.95rem;
             outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
+
         .modal input[type="text"]:focus {
             border-color: #ff6b6b;
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
         }
+
         .modal input[type="file"] {
-            padding: 8px;
-            background: #111;
-            border: 1px dashed #444;
+            padding: 10px;
+            background: #11111b;
+            border: 1px dashed #2a2a3e;
         }
+
         .modal input[type="file"]::file-selector-button {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: #fff;
             border: none;
-            padding: 6px 16px;
+            padding: 6px 18px;
             border-radius: 20px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.3s ease;
         }
+
+        .modal input[type="file"]::file-selector-button:hover {
+            transform: scale(1.05);
+        }
+
         .modal .file-info {
-            background: #111;
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin-top: 8px;
+            background: #11111b;
+            padding: 10px 16px;
+            border-radius: 12px;
+            margin-top: 10px;
             font-size: 0.85rem;
-            color: #888;
+            color: #666680;
+            border: 1px solid #1a1a2a;
         }
+
         .modal .file-info strong {
-            color: #fff;
+            color: #eee;
         }
+
         .modal .btn-submit-upload {
             width: 100%;
             padding: 14px;
             border: none;
-            border-radius: 30px;
-            background: #ff6b6b;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: #fff;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 16px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-family: inherit;
         }
-        .modal .btn-submit-upload:hover {
-            background: #e55a5a;
+
+        .modal .btn-submit-upload:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.35);
         }
+
         .modal .btn-submit-upload:disabled {
-            background: #444;
+            background: #2a2a3e;
             cursor: not-allowed;
         }
+
         .modal .upload-progress {
             width: 100%;
             height: 4px;
-            background: #333;
+            background: #2a2a3e;
             border-radius: 4px;
-            margin-top: 12px;
+            margin-top: 14px;
             overflow: hidden;
             display: none;
         }
-        .modal .upload-progress .bar {
-            height: 100%;
-            background: #ff6b6b;
-            width: 0%;
-            transition: width 0.3s;
-            border-radius: 4px;
-        }
+
         .modal .upload-progress.show {
             display: block;
         }
+
+        .modal .upload-progress .bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 4px;
+        }
+
         .modal .status-msg {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 0.9rem;
             min-height: 24px;
         }
+
         .modal .status-msg.success {
             color: #4caf50;
         }
+
         .modal .status-msg.error {
             color: #ff4444;
         }
-        .modal .thumbnail-preview {
-            width: 100%;
-            max-height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-top: 8px;
+
+        /* ===== VIDEO PLAYER MODAL ===== */
+        .video-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .video-modal-overlay video {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 12px;
             background: #000;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .video-modal-overlay .close-video {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            z-index: 2001;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-overlay .close-video:hover {
+            background: rgba(255, 68, 68, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .video-modal-overlay .video-title-overlay {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 24px;
+            border-radius: 40px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            max-width: 80%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* ===== RESPONSIVE ===== */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .video-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 12px;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 14px;
             }
+
             .header .logo h1 {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
             }
+
             .btn-upload-header {
-                padding: 8px 16px;
+                padding: 10px 18px;
                 font-size: 0.8rem;
             }
-            .modal {
-                padding: 20px 16px;
+
+            .header .user-info .name {
+                font-size: 0.8rem;
             }
+
+            .modal {
+                padding: 24px 18px;
+            }
+
+            .auth-box {
+                padding: 28px 20px;
+            }
+
             .video-modal-overlay .close-video {
-                top: 10px;
-                right: 20px;
-                font-size: 2rem;
+                top: 16px;
+                right: 16px;
+                font-size: 1.8rem;
+                width: 44px;
+                height: 44px;
+            }
+
+            .video-modal-overlay .video-title-overlay {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+                bottom: 20px;
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            body {
+                padding: 8px;
+            }
+
+            .header {
+                padding: 12px 0 16px;
+            }
+
+            .header .logo h1 {
+                font-size: 1.1rem;
+            }
+
+            .btn-upload-header {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+
+            .btn-logout {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+
+            .video-card .info {
+                padding: 10px 12px 12px;
+            }
+
+            .video-card .info .title {
+                font-size: 0.8rem;
+            }
+
+            .filter-bar .tag {
+                padding: 5px 12px;
+                font-size: 0.7rem;
+            }
+
+            .filter-bar .video-count {
+                font-size: 0.7rem;
+                padding: 4px 12px;
             }
         }
     </style>
@@ -539,16 +895,20 @@
     <div class="container">
 
         <!-- ====== FORM ĐĂNG NHẬP / ĐĂNG KÝ ====== -->
-        <div id="authBox" class="auth-box">
-            <h2 id="authTitle">🔐 Đăng nhập</h2>
-            <div id="authError" class="error-msg"></div>
-            <div id="authSuccess" class="success-msg"></div>
-            <input type="text" id="authUsername" placeholder="Tên đăng nhập" />
-            <input type="password" id="authPassword" placeholder="Mật khẩu" />
-            <button class="btn-auth btn-login" id="authMainBtn">Đăng nhập</button>
-            <button class="btn-auth btn-register" id="authSwitchBtn">Chưa có tài khoản? Đăng ký</button>
-            <div class="switch-link">
-                <span id="authSwitchText">Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span></span>
+        <div id="authBox" class="auth-wrapper">
+            <div class="auth-box">
+                <div class="logo-icon">🎬</div>
+                <h2 id="authTitle">Đăng nhập</h2>
+                <p class="sub-title" id="authSub">Chào mừng bạn quay trở lại</p>
+                <div id="authError" class="error-msg"></div>
+                <div id="authSuccess" class="success-msg"></div>
+                <input type="text" id="authUsername" placeholder="Tên đăng nhập" />
+                <input type="password" id="authPassword" placeholder="Mật khẩu" />
+                <button class="btn-auth btn-login" id="authMainBtn">Đăng nhập</button>
+                <button class="btn-auth btn-register" id="authSwitchBtn">Chưa có tài khoản? Đăng ký</button>
+                <div class="switch-link">
+                    <span id="authSwitchText">Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span></span>
+                </div>
             </div>
         </div>
 
@@ -556,26 +916,39 @@
         <div id="mainContent" class="main-content">
 
             <!-- HEADER -->
-            <div class="header">
-                <div class="logo"><h1>🎬 Kho Video</h1></div>
-                <div class="header-actions">
-                    <span class="user-info">👤 <strong id="displayUsername">User</strong></span>
-                    <button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button>
-                    <button class="btn-logout" id="logoutBtn">🚪 Đăng xuất</button>
+            <header class="header">
+                <div class="logo">
+                    <span class="icon">🎬</span>
+                    <h1>VidHub</h1>
+                    <span class="version">v2.0</span>
                 </div>
-            </div>
+                <div class="user-section">
+                    <div class="user-info">
+                        <div class="avatar" id="userAvatar">N</div>
+                        <span class="name" id="displayUsername">User</span>
+                        <span class="admin-badge" id="adminBadge" style="display:none;">👑 Admin</span>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button>
+                        <button class="btn-logout" id="logoutBtn">Đăng xuất</button>
+                    </div>
+                </div>
+            </header>
 
             <!-- BỘ LỌC -->
             <div class="filter-bar">
-                <span class="tag active">Tất cả</span>
+                <span class="tag active">📹 Tất cả</span>
+                <span class="tag">🔥 Phổ biến</span>
+                <span class="tag">🆕 Mới nhất</span>
                 <span class="video-count" id="videoCount">0 video</span>
             </div>
 
             <!-- DANH SÁCH VIDEO -->
             <div class="video-grid" id="videoGrid">
                 <div class="empty-state">
-                    <span class="icon">📹</span>
-                    <p>Chưa có video nào. Hãy đăng video đầu tiên nhé!</p>
+                    <span class="icon">🎥</span>
+                    <h3>Chưa có video nào</h3>
+                    <p>Hãy đăng video đầu tiên của bạn nhé!</p>
                 </div>
             </div>
         </div>
@@ -583,8 +956,10 @@
         <!-- ====== MODAL UPLOAD VIDEO ====== -->
         <div class="modal-overlay" id="uploadModal">
             <div class="modal">
-                <button class="close-modal" id="closeModalBtn">&times;</button>
-                <h2>📤 Đăng video mới</h2>
+                <div class="modal-header">
+                    <h2>📤 Đăng video mới</h2>
+                    <button class="close-modal" id="closeModalBtn">&times;</button>
+                </div>
 
                 <label>🎬 Chọn video (tối đa 15GB)</label>
                 <input type="file" id="videoFileInput" accept="video/*" />
@@ -593,7 +968,7 @@
                 <input type="text" id="videoTitleInput" placeholder="Nhập tiêu đề video..." />
 
                 <div class="file-info" id="fileInfo" style="display:none;">
-                    📁 <strong id="fileName">video.mp4</strong> - <span id="fileSize">0 MB</span>
+                    📁 <strong id="fileName">video.mp4</strong> · <span id="fileSize">0 MB</span>
                 </div>
 
                 <button class="btn-submit-upload" id="submitUploadBtn">✅ Đăng video</button>
@@ -604,8 +979,9 @@
 
         <!-- ====== MODAL XEM VIDEO ====== -->
         <div class="video-modal-overlay" id="videoModal">
-            <button class="close-video" id="closeVideoBtn">&times;</button>
+            <button class="close-video" id="closeVideoBtn">✕</button>
             <video id="videoPlayer" controls autoplay></video>
+            <div class="video-title-overlay" id="videoTitleOverlay">Đang phát...</div>
         </div>
 
     </div>
@@ -614,6 +990,9 @@
         // ========================================
         // 1. QUẢN LÝ TÀI KHOẢN
         // ========================================
+
+        const ADMIN_USER = 'Nduc';
+        const ADMIN_PASS = 'Ducanh05092008';
 
         function getUsers() {
             try { return JSON.parse(localStorage.getItem('users')) || {}; } catch { return {}; }
@@ -632,6 +1011,10 @@
             else localStorage.removeItem('currentUser');
         }
 
+        function isAdmin(username) {
+            return username === ADMIN_USER;
+        }
+
         // ========================================
         // 2. ĐĂNG NHẬP / ĐĂNG KÝ
         // ========================================
@@ -639,6 +1022,7 @@
         const authBox = document.getElementById('authBox');
         const mainContent = document.getElementById('mainContent');
         const authTitle = document.getElementById('authTitle');
+        const authSub = document.getElementById('authSub');
         const authError = document.getElementById('authError');
         const authSuccess = document.getElementById('authSuccess');
         const authUsername = document.getElementById('authUsername');
@@ -646,7 +1030,10 @@
         const authMainBtn = document.getElementById('authMainBtn');
         const authSwitchBtn = document.getElementById('authSwitchBtn');
         const authSwitchLink = document.getElementById('authSwitchLink');
+        const authSwitchText = document.getElementById('authSwitchText');
         const displayUsername = document.getElementById('displayUsername');
+        const userAvatar = document.getElementById('userAvatar');
+        const adminBadge = document.getElementById('adminBadge');
 
         let isLoginMode = true;
 
@@ -662,24 +1049,41 @@
         function switchMode() {
             isLoginMode = !isLoginMode;
             if (isLoginMode) {
-                authTitle.textContent = '🔐 Đăng nhập';
+                authTitle.textContent = 'Đăng nhập';
+                authSub.textContent = 'Chào mừng bạn quay trở lại';
                 authMainBtn.textContent = 'Đăng nhập';
                 authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
-                authSwitchLink.textContent = 'Đăng ký';
+                authSwitchText.innerHTML = 'Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
                 clearMessages();
             } else {
-                authTitle.textContent = '📝 Đăng ký';
+                authTitle.textContent = 'Đăng ký';
+                authSub.textContent = 'Tạo tài khoản mới';
                 authMainBtn.textContent = 'Đăng ký';
                 authSwitchBtn.textContent = 'Đã có tài khoản? Đăng nhập';
-                authSwitchLink.textContent = 'Đăng nhập';
+                authSwitchText.innerHTML = 'Đã có tài khoản? <span id="authSwitchLink">Đăng nhập</span>';
                 clearMessages();
             }
+            document.getElementById('authSwitchLink').addEventListener('click', switchMode);
         }
 
         function handleAuth() {
             const username = authUsername.value.trim();
             const password = authPassword.value.trim();
             if (!username || !password) { showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.'); return; }
+
+            // Kiểm tra admin
+            if (username === ADMIN_USER && password === ADMIN_PASS) {
+                setCurrentUser(username);
+                showSuccess('✅ Đăng nhập Admin thành công!');
+                setTimeout(() => {
+                    authBox.style.display = 'none';
+                    mainContent.classList.add('active');
+                    updateUI(username);
+                    renderVideos();
+                }, 500);
+                return;
+            }
+
             const users = getUsers();
             if (isLoginMode) {
                 if (users[username] && users[username] === password) {
@@ -688,7 +1092,7 @@
                     setTimeout(() => {
                         authBox.style.display = 'none';
                         mainContent.classList.add('active');
-                        displayUsername.textContent = username;
+                        updateUI(username);
                         renderVideos();
                     }, 500);
                 } else {
@@ -700,34 +1104,49 @@
                 saveUsers(users);
                 showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
                 isLoginMode = true;
-                authTitle.textContent = '🔐 Đăng nhập';
+                authTitle.textContent = 'Đăng nhập';
+                authSub.textContent = 'Chào mừng bạn quay trở lại';
                 authMainBtn.textContent = 'Đăng nhập';
                 authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
-                authSwitchLink.textContent = 'Đăng ký';
+                authSwitchText.innerHTML = 'Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
+                document.getElementById('authSwitchLink').addEventListener('click', switchMode);
                 authPassword.value = '';
+            }
+        }
+
+        function updateUI(username) {
+            displayUsername.textContent = username;
+            userAvatar.textContent = username.charAt(0).toUpperCase();
+            if (isAdmin(username)) {
+                adminBadge.style.display = 'inline-block';
+            } else {
+                adminBadge.style.display = 'none';
             }
         }
 
         function logout() {
             setCurrentUser(null);
-            authBox.style.display = 'block';
+            authBox.style.display = 'flex';
             mainContent.classList.remove('active');
             authUsername.value = '';
             authPassword.value = '';
             isLoginMode = true;
-            authTitle.textContent = '🔐 Đăng nhập';
+            authTitle.textContent = 'Đăng nhập';
+            authSub.textContent = 'Chào mừng bạn quay trở lại';
             authMainBtn.textContent = 'Đăng nhập';
             authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
-            authSwitchLink.textContent = 'Đăng ký';
+            authSwitchText.innerHTML = 'Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
+            document.getElementById('authSwitchLink').addEventListener('click', switchMode);
             clearMessages();
             document.getElementById('videoGrid').innerHTML =
-                `<div class="empty-state"><span class="icon">📹</span><p>Hãy đăng nhập để xem video.</p></div>`;
+                `<div class="empty-state"><span class="icon">🎥</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>`;
             document.getElementById('videoCount').textContent = '0 video';
+            adminBadge.style.display = 'none';
         }
 
         authMainBtn.addEventListener('click', handleAuth);
         authSwitchBtn.addEventListener('click', switchMode);
-        authSwitchLink.addEventListener('click', switchMode);
+        document.getElementById('authSwitchLink').addEventListener('click', switchMode);
         authPassword.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
         authUsername.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
         document.getElementById('logoutBtn').addEventListener('click', logout);
@@ -736,7 +1155,6 @@
         // 3. QUẢN LÝ VIDEO BẰNG IndexedDB
         // ========================================
 
-        let db = null;
         const DB_NAME = 'VideoDB';
         const STORE_NAME = 'videos';
 
@@ -763,8 +1181,13 @@
                 req.onsuccess = function() {
                     const all = req.result || [];
                     const currentUser = getCurrentUser();
-                    const filtered = all.filter(v => v.username === currentUser);
-                    resolve(filtered);
+                    // Admin xem được tất cả video, user thường chỉ xem video của mình
+                    if (isAdmin(currentUser)) {
+                        resolve(all);
+                    } else {
+                        const filtered = all.filter(v => v.username === currentUser);
+                        resolve(filtered);
+                    }
                 };
                 req.onerror = function() { resolve([]); };
             });
@@ -807,12 +1230,10 @@
                 video.playsInline = true;
 
                 video.onloadeddata = function() {
-                    // Seek đến giây thứ 1 (hoặc gần đầu video)
                     video.currentTime = Math.min(time, video.duration * 0.3);
                 };
 
                 video.onseeked = function() {
-                    // Vẽ frame hiện tại lên canvas
                     canvas.width = video.videoWidth || 640;
                     canvas.height = video.videoHeight || 360;
                     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -825,12 +1246,10 @@
                     reject('Không thể tạo thumbnail: ' + e);
                 };
 
-                // Tạo URL tạm từ file
                 const url = URL.createObjectURL(videoFile);
                 video.src = url;
                 video.load();
 
-                // Fallback nếu không seek được
                 setTimeout(() => {
                     if (video.readyState >= 2) {
                         canvas.width = video.videoWidth || 640;
@@ -853,6 +1272,7 @@
         const videoModal = document.getElementById('videoModal');
         const videoPlayer = document.getElementById('videoPlayer');
         const closeVideoBtn = document.getElementById('closeVideoBtn');
+        const videoTitleOverlay = document.getElementById('videoTitleOverlay');
 
         function formatFileSize(bytes) {
             if (bytes < 1024) return bytes + ' B';
@@ -869,7 +1289,8 @@
         }
 
         function openVideoModal(videoData) {
-            videoPlayer.src = videoData.data; // data là blob URL
+            videoPlayer.src = videoData.data;
+            videoTitleOverlay.textContent = videoData.title || 'Không có tiêu đề';
             videoModal.classList.add('show');
             videoPlayer.play();
         }
@@ -887,11 +1308,13 @@
 
         async function renderVideos() {
             const videos = await getVideosFromDB();
+            const currentUser = getCurrentUser();
+            const isAdminUser = isAdmin(currentUser);
             videoCount.textContent = videos.length + ' video';
 
             if (videos.length === 0) {
                 videoGrid.innerHTML =
-                    `<div class="empty-state"><span class="icon">📹</span><p>Chưa có video nào. Hãy đăng video đầu tiên nhé!</p></div>`;
+                    `<div class="empty-state"><span class="icon">🎥</span><h3>Chưa có video nào</h3><p>${isAdminUser ? 'Hãy đăng video đầu tiên' : 'Chưa có video, hãy đăng video mới'}</p></div>`;
                 return;
             }
 
@@ -900,10 +1323,13 @@
                 const duration = video.duration || '0:00';
                 const views = video.views || 0;
                 const thumb = video.thumbnail || '';
+                const uploaderName = video.username || 'Unknown';
+                const showDelete = isAdminUser; // Chỉ admin mới thấy nút xóa
+
                 html += `
                     <div class="video-card" data-id="${video.id}">
                         <div class="thumbnail">
-                            ${thumb ? `<img src="${thumb}" alt="${video.title || 'Video'}" />` : '<div style="color:#666;font-size:0.8rem;">🎬</div>'}
+                            ${thumb ? `<img src="${thumb}" alt="${video.title || 'Video'}" loading="lazy" />` : '<div style="color:#555;font-size:0.8rem;">🎬</div>'}
                             <span class="duration">${typeof duration === 'number' ? formatTime(duration) : duration}</span>
                             <span class="hd-badge">HD</span>
                             <span class="play-icon">▶️</span>
@@ -911,17 +1337,18 @@
                         <div class="info">
                             <div class="title">${video.title || 'Không có tiêu đề'}</div>
                             <div class="meta">
-                                <span class="views">👁️ ${views} lượt xem</span>
-                                <span class="time">${formatFileSize(video.size || 0)}</span>
+                                <span class="views">👁️ ${views}</span>
+                                <span class="time">📁 ${formatFileSize(video.size || 0)}</span>
+                                ${isAdminUser ? `<span class="uploader">👤 ${uploaderName}</span>` : ''}
                             </div>
-                            <button class="btn-delete-video" data-id="${video.id}">🗑️ Xóa</button>
+                            ${showDelete ? `<button class="btn-delete-video" data-id="${video.id}">🗑️ Xóa video</button>` : ''}
                         </div>
                     </div>
                 `;
             }
             videoGrid.innerHTML = html;
 
-            // Gán sự kiện xóa
+            // Sự kiện xóa (chỉ admin)
             document.querySelectorAll('.btn-delete-video').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
@@ -933,8 +1360,8 @@
                 });
             });
 
-            // Gán sự kiện click vào card để mở video
-            document.querySelectorAll('.video-card').forEach((card, index) => {
+            // Sự kiện click vào card để mở video
+            document.querySelectorAll('.video-card').forEach((card) => {
                 card.addEventListener('click', function() {
                     const id = parseInt(this.dataset.id);
                     const video = videos.find(v => v.id === id);
@@ -1028,8 +1455,6 @@
             progressBar.style.width = '20%';
 
             try {
-                // Tạo thumbnail từ video
-                statusMsg.textContent = '⏳ Đang tạo thumbnail...';
                 let thumbnail = null;
                 try {
                     thumbnail = await generateThumbnail(videoFile);
@@ -1038,8 +1463,6 @@
                     console.warn('Không tạo được thumbnail:', e);
                 }
 
-                // Đọc video thành base64
-                statusMsg.textContent = '⏳ Đang lưu video...';
                 const reader = new FileReader();
                 const videoData = await new Promise((resolve, reject) => {
                     reader.onload = function(e) { resolve(e.target.result); };
@@ -1048,7 +1471,6 @@
                 });
                 progressBar.style.width = '80%';
 
-                // Lấy duration
                 const tempVideo = document.createElement('video');
                 const url = URL.createObjectURL(videoFile);
                 tempVideo.src = url;
@@ -1100,13 +1522,13 @@
             if (currentUser) {
                 authBox.style.display = 'none';
                 mainContent.classList.add('active');
-                displayUsername.textContent = currentUser;
+                updateUI(currentUser);
                 await renderVideos();
             } else {
-                authBox.style.display = 'block';
+                authBox.style.display = 'flex';
                 mainContent.classList.remove('active');
                 document.getElementById('videoGrid').innerHTML =
-                    `<div class="empty-state"><span class="icon">📹</span><p>Hãy đăng nhập để xem video.</p></div>`;
+                    `<div class="empty-state"><span class="icon">🎥</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>`;
                 document.getElementById('videoCount').textContent = '0 video';
             }
         })();
