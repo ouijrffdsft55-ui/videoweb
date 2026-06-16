@@ -1446,7 +1446,8 @@
                     mainContent.classList.add('active');
                     mainContent.classList.remove('vip-theme');
                     updateUI(username);
-                    loadAndRenderVideos();
+                    // Gọi load video ngay lập tức
+                    loadAndRenderVideosFast();
                 }, 500);
                 return;
             }
@@ -1465,7 +1466,7 @@
                             mainContent.classList.remove('vip-theme');
                         }
                         updateUI(username);
-                        loadAndRenderVideos();
+                        loadAndRenderVideosFast();
                     }, 500);
                 } else {
                     showError('❌ Sai tên đăng nhập hoặc mật khẩu.');
@@ -1883,7 +1884,7 @@
                     `;
         }
 
-        // Render video grid với cache
+        // Render video grid với cache - TỐI ƯU HIỂN THỊ NGAY
         function renderVideoGrid(videos, showDelete) {
             if (!videos || videos.length === 0) {
                 const isVip = currentTab === 'vip';
@@ -1995,9 +1996,38 @@
             renderVideoGrid(videosToShow, showDelete);
         }
 
-        async function loadAndRenderVideos() {
-            await loadAndCacheVideos();
-            renderCurrentTab();
+        // ====== HÀM LOAD VÀ RENDER NHANH (KHÔNG ĐỢI) ======
+        async function loadAndRenderVideosFast() {
+            try {
+                // Lấy dữ liệu từ DB ngay lập tức
+                allVideos = await getVideosFromDB();
+                
+                // Phân loại ngay
+                filteredVideosCache.normal = allVideos
+                    .filter(v => v.videoType !== 'vip')
+                    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+                
+                filteredVideosCache.vip = allVideos
+                    .filter(v => v.videoType === 'vip')
+                    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+                
+                isDataLoaded = true;
+                
+                // Render ngay lập tức
+                renderCurrentTab();
+                
+            } catch (error) {
+                console.error('Lỗi tải video:', error);
+                // Vẫn hiển thị giao diện
+                videoGrid.innerHTML = `
+                    <div class="empty-state">
+                        <span class="icon">⚠️</span>
+                        <h3>Không thể tải video</h3>
+                        <p>Vui lòng thử lại sau</p>
+                    </div>
+                `;
+                videoCount.textContent = '0 video';
+            }
         }
 
         // ========================================
@@ -2182,21 +2212,58 @@
         });
 
         // ========================================
-        // 10. KHỞI ĐỘNG
+        // 10. KHỞI ĐỘNG - TỐI ƯU HIỂN THỊ NGAY
         // ========================================
 
         (async function init() {
             const currentUser = getCurrentUser();
+            
             if (currentUser) {
+                // 1. Ẩn form đăng nhập, hiện main content NGAY LẬP TỨC
                 authBox.style.display = 'none';
                 mainContent.classList.add('active');
+                
+                // 2. Cập nhật UI cơ bản
                 const users = getUsers();
                 if (users[currentUser] && users[currentUser].vip) {
                     mainContent.classList.add('vip-theme');
                 }
                 updateUI(currentUser);
-                await loadAndRenderVideos();
+                
+                // 3. Tải video và render ĐỒNG THỜI - KHÔNG ĐỢI
+                try {
+                    // Lấy dữ liệu từ DB
+                    allVideos = await getVideosFromDB();
+                    
+                    // Phân loại ngay lập tức
+                    filteredVideosCache.normal = allVideos
+                        .filter(v => v.videoType !== 'vip')
+                        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+                    
+                    filteredVideosCache.vip = allVideos
+                        .filter(v => v.videoType === 'vip')
+                        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+                    
+                    isDataLoaded = true;
+                    
+                    // 4. RENDER NGAY LẬP TỨC
+                    renderCurrentTab();
+                    
+                } catch (error) {
+                    console.error('Lỗi tải video:', error);
+                    // Vẫn hiển thị giao diện nhưng thông báo lỗi
+                    videoGrid.innerHTML = `
+                        <div class="empty-state">
+                            <span class="icon">⚠️</span>
+                            <h3>Không thể tải video</h3>
+                            <p>Vui lòng thử lại sau</p>
+                        </div>
+                    `;
+                    videoCount.textContent = '0 video';
+                }
+                
             } else {
+                // Chưa đăng nhập
                 authBox.style.display = 'flex';
                 mainContent.classList.remove('active');
                 document.getElementById('videoGrid').innerHTML =
