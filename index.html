@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kho Video - Có đăng nhập</title>
+    <title>Kho Video Pro</title>
     <style>
         * {
             margin: 0;
@@ -14,21 +14,21 @@
         body {
             background: #0a0a0a;
             color: #fff;
-            padding: 20px;
+            padding: 12px;
             min-height: 100vh;
         }
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: auto;
         }
 
-        /* ===== Form đăng nhập / đăng ký ===== */
+        /* ===== FORM ĐĂNG NHẬP ===== */
         .auth-box {
             background: #1a1a1a;
             border-radius: 16px;
             padding: 30px 24px;
-            max-width: 420px;
-            margin: 40px auto;
+            max-width: 400px;
+            margin: 60px auto;
             border: 1px solid #2a2a2a;
         }
         .auth-box h2 {
@@ -47,7 +47,6 @@
             color: #fff;
             font-size: 1rem;
             outline: none;
-            transition: 0.3s;
         }
         .auth-box input:focus {
             border-color: #ff6b6b;
@@ -92,18 +91,16 @@
             color: #ff4444;
             font-size: 0.85rem;
             text-align: center;
-            margin-bottom: 10px;
             min-height: 20px;
         }
         .auth-box .success-msg {
             color: #4caf50;
             font-size: 0.85rem;
             text-align: center;
-            margin-bottom: 10px;
             min-height: 20px;
         }
 
-        /* ===== Phần chính (sau khi đăng nhập) ===== */
+        /* ===== PHẦN CHÍNH ===== */
         .main-content {
             display: none;
         }
@@ -111,170 +108,380 @@
             display: block;
         }
 
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+        }
+        .header .logo h1 {
+            font-size: 1.6rem;
+            color: #ff6b6b;
         }
         .header .user-info {
             color: #888;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
         .header .user-info strong {
             color: #ff6b6b;
+        }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-upload-header {
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-upload-header:hover {
+            background: #e55a5a;
+            transform: scale(1.03);
         }
         .btn-logout {
             background: #333;
             color: #fff;
             border: none;
-            padding: 8px 20px;
+            padding: 8px 18px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: 0.3s;
         }
         .btn-logout:hover {
             background: #ff4444;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+        /* ===== BỘ LỌC ===== */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .filter-bar .tag {
+            background: #1a1a1a;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #aaa;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .filter-bar .tag.active {
+            border-color: #ff6b6b;
             color: #ff6b6b;
         }
-        .sub {
-            text-align: center;
-            color: #888;
-            margin-bottom: 30px;
-            font-size: 0.95rem;
-        }
-        .upload-area {
-            background: #1e1e1e;
-            border: 2px dashed #444;
-            border-radius: 14px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-bottom: 30px;
-        }
-        .upload-area:hover {
-            border-color: #ff6b6b;
-            background: #252525;
-        }
-        .upload-area input {
-            display: none;
-        }
-        .upload-area label {
-            display: inline-block;
-            background: #ff6b6b;
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .upload-area label:hover {
-            background: #e55a5a;
-            transform: scale(1.03);
-        }
-        .upload-area p {
-            margin-top: 14px;
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        .video-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .video-item {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 16px;
-            border: 1px solid #2a2a2a;
-            transition: 0.3s;
-        }
-        .video-item:hover {
+        .filter-bar .tag:hover {
             border-color: #ff6b6b;
         }
-        .video-item video {
-            width: 100%;
-            max-height: 400px;
-            border-radius: 8px;
-            background: #000;
-        }
-        .video-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .video-name {
-            font-weight: bold;
-            color: #fff;
-            font-size: 1rem;
-            word-break: break-word;
-            flex: 1;
-        }
-        .video-size {
-            color: #888;
+        .filter-bar .video-count {
+            color: #666;
             font-size: 0.8rem;
+            margin-left: auto;
         }
-        .btn-delete {
-            background: #ff4444;
+
+        /* ===== DANH SÁCH VIDEO DẠNG LƯỚI ===== */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .video-card {
+            background: #141414;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+            border: 1px solid #1a1a1a;
+        }
+        .video-card:hover {
+            border-color: #ff6b6b;
+            transform: translateY(-4px);
+        }
+
+        .video-card .thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-card .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .video-card .thumbnail video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .video-card .thumbnail .duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+        .video-card .thumbnail .hd-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(255, 107, 107, 0.9);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: bold;
+        }
+
+        .video-card .info {
+            padding: 10px 12px 12px;
+        }
+        .video-card .info .title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #fff;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+        .video-card .info .meta {
+            font-size: 0.75rem;
+            color: #888;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .video-card .info .meta .views {
+            color: #666;
+        }
+        .video-card .info .meta .time {
+            color: #666;
+        }
+        .video-card .btn-delete-video {
+            background: transparent;
+            color: #666;
+            border: none;
+            font-size: 0.7rem;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: 0.3s;
+            margin-top: 4px;
+        }
+        .video-card .btn-delete-video:hover {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 60px 20px;
+            grid-column: 1 / -1;
+        }
+        .empty-state .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .empty-state p {
+            font-size: 1rem;
+        }
+
+        /* ===== MODAL UPLOAD ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px 24px;
+            max-width: 520px;
+            width: 100%;
+            border: 1px solid #2a2a2a;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal h2 {
+            color: #ff6b6b;
+            margin-bottom: 16px;
+            font-size: 1.4rem;
+        }
+        .modal .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal .close-modal:hover {
+            color: #fff;
+        }
+        .modal label {
+            display: block;
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            margin-top: 12px;
+        }
+        .modal input[type="text"],
+        .modal input[type="file"] {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #111;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .modal input[type="text"]:focus {
+            border-color: #ff6b6b;
+        }
+        .modal input[type="file"] {
+            padding: 8px;
+            background: #111;
+            border: 1px dashed #444;
+        }
+        .modal input[type="file"]::file-selector-button {
+            background: #ff6b6b;
             color: #fff;
             border: none;
             padding: 6px 16px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 0.8rem;
-            transition: 0.3s;
+            font-weight: bold;
         }
-        .btn-delete:hover {
-            background: #cc0000;
-        }
-        .empty {
-            text-align: center;
-            color: #666;
-            padding: 40px 0;
-            font-style: italic;
-        }
-        .storage {
-            text-align: right;
-            color: #666;
+        .modal .file-info {
+            background: #111;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-top: 8px;
             font-size: 0.85rem;
+            color: #888;
+        }
+        .modal .file-info strong {
+            color: #fff;
+        }
+        .modal .btn-submit-upload {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: #ff6b6b;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
             margin-top: 16px;
         }
+        .modal .btn-submit-upload:hover {
+            background: #e55a5a;
+        }
+        .modal .btn-submit-upload:disabled {
+            background: #444;
+            cursor: not-allowed;
+        }
+        .modal .upload-progress {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 4px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+        }
+        .modal .upload-progress .bar {
+            height: 100%;
+            background: #ff6b6b;
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+        .modal .upload-progress.show {
+            display: block;
+        }
+        .modal .status-msg {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            min-height: 24px;
+        }
+        .modal .status-msg.success {
+            color: #4caf50;
+        }
+        .modal .status-msg.error {
+            color: #ff4444;
+        }
+        .modal .thumbnail-preview {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 8px;
+            background: #000;
+        }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.6rem;
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
             }
-            .upload-area {
-                padding: 24px 12px;
+            .header .logo h1 {
+                font-size: 1.2rem;
             }
-            .upload-area label {
-                padding: 10px 20px;
-                font-size: 0.9rem;
+            .btn-upload-header {
+                padding: 8px 16px;
+                font-size: 0.8rem;
             }
-            .video-info {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .btn-delete {
-                align-self: flex-end;
-            }
-            .auth-box {
+            .modal {
                 padding: 20px 16px;
-                margin: 20px 10px;
             }
         }
     </style>
@@ -288,13 +495,10 @@
             <h2 id="authTitle">🔐 Đăng nhập</h2>
             <div id="authError" class="error-msg"></div>
             <div id="authSuccess" class="success-msg"></div>
-
             <input type="text" id="authUsername" placeholder="Tên đăng nhập" />
             <input type="password" id="authPassword" placeholder="Mật khẩu" />
-
             <button class="btn-auth btn-login" id="authMainBtn">Đăng nhập</button>
             <button class="btn-auth btn-register" id="authSwitchBtn">Chưa có tài khoản? Đăng ký</button>
-
             <div class="switch-link">
                 <span id="authSwitchText">Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span></span>
             </div>
@@ -303,37 +507,68 @@
         <!-- ====== PHẦN CHÍNH SAU ĐĂNG NHẬP ====== -->
         <div id="mainContent" class="main-content">
 
+            <!-- HEADER -->
             <div class="header">
-                <div class="user-info">👤 Xin chào, <strong id="displayUsername">User</strong></div>
-                <button class="btn-logout" id="logoutBtn">🚪 Đăng xuất</button>
+                <div class="logo"><h1>🎬 Kho Video</h1></div>
+                <div class="header-actions">
+                    <span class="user-info">👤 <strong id="displayUsername">User</strong></span>
+                    <button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button>
+                    <button class="btn-logout" id="logoutBtn">🚪 Đăng xuất</button>
+                </div>
             </div>
 
-            <h1>🎬 Kho Video</h1>
-            <p class="sub">Tải video lên và xem lại bất cứ lúc nào</p>
-
-            <div class="upload-area" id="uploadArea">
-                <input type="file" id="fileInput" accept="video/*" multiple />
-                <label for="fileInput">📤 Chọn video để tải lên</label>
-                <p>Hỗ trợ: MP4, WebM, AVI, MOV, MKV...</p>
+            <!-- BỘ LỌC -->
+            <div class="filter-bar">
+                <span class="tag active">Tất cả</span>
+                <span class="tag">Mới nhất</span>
+                <span class="tag">Phổ biến</span>
+                <span class="video-count" id="videoCount">0 video</span>
             </div>
 
-            <div id="videoList" class="video-list"></div>
-            <div class="storage" id="storageInfo">Đã dùng: 0 MB</div>
+            <!-- DANH SÁCH VIDEO -->
+            <div class="video-grid" id="videoGrid">
+                <div class="empty-state">
+                    <span class="icon">📹</span>
+                    <p>Chưa có video nào. Hãy đăng video đầu tiên nhé!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== MODAL UPLOAD VIDEO ====== -->
+        <div class="modal-overlay" id="uploadModal">
+            <div class="modal">
+                <button class="close-modal" id="closeModalBtn">&times;</button>
+                <h2>📤 Đăng video mới</h2>
+
+                <label>🎬 Chọn video (tối đa 15GB)</label>
+                <input type="file" id="videoFileInput" accept="video/*" />
+
+                <label>🖼️ Ảnh bìa (thumbnail) - tùy chọn</label>
+                <input type="file" id="thumbnailInput" accept="image/*" />
+                <img id="thumbnailPreview" class="thumbnail-preview" style="display:none;" alt="Thumbnail preview" />
+
+                <label>📝 Tiêu đề video</label>
+                <input type="text" id="videoTitleInput" placeholder="Nhập tiêu đề video..." />
+
+                <div class="file-info" id="fileInfo" style="display:none;">
+                    📁 <strong id="fileName">video.mp4</strong> - <span id="fileSize">0 MB</span>
+                </div>
+
+                <button class="btn-submit-upload" id="submitUploadBtn">✅ Đăng video</button>
+                <div class="upload-progress" id="uploadProgress"><div class="bar" id="progressBar"></div></div>
+                <div class="status-msg" id="statusMsg"></div>
+            </div>
         </div>
 
     </div>
 
     <script>
         // ========================================
-        // 1. QUẢN LÝ TÀI KHOẢN (localStorage)
+        // 1. QUẢN LÝ TÀI KHOẢN
         // ========================================
 
         function getUsers() {
-            try {
-                return JSON.parse(localStorage.getItem('users')) || {};
-            } catch {
-                return {};
-            }
+            try { return JSON.parse(localStorage.getItem('users')) || {}; } catch { return {}; }
         }
 
         function saveUsers(users) {
@@ -345,15 +580,12 @@
         }
 
         function setCurrentUser(username) {
-            if (username) {
-                localStorage.setItem('currentUser', username);
-            } else {
-                localStorage.removeItem('currentUser');
-            }
+            if (username) localStorage.setItem('currentUser', username);
+            else localStorage.removeItem('currentUser');
         }
 
         // ========================================
-        // 2. ĐĂNG KÝ / ĐĂNG NHẬP
+        // 2. ĐĂNG NHẬP / ĐĂNG KÝ
         // ========================================
 
         const authBox = document.getElementById('authBox');
@@ -370,20 +602,14 @@
 
         let isLoginMode = true;
 
-        function showError(msg) {
-            authError.textContent = msg;
-            authSuccess.textContent = '';
-        }
+        function showError(msg) { authError.textContent = msg;
+            authSuccess.textContent = ''; }
 
-        function showSuccess(msg) {
-            authSuccess.textContent = msg;
-            authError.textContent = '';
-        }
+        function showSuccess(msg) { authSuccess.textContent = msg;
+            authError.textContent = ''; }
 
-        function clearMessages() {
-            authError.textContent = '';
-            authSuccess.textContent = '';
-        }
+        function clearMessages() { authError.textContent = '';
+            authSuccess.textContent = ''; }
 
         function switchMode() {
             isLoginMode = !isLoginMode;
@@ -405,16 +631,9 @@
         function handleAuth() {
             const username = authUsername.value.trim();
             const password = authPassword.value.trim();
-
-            if (!username || !password) {
-                showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.');
-                return;
-            }
-
+            if (!username || !password) { showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.'); return; }
             const users = getUsers();
-
             if (isLoginMode) {
-                // ĐĂNG NHẬP
                 if (users[username] && users[username] === password) {
                     setCurrentUser(username);
                     showSuccess('✅ Đăng nhập thành công!');
@@ -422,21 +641,16 @@
                         authBox.style.display = 'none';
                         mainContent.classList.add('active');
                         displayUsername.textContent = username;
-                        renderVideos(); // Load video của user
+                        renderVideos();
                     }, 500);
                 } else {
                     showError('❌ Sai tên đăng nhập hoặc mật khẩu.');
                 }
             } else {
-                // ĐĂNG KÝ
-                if (users[username]) {
-                    showError('❌ Tên đăng nhập đã tồn tại.');
-                    return;
-                }
+                if (users[username]) { showError('❌ Tên đăng nhập đã tồn tại.'); return; }
                 users[username] = password;
                 saveUsers(users);
                 showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
-                // Chuyển sang chế độ đăng nhập
                 isLoginMode = true;
                 authTitle.textContent = '🔐 Đăng nhập';
                 authMainBtn.textContent = 'Đăng nhập';
@@ -458,199 +672,341 @@
             authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
             authSwitchLink.textContent = 'Đăng ký';
             clearMessages();
-            // Xóa video list khi logout
-            document.getElementById('videoList').innerHTML =
-            '<div class="empty">📭 Hãy đăng nhập để xem video của bạn.</div>';
-            document.getElementById('storageInfo').textContent = 'Đã dùng: 0 MB';
+            document.getElementById('videoGrid').innerHTML = `<div class="empty-state"><span class="icon">📹</span><p>Hãy đăng nhập để xem video.</p></div>`;
+            document.getElementById('videoCount').textContent = '0 video';
         }
-
-        // ========================================
-        // 3. SỰ KIỆN ĐĂNG NHẬP / ĐĂNG KÝ
-        // ========================================
 
         authMainBtn.addEventListener('click', handleAuth);
         authSwitchBtn.addEventListener('click', switchMode);
         authSwitchLink.addEventListener('click', switchMode);
-
-        // Enter key để submit
-        authPassword.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') handleAuth();
-        });
-        authUsername.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') handleAuth();
-        });
+        authPassword.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
+        authUsername.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
+        document.getElementById('logoutBtn').addEventListener('click', logout);
 
         // ========================================
-        // 4. QUẢN LÝ VIDEO THEO USER
+        // 3. QUẢN LÝ VIDEO BẰNG IndexedDB (hỗ trợ 15GB)
         // ========================================
 
-        const fileInput = document.getElementById('fileInput');
-        const videoList = document.getElementById('videoList');
-        const uploadArea = document.getElementById('uploadArea');
-        const storageInfo = document.getElementById('storageInfo');
+        let db = null;
+        const DB_NAME = 'VideoDB';
+        const STORE_NAME = 'videos';
 
-        function getVideoKey() {
-            const user = getCurrentUser();
-            return user ? `videos_${user}` : 'videos_guest';
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = function(e) {
+                    const d = e.target.result;
+                    if (!d.objectStoreNames.contains(STORE_NAME)) {
+                        d.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                    }
+                };
+                request.onsuccess = function(e) { resolve(e.target.result); };
+                request.onerror = function(e) { reject(e.target.error); };
+            });
         }
 
-        function getVideos() {
-            try {
-                return JSON.parse(localStorage.getItem(getVideoKey())) || [];
-            } catch {
-                return [];
-            }
+        async function getVideosFromDB() {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.getAll();
+                req.onsuccess = function() {
+                    const all = req.result || [];
+                    // Lọc theo user
+                    const currentUser = getCurrentUser();
+                    const filtered = all.filter(v => v.username === currentUser);
+                    resolve(filtered);
+                };
+                req.onerror = function() { resolve([]); };
+            });
         }
 
-        function saveVideos(videos) {
-            localStorage.setItem(getVideoKey(), JSON.stringify(videos));
+        async function saveVideoToDB(videoData) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.add(videoData);
+                req.onsuccess = function() { resolve(req.result); };
+                req.onerror = function() { reject(req.error); };
+            });
         }
 
-        function getTotalSizeMB(videos) {
-            const totalBytes = videos.reduce((sum, v) => sum + (v.size || 0), 0);
-            return totalBytes / (1024 * 1024);
+        async function deleteVideoFromDB(id) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.delete(id);
+                req.onsuccess = function() { resolve(); };
+                req.onerror = function() { reject(req.error); };
+            });
         }
 
-        function formatSize(bytes) {
+        // ========================================
+        // 4. HIỂN THỊ VIDEO
+        // ========================================
+
+        const videoGrid = document.getElementById('videoGrid');
+        const videoCount = document.getElementById('videoCount');
+
+        function formatFileSize(bytes) {
             if (bytes < 1024) return bytes + ' B';
             if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+            if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+            return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
         }
 
-        function renderVideos() {
-            const videos = getVideos();
-            const totalMB = getTotalSizeMB(videos);
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return m + ':' + (s < 10 ? '0' : '') + s;
+        }
 
-            storageInfo.textContent = `Đã dùng: ${totalMB.toFixed(1)} MB / 500 MB`;
+        function getVideoDuration(videoElement) {
+            return new Promise((resolve) => {
+                if (videoElement.duration) { resolve(videoElement.duration); return; }
+                videoElement.addEventListener('loadedmetadata', function() {
+                    resolve(this.duration);
+                });
+                videoElement.addEventListener('error', function() {
+                    resolve(0);
+                });
+                setTimeout(() => resolve(0), 5000);
+            });
+        }
+
+        async function renderVideos() {
+            const videos = await getVideosFromDB();
+            videoCount.textContent = videos.length + ' video';
 
             if (videos.length === 0) {
-                videoList.innerHTML = `<div class="empty">📭 Chưa có video nào. Hãy tải lên nhé!</div>`;
+                videoGrid.innerHTML = `<div class="empty-state"><span class="icon">📹</span><p>Chưa có video nào. Hãy đăng video đầu tiên nhé!</p></div>`;
                 return;
             }
 
             let html = '';
-            videos.forEach((video, index) => {
+            for (const video of videos) {
+                const duration = video.duration || '0:00';
+                const views = video.views || 0;
                 html += `
-                    <div class="video-item">
-                        <video controls>
-                            <source src="${video.data}" type="${video.type || 'video/mp4'}">
-                            Trình duyệt không hỗ trợ video.
-                        </video>
-                        <div class="video-info">
-                            <span class="video-name">📹 ${video.name}</span>
-                            <span class="video-size">${formatSize(video.size)}</span>
-                            <button class="btn-delete" data-index="${index}">Xóa</button>
+                    <div class="video-card" data-id="${video.id}">
+                        <div class="thumbnail">
+                            ${video.thumbnail ? `<img src="${video.thumbnail}" alt="${video.title || 'Video'}" />` : ''}
+                            <video src="${video.data}" preload="metadata"></video>
+                            <span class="duration">${typeof duration === 'number' ? formatTime(duration) : duration}</span>
+                            <span class="hd-badge">HD</span>
+                        </div>
+                        <div class="info">
+                            <div class="title">${video.title || 'Không có tiêu đề'}</div>
+                            <div class="meta">
+                                <span class="views">👁️ ${views} lượt xem</span>
+                                <span class="time">${formatFileSize(video.size || 0)}</span>
+                            </div>
+                            <button class="btn-delete-video" data-id="${video.id}">🗑️ Xóa</button>
                         </div>
                     </div>
                 `;
-            });
-            videoList.innerHTML = html;
+            }
+            videoGrid.innerHTML = html;
 
-            document.querySelectorAll('.btn-delete').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.index);
-                    deleteVideo(idx);
+            // Gán sự kiện xóa
+            document.querySelectorAll('.btn-delete-video').forEach(btn => {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    const id = parseInt(this.dataset.id);
+                    if (confirm('Bạn có chắc muốn xóa video này?')) {
+                        await deleteVideoFromDB(id);
+                        renderVideos();
+                    }
                 });
             });
+
+            // Lấy duration cho từng video
+            document.querySelectorAll('.video-card').forEach(card => {
+                const videoEl = card.querySelector('video');
+                const durSpan = card.querySelector('.duration');
+                if (videoEl && durSpan) {
+                    videoEl.addEventListener('loadedmetadata', function() {
+                        durSpan.textContent = formatTime(this.duration);
+                    });
+                }
+            });
         }
 
-        function deleteVideo(index) {
-            const videos = getVideos();
-            videos.splice(index, 1);
-            saveVideos(videos);
-            renderVideos();
+        // ========================================
+        // 5. UPLOAD VIDEO (Modal)
+        // ========================================
+
+        const uploadModal = document.getElementById('uploadModal');
+        const openUploadBtn = document.getElementById('openUploadBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const videoFileInput = document.getElementById('videoFileInput');
+        const thumbnailInput = document.getElementById('thumbnailInput');
+        const thumbnailPreview = document.getElementById('thumbnailPreview');
+        const videoTitleInput = document.getElementById('videoTitleInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const submitBtn = document.getElementById('submitUploadBtn');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressBar = document.getElementById('progressBar');
+        const statusMsg = document.getElementById('statusMsg');
+
+        let selectedVideoFile = null;
+        let selectedThumbnailData = null;
+
+        function openModal() {
+            uploadModal.classList.add('show');
+            resetUploadForm();
         }
 
-        function addVideo(file) {
-            const videos = getVideos();
-            const totalMB = getTotalSizeMB(videos);
-            const fileMB = file.size / (1024 * 1024);
+        function closeModal() {
+            uploadModal.classList.remove('show');
+            resetUploadForm();
+        }
 
-            if (totalMB + fileMB > 500) {
-                alert(`❌ Vượt quá dung lượng cho phép 500 MB!\nHiện tại: ${totalMB.toFixed(1)} MB\nVideo này: ${fileMB.toFixed(1)} MB`);
-                return false;
+        function resetUploadForm() {
+            videoFileInput.value = '';
+            thumbnailInput.value = '';
+            thumbnailPreview.style.display = 'none';
+            thumbnailPreview.src = '';
+            videoTitleInput.value = '';
+            fileInfo.style.display = 'none';
+            uploadProgress.classList.remove('show');
+            progressBar.style.width = '0%';
+            statusMsg.textContent = '';
+            statusMsg.className = 'status-msg';
+            submitBtn.disabled = false;
+            selectedVideoFile = null;
+            selectedThumbnailData = null;
+        }
+
+        openUploadBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        uploadModal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        videoFileInput.addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
+            // Kiểm tra dung lượng 15GB = 15 * 1024 * 1024 * 1024
+            const maxSize = 15 * 1024 * 1024 * 1024;
+            if (file.size > maxSize) {
+                statusMsg.textContent = '❌ Video vượt quá 15GB. Vui lòng chọn video nhỏ hơn.';
+                statusMsg.className = 'status-msg error';
+                this.value = '';
+                return;
             }
+            selectedVideoFile = file;
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileInfo.style.display = 'block';
+            statusMsg.textContent = '';
+            statusMsg.className = 'status-msg';
+        });
 
+        thumbnailInput.addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                const videoData = {
-                    name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    data: e.target.result,
-                };
-                videos.push(videoData);
-                saveVideos(videos);
-                renderVideos();
+                selectedThumbnailData = e.target.result;
+                thumbnailPreview.src = e.target.result;
+                thumbnailPreview.style.display = 'block';
             };
             reader.readAsDataURL(file);
-            return true;
-        }
+        });
 
-        function handleFiles(files) {
-            let added = 0;
-            for (let file of files) {
-                if (file.type.startsWith('video/')) {
-                    const success = addVideo(file);
-                    if (success) added++;
-                } else {
-                    alert(`⚠️ "${file.name}" không phải là video.`);
-                }
+        submitBtn.addEventListener('click', async function() {
+            const videoFile = selectedVideoFile;
+            const title = videoTitleInput.value.trim() || 'Video không tiêu đề';
+            const username = getCurrentUser();
+
+            if (!videoFile) {
+                statusMsg.textContent = '⚠️ Vui lòng chọn video.';
+                statusMsg.className = 'status-msg error';
+                return;
             }
-            if (added > 0) {
-                fileInput.value = '';
+
+            submitBtn.disabled = true;
+            statusMsg.textContent = '⏳ Đang xử lý...';
+            statusMsg.className = 'status-msg';
+            uploadProgress.classList.add('show');
+            progressBar.style.width = '10%';
+
+            try {
+                // Đọc video thành base64
+                const reader = new FileReader();
+                const videoData = await new Promise((resolve, reject) => {
+                    reader.onload = function(e) { resolve(e.target.result); };
+                    reader.onerror = function() { reject('Lỗi đọc file'); };
+                    reader.readAsDataURL(videoFile);
+                });
+                progressBar.style.width = '60%';
+
+                // Lấy duration
+                const tempVideo = document.createElement('video');
+                tempVideo.src = URL.createObjectURL(videoFile);
+                const duration = await new Promise((resolve) => {
+                    tempVideo.addEventListener('loadedmetadata', function() {
+                        resolve(this.duration);
+                    });
+                    tempVideo.addEventListener('error', function() {
+                        resolve(0);
+                    });
+                    setTimeout(() => resolve(0), 5000);
+                });
+                URL.revokeObjectURL(tempVideo.src);
+
+                const videoObj = {
+                    username: username,
+                    title: title,
+                    data: videoData,
+                    thumbnail: selectedThumbnailData || null,
+                    size: videoFile.size,
+                    duration: duration || 0,
+                    views: 0,
+                    createdAt: new Date().toISOString()
+                };
+
+                await saveVideoToDB(videoObj);
+                progressBar.style.width = '100%';
+                statusMsg.textContent = '✅ Đăng video thành công!';
+                statusMsg.className = 'status-msg success';
+
+                setTimeout(() => {
+                    closeModal();
+                    renderVideos();
+                }, 1000);
+
+            } catch (error) {
+                statusMsg.textContent = '❌ Lỗi: ' + error;
+                statusMsg.className = 'status-msg error';
+                submitBtn.disabled = false;
             }
-        }
-
-        // ========================================
-        // 5. SỰ KIỆN UPLOAD VIDEO
-        // ========================================
-
-        fileInput.addEventListener('change', function() {
-            handleFiles(this.files);
-        });
-
-        uploadArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.style.borderColor = '#ff6b6b';
-            this.style.background = '#252525';
-        });
-        uploadArea.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            this.style.borderColor = '#444';
-            this.style.background = '#1e1e1e';
-        });
-        uploadArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.style.borderColor = '#444';
-            this.style.background = '#1e1e1e';
-            if (e.dataTransfer.files.length) {
-                handleFiles(e.dataTransfer.files);
-            }
         });
 
         // ========================================
-        // 6. ĐĂNG XUẤT
+        // 6. KHỞI ĐỘNG
         // ========================================
 
-        document.getElementById('logoutBtn').addEventListener('click', logout);
-
-        // ========================================
-        // 7. KIỂM TRA ĐĂNG NHẬP KHI TẢI LẠI TRANG
-        // ========================================
-
-        (function init() {
+        (async function init() {
             const currentUser = getCurrentUser();
             if (currentUser) {
                 authBox.style.display = 'none';
                 mainContent.classList.add('active');
                 displayUsername.textContent = currentUser;
-                renderVideos();
+                await renderVideos();
             } else {
                 authBox.style.display = 'block';
                 mainContent.classList.remove('active');
-                document.getElementById('videoList').innerHTML =
-                    '<div class="empty">📭 Hãy đăng nhập để xem video của bạn.</div>';
+                document.getElementById('videoGrid').innerHTML =
+                    `<div class="empty-state"><span class="icon">📹</span><p>Hãy đăng nhập để xem video.</p></div>`;
+                document.getElementById('videoCount').textContent = '0 video';
             }
         })();
     </script>
