@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kho Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #ff6b6b;
+        }
+        .sub {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        .upload-area {
+            background: #1e1e1e;
+            border: 2px dashed #444;
+            border-radius: 14px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 30px;
+        }
+        .upload-area:hover {
+            border-color: #ff6b6b;
+            background: #252525;
+        }
+        .upload-area input {
+            display: none;
+        }
+        .upload-area label {
+            display: inline-block;
+            background: #ff6b6b;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .upload-area label:hover {
+            background: #e55a5a;
+            transform: scale(1.03);
+        }
+        .upload-area p {
+            margin-top: 14px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .video-item {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #2a2a2a;
+            transition: 0.3s;
+        }
+        .video-item:hover {
+            border-color: #ff6b6b;
+        }
+        .video-item video {
+            width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            background: #000;
+        }
+        .video-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .video-name {
+            font-weight: bold;
+            color: #fff;
+            font-size: 1rem;
+            word-break: break-word;
+            flex: 1;
+        }
+        .video-size {
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .btn-delete {
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .btn-delete:hover {
+            background: #cc0000;
+        }
+        .empty {
+            text-align: center;
+            color: #666;
+            padding: 40px 0;
+            font-style: italic;
+        }
+        .storage {
+            text-align: right;
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 16px;
+        }
+        /* Responsive cho mobile */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .upload-area { padding: 24px 12px; }
+            .upload-area label { padding: 10px 20px; font-size: 0.9rem; }
+            .video-info { flex-direction: column; align-items: flex-start; }
+            .btn-delete { align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎬 Kho Video</h1>
+        <p class="sub">Tải video lên và xem lại bất cứ lúc nào</p>
+
+        <div class="upload-area" id="uploadArea">
+            <input type="file" id="fileInput" accept="video/*" multiple />
+            <label for="fileInput">📤 Chọn video để tải lên</label>
+            <p>Hỗ trợ: MP4, WebM, AVI, MOV, MKV...</p>
+        </div>
+
+        <div id="videoList" class="video-list"></div>
+
+        <div class="storage" id="storageInfo">Đã dùng: 0 MB</div>
+    </div>
+
+    <script>
+        const MAX_STORAGE_MB = 500;
+
+        const fileInput = document.getElementById('fileInput');
+        const videoList = document.getElementById('videoList');
+        const uploadArea = document.getElementById('uploadArea');
+        const storageInfo = document.getElementById('storageInfo');
+
+        function getVideos() {
+            try {
+                return JSON.parse(localStorage.getItem('videos')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveVideos(videos) {
+            localStorage.setItem('videos', JSON.stringify(videos));
+        }
+
+        function getTotalSizeMB(videos) {
+            const totalBytes = videos.reduce((sum, v) => sum + (v.size || 0), 0);
+            return totalBytes / (1024 * 1024);
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function renderVideos() {
+            const videos = getVideos();
+            const totalMB = getTotalSizeMB(videos);
+
+            storageInfo.textContent = `Đã dùng: ${totalMB.toFixed(1)} MB / ${MAX_STORAGE_MB} MB`;
+
+            if (videos.length === 0) {
+                videoList.innerHTML = `<div class="empty">📭 Chưa có video nào. Hãy tải lên nhé!</div>`;
+                return;
+            }
+
+            let html = '';
+            videos.forEach((video, index) => {
+                html += `
+                    <div class="video-item">
+                        <video controls>
+                            <source src="${video.data}" type="${video.type || 'video/mp4'}">
+                            Trình duyệt không hỗ trợ video.
+                        </video>
+                        <div class="video-info">
+                            <span class="video-name">📹 ${video.name}</span>
+                            <span class="video-size">${formatSize(video.size)}</span>
+                            <button class="btn-delete" data-index="${index}">Xóa</button>
+                        </div>
+                    </div>
+                `;
+            });
+            videoList.innerHTML = html;
+
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    deleteVideo(idx);
+                });
+            });
+        }
+
+        function deleteVideo(index) {
+            const videos = getVideos();
+            videos.splice(index, 1);
+            saveVideos(videos);
+            renderVideos();
+        }
+
+        function addVideo(file) {
+            const videos = getVideos();
+            const totalMB = getTotalSizeMB(videos);
+            const fileMB = file.size / (1024 * 1024);
+
+            if (totalMB + fileMB > MAX_STORAGE_MB) {
+                alert(`❌ Vượt quá dung lượng cho phép ${MAX_STORAGE_MB} MB!\nHiện tại: ${totalMB.toFixed(1)} MB\nVideo này: ${fileMB.toFixed(1)} MB`);
+                return false;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const videoData = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    data: e.target.result,
+                };
+                videos.push(videoData);
+                saveVideos(videos);
+                renderVideos();
+            };
+            reader.readAsDataURL(file);
+            return true;
+        }
+
+        function handleFiles(files) {
+            let added = 0;
+            for (let file of files) {
+                if (file.type.startsWith('video/')) {
+                    const success = addVideo(file);
+                    if (success) added++;
+                } else {
+                    alert(`⚠️ "${file.name}" không phải là video.`);
+                }
+            }
+            if (added > 0) {
+                fileInput.value = '';
+            }
+        }
+
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#ff6b6b';
+            this.style.background = '#252525';
+        });
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#444';
+            this.style.background = '#1e1e1e';
+        });
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#444';
+            this.style.background = '#1e1e1e';
+            if (e.dataTransfer.files.length) {
+                handleFiles(e.dataTransfer.files);
+            }
+        });
+
+        renderVideos();
+    </script>
+
+</body>
+</html>
