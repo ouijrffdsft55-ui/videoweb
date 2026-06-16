@@ -430,6 +430,7 @@
             font-weight: 600;
             font-family: inherit;
             will-change: border-color, color, background;
+            user-select: none;
         }
 
         .filter-bar .tab.active {
@@ -484,6 +485,7 @@
             background: #16161f;
             padding: 6px 16px;
             border-radius: 40px;
+            white-space: nowrap;
         }
 
         /* ===== VIP CREATE PANEL ===== */
@@ -610,6 +612,10 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 20px;
+        }
+
+        .video-grid.hidden-grid {
+            display: none;
         }
 
         .video-card {
@@ -1392,6 +1398,11 @@
         let isLoginMode = true;
         let currentTab = 'normal';
         let allVideos = [];
+        let filteredVideosCache = {
+            normal: [],
+            vip: []
+        };
+        let isDataLoaded = false;
 
         function showError(msg) { authError.textContent = msg;
             authSuccess.textContent = ''; }
@@ -1435,7 +1446,7 @@
                     mainContent.classList.add('active');
                     mainContent.classList.remove('vip-theme');
                     updateUI(username);
-                    renderVideos();
+                    loadAndRenderVideos();
                 }, 500);
                 return;
             }
@@ -1454,7 +1465,7 @@
                             mainContent.classList.remove('vip-theme');
                         }
                         updateUI(username);
-                        renderVideos();
+                        loadAndRenderVideos();
                     }, 500);
                 } else {
                     showError('❌ Sai tên đăng nhập hoặc mật khẩu.');
@@ -1515,6 +1526,7 @@
                     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                     document.querySelector('.tab[data-tab="normal"]').classList.add('active');
                     vipCreatePanel.classList.remove('active');
+                    document.getElementById('videoGrid').classList.remove('hidden-grid');
                 }
             }
         }
@@ -1543,11 +1555,15 @@
             vipTabBtn.classList.add('hidden');
             createVipTabBtn.classList.add('hidden');
             vipCreatePanel.classList.remove('active');
+            document.getElementById('videoGrid').classList.remove('hidden-grid');
             currentTab = 'normal';
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelector('.tab[data-tab="normal"]').classList.add('active');
             authPasswordInput.setAttribute('type', 'password');
             togglePasswordBtn.textContent = '👁️';
+            allVideos = [];
+            filteredVideosCache = { normal: [], vip: [] };
+            isDataLoaded = false;
         }
 
         authMainBtn.addEventListener('click', handleAuth);
@@ -1737,7 +1753,7 @@
         }
 
         // ========================================
-        // 7. HIỂN THỊ VIDEO - TABS
+        // 7. HIỂN THỊ VIDEO - TABS (TỐI ƯU)
         // ========================================
 
         const videoGrid = document.getElementById('videoGrid');
@@ -1833,6 +1849,41 @@
             if (e.target === this) closeVideoModal();
         });
 
+        // Tạo HTML cho video card (tối ưu)
+        function createVideoCardHTML(video, showDelete) {
+            const duration = video.duration || '0:00';
+            const views = video.views || 0;
+            const thumb = video.thumbnail || '';
+            const uploaderName = video.username || 'Unknown';
+            const timeAgo = getTimeAgo(video.createdAt);
+            const isVipVideo = video.videoType === 'vip';
+            const badgeClass = isVipVideo ? 'vip-badge-thumb' : 'hd-badge';
+            const badgeText = isVipVideo ? 'VIP' : 'HD';
+            const cardClass = isVipVideo ? 'vip-card' : '';
+
+            return `
+                        <div class="video-card ${cardClass}" data-id="${video.id}">
+                            <div class="thumbnail">
+                                ${thumb ? `<img src="${thumb}" alt="${video.title || 'Video'}" loading="lazy" />` : '<div style="color:#555;font-size:0.8rem;">🎬</div>'}
+                                <span class="duration">${typeof duration === 'number' ? formatTime(duration) : duration}</span>
+                                <span class="${badgeClass}">${badgeText}</span>
+                                <span class="play-icon">▶️</span>
+                                <span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:0.6rem;">👤 ${uploaderName}</span>
+                            </div>
+                            <div class="info">
+                                <div class="title">${video.title || 'Không có tiêu đề'}</div>
+                                <div class="meta">
+                                    <span class="views">👁️ ${views}</span>
+                                    <span class="time">📁 ${formatFileSize(video.size || 0)}</span>
+                                    <span class="time" style="color:#555;">🕐 ${timeAgo}</span>
+                                </div>
+                                ${showDelete ? `<button class="btn-delete-video" data-id="${video.id}">🗑️ Xóa video</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+        }
+
+        // Render video grid với cache
         function renderVideoGrid(videos, showDelete) {
             if (!videos || videos.length === 0) {
                 const isVip = currentTab === 'vip';
@@ -1849,40 +1900,21 @@
                 return;
             }
 
-            let html = '';
-            for (const video of videos) {
-                const duration = video.duration || '0:00';
-                const views = video.views || 0;
-                const thumb = video.thumbnail || '';
-                const uploaderName = video.username || 'Unknown';
-                const timeAgo = getTimeAgo(video.createdAt);
-                const isVipVideo = video.videoType === 'vip';
-                const badgeClass = isVipVideo ? 'vip-badge-thumb' : 'hd-badge';
-                const badgeText = isVipVideo ? 'VIP' : 'HD';
-                const cardClass = isVipVideo ? 'vip-card' : '';
+            // Sử dụng DocumentFragment để tối ưu performance
+            const fragment = document.createDocumentFragment();
+            const tempDiv = document.createElement('div');
 
-                html += `
-                            <div class="video-card ${cardClass}" data-id="${video.id}">
-                                <div class="thumbnail">
-                                    ${thumb ? `<img src="${thumb}" alt="${video.title || 'Video'}" loading="lazy" />` : '<div style="color:#555;font-size:0.8rem;">🎬</div>'}
-                                    <span class="duration">${typeof duration === 'number' ? formatTime(duration) : duration}</span>
-                                    <span class="${badgeClass}">${badgeText}</span>
-                                    <span class="play-icon">▶️</span>
-                                    <span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:0.6rem;">👤 ${uploaderName}</span>
-                                </div>
-                                <div class="info">
-                                    <div class="title">${video.title || 'Không có tiêu đề'}</div>
-                                    <div class="meta">
-                                        <span class="views">👁️ ${views}</span>
-                                        <span class="time">📁 ${formatFileSize(video.size || 0)}</span>
-                                        <span class="time" style="color:#555;">🕐 ${timeAgo}</span>
-                                    </div>
-                                    ${showDelete ? `<button class="btn-delete-video" data-id="${video.id}">🗑️ Xóa video</button>` : ''}
-                                </div>
-                            </div>
-                        `;
+            for (const video of videos) {
+                tempDiv.innerHTML = createVideoCardHTML(video, showDelete);
+                const card = tempDiv.firstElementChild;
+                if (card) {
+                    fragment.appendChild(card.cloneNode(true));
+                }
+                tempDiv.innerHTML = '';
             }
-            videoGrid.innerHTML = html;
+
+            videoGrid.innerHTML = '';
+            videoGrid.appendChild(fragment);
 
             // ====== NÚT XÓA VIDEO CHO ADMIN ======
             videoGrid.querySelectorAll('.btn-delete-video').forEach(btn => {
@@ -1897,7 +1929,9 @@
                             URL.revokeObjectURL(blobCache.get(videoToDelete.data));
                             blobCache.delete(videoToDelete.data);
                         }
-                        renderVideos();
+                        // Cập nhật cache
+                        await loadAndCacheVideos();
+                        renderCurrentTab();
                     }
                 });
             });
@@ -1914,50 +1948,64 @@
             });
         }
 
-        async function renderVideos() {
+        // Load và cache dữ liệu
+        async function loadAndCacheVideos() {
             allVideos = await getVideosFromDB();
+
+            // Phân loại và cache
+            filteredVideosCache.normal = allVideos
+                .filter(v => v.videoType !== 'vip')
+                .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+
+            filteredVideosCache.vip = allVideos
+                .filter(v => v.videoType === 'vip')
+                .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+
+            isDataLoaded = true;
+            return allVideos;
+        }
+
+        // Render theo tab hiện tại (sử dụng cache)
+        function renderCurrentTab() {
             const currentUser = getCurrentUser();
             const isAdminUser = isAdmin(currentUser);
             const isVipUser = isVip(currentUser);
 
             if (currentTab === 'create-vip') {
-                videoGrid.style.display = 'none';
+                videoGrid.classList.add('hidden-grid');
                 vipCreatePanel.classList.add('active');
                 videoCount.textContent = allVideos.length + ' video';
                 return;
             } else {
-                videoGrid.style.display = 'grid';
+                videoGrid.classList.remove('hidden-grid');
                 vipCreatePanel.classList.remove('active');
             }
 
-            let filteredVideos = [];
+            let videosToShow = [];
             if (currentTab === 'normal') {
-                filteredVideos = allVideos.filter(v => v.videoType !== 'vip');
+                videosToShow = filteredVideosCache.normal;
             } else if (currentTab === 'vip') {
-                filteredVideos = allVideos.filter(v => v.videoType === 'vip');
+                videosToShow = filteredVideosCache.vip;
             }
-
-            filteredVideos.sort((a, b) => {
-                const timeA = new Date(a.createdAt || 0).getTime();
-                const timeB = new Date(b.createdAt || 0).getTime();
-                return timeB - timeA;
-            });
 
             const totalVideos = allVideos.length;
             videoCount.textContent = totalVideos + ' video';
 
-            // ====== CHỈ ADMIN MỚI CÓ NÚT XÓA ======
             const showDelete = isAdminUser;
+            renderVideoGrid(videosToShow, showDelete);
+        }
 
-            renderVideoGrid(filteredVideos, showDelete);
+        async function loadAndRenderVideos() {
+            await loadAndCacheVideos();
+            renderCurrentTab();
         }
 
         // ========================================
-        // 8. TAB SWITCHING
+        // 8. TAB SWITCHING (CHUYỂN TAB NGAY LẬP TỨC)
         // ========================================
 
         document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
+            tab.addEventListener('click', function(e) {
                 const tabName = this.dataset.tab;
                 const currentUser = getCurrentUser();
                 const isAdminUser = isAdmin(currentUser);
@@ -1970,10 +2018,13 @@
                     return;
                 }
 
+                // Đổi active tab ngay lập tức
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 currentTab = tabName;
-                renderVideos();
+
+                // Render ngay lập tức (không cần đợi)
+                renderCurrentTab();
             });
         });
 
@@ -2115,9 +2166,12 @@
                 statusMsg.textContent = '✅ Đăng video thành công!';
                 statusMsg.className = 'status-msg success';
 
+                // Cập nhật cache và render lại
+                await loadAndCacheVideos();
+                renderCurrentTab();
+
                 setTimeout(() => {
                     closeModal();
-                    renderVideos();
                 }, 1000);
 
             } catch (error) {
@@ -2141,7 +2195,7 @@
                     mainContent.classList.add('vip-theme');
                 }
                 updateUI(currentUser);
-                await renderVideos();
+                await loadAndRenderVideos();
             } else {
                 authBox.style.display = 'flex';
                 mainContent.classList.remove('active');
@@ -2151,6 +2205,7 @@
                 vipTabBtn.classList.add('hidden');
                 createVipTabBtn.classList.add('hidden');
                 vipCreatePanel.classList.remove('active');
+                document.getElementById('videoGrid').classList.remove('hidden-grid');
             }
         })();
     </script>
