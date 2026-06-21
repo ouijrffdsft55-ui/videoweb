@@ -420,6 +420,213 @@
             color: #fff;
         }
 
+        /* ===== SETTINGS BUTTON ===== */
+        .btn-settings {
+            background: rgba(255, 255, 255, 0.05);
+            color: #8888a0;
+            border: 1px solid #2a2a3e;
+            padding: 10px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            will-change: background, border-color, color;
+        }
+
+        .btn-settings:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ff6b6b;
+            color: #fff;
+        }
+
+        /* ===== SETTINGS MODAL ===== */
+        .settings-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .settings-modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .settings-modal {
+            background: linear-gradient(145deg, #1a1a28, #222236);
+            border-radius: 24px;
+            padding: 32px 28px;
+            max-width: 480px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .settings-modal .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .settings-modal .settings-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-modal .close-settings {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #8888a0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            transition: background 0.2s ease, color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-modal .close-settings:hover {
+            background: rgba(255, 68, 68, 0.15);
+            color: #fff;
+        }
+
+        .settings-modal .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-modal .setting-group label {
+            display: block;
+            color: #8888a0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .settings-modal .setting-group .input-with-icon {
+            position: relative;
+        }
+
+        .settings-modal .setting-group .input-with-icon input {
+            width: 100%;
+            padding: 12px 16px;
+            padding-right: 50px;
+            border-radius: 12px;
+            border: 1px solid #2a2a3e;
+            background: #11111b;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-family: inherit;
+        }
+
+        .settings-modal .setting-group .input-with-icon input:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        .settings-modal .setting-group .input-with-icon .toggle-settings-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666680;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: color;
+        }
+
+        .settings-modal .setting-group .input-with-icon .toggle-settings-password:hover {
+            color: #fff;
+        }
+
+        .settings-modal .setting-group .info-text {
+            color: #55556b;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        .settings-modal .setting-group .info-text .highlight {
+            color: #ff6b6b;
+        }
+
+        .settings-modal .btn-save-settings {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            font-family: inherit;
+            will-change: transform;
+            margin-top: 8px;
+        }
+
+        .settings-modal .btn-save-settings:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.35);
+        }
+
+        .settings-modal .btn-save-settings:disabled {
+            background: #2a2a3e;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .settings-modal .settings-status {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            min-height: 24px;
+        }
+
+        .settings-modal .settings-status.success {
+            color: #4caf50;
+        }
+
+        .settings-modal .settings-status.error {
+            color: #ff4444;
+        }
+
+        /* ===== STORAGE INFO ===== */
         .storage-info {
             background: #16161f;
             border-radius: 12px;
@@ -1346,6 +1553,9 @@
             .vip-create-panel .vip-quantity input[type="number"] {
                 width: 60px;
             }
+            .settings-modal {
+                padding: 24px 18px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1368,6 +1578,10 @@
             }
             .btn-logout {
                 padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+            .btn-settings {
+                padding: 8px 12px;
                 font-size: 0.75rem;
             }
             .video-card .info {
@@ -1442,6 +1656,7 @@
                         <span class="vip-expiry" id="vipExpiry" style="display:none;"></span>
                     </div>
                     <div class="header-actions">
+                        <button class="btn-settings" id="openSettingsBtn">⚙️ Cài đặt</button>
                         <button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button>
                         <button class="btn-logout" id="logoutBtn">Đăng xuất</button>
                     </div>
@@ -1549,6 +1764,55 @@
             </div>
         </div>
 
+        <!-- ====== MODAL CÀI ĐẶT ====== -->
+        <div class="settings-modal-overlay" id="settingsModal">
+            <div class="settings-modal">
+                <div class="settings-header">
+                    <h2>⚙️ Cài đặt</h2>
+                    <button class="close-settings" id="closeSettingsBtn">&times;</button>
+                </div>
+
+                <div class="setting-group">
+                    <label>👤 Tên đăng nhập mới</label>
+                    <div class="input-with-icon">
+                        <input type="text" id="settingsNewUsername" placeholder="Nhập tên đăng nhập mới..." />
+                    </div>
+                    <div class="info-text">💡 Để trống nếu không muốn đổi</div>
+                </div>
+
+                <div class="setting-group">
+                    <label>🔑 Mật khẩu mới</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="settingsNewPassword" placeholder="Nhập mật khẩu mới..." />
+                        <button class="toggle-settings-password" id="toggleSettingsPassword" type="button">👁️</button>
+                    </div>
+                    <div class="info-text">💡 Để trống nếu không muốn đổi</div>
+                </div>
+
+                <div class="setting-group">
+                    <label>🔐 Xác nhận mật khẩu mới</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="settingsConfirmPassword" placeholder="Nhập lại mật khẩu mới..." />
+                        <button class="toggle-settings-password" id="toggleSettingsConfirm" type="button">👁️</button>
+                    </div>
+                </div>
+
+                <div class="setting-group" style="background:rgba(255,255,255,0.03); border-radius:12px; padding:12px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <span style="color:#8888a0; font-size:0.85rem;">📋 Trạng thái tài khoản:</span>
+                        <span id="settingsAccountStatus" style="color:#4caf50; font-weight:600;">🟢 Đang hoạt động</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:4px;">
+                        <span style="color:#8888a0; font-size:0.85rem;">⭐ Quyền hạn:</span>
+                        <span id="settingsAccountRole" style="color:#ffd700; font-weight:600;">Thường</span>
+                    </div>
+                </div>
+
+                <button class="btn-save-settings" id="saveSettingsBtn">💾 Lưu thay đổi</button>
+                <div class="settings-status" id="settingsStatus"></div>
+            </div>
+        </div>
+
         <!-- ====== MODAL XEM VIDEO ====== -->
         <div class="video-modal-overlay" id="videoModal">
             <button class="close-video" id="closeVideoBtn">✕</button>
@@ -1643,6 +1907,24 @@
         togglePasswordBtn.addEventListener('click', function() {
             const type = authPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             authPasswordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // Settings password toggle
+        const toggleSettingsPassword = document.getElementById('toggleSettingsPassword');
+        const settingsNewPassword = document.getElementById('settingsNewPassword');
+        const toggleSettingsConfirm = document.getElementById('toggleSettingsConfirm');
+        const settingsConfirmPassword = document.getElementById('settingsConfirmPassword');
+
+        toggleSettingsPassword.addEventListener('click', function() {
+            const type = settingsNewPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            settingsNewPassword.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        toggleSettingsConfirm.addEventListener('click', function() {
+            const type = settingsConfirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            settingsConfirmPassword.setAttribute('type', type);
             this.textContent = type === 'password' ? '👁️' : '🙈';
         });
 
@@ -1867,7 +2149,166 @@
         document.getElementById('logoutBtn').addEventListener('click', logout);
 
         // ========================================
-        // 4. TẠO VIP
+        // 4. CÀI ĐẶT - ĐỔI TÊN & MẬT KHẨU
+        // ========================================
+
+        const settingsModal = document.getElementById('settingsModal');
+        const openSettingsBtn = document.getElementById('openSettingsBtn');
+        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        const settingsNewUsername = document.getElementById('settingsNewUsername');
+        const settingsNewPassword = document.getElementById('settingsNewPassword');
+        const settingsConfirmPassword = document.getElementById('settingsConfirmPassword');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const settingsStatus = document.getElementById('settingsStatus');
+        const settingsAccountStatus = document.getElementById('settingsAccountStatus');
+        const settingsAccountRole = document.getElementById('settingsAccountRole');
+
+        function openSettings() {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+            
+            // Reset form
+            settingsNewUsername.value = '';
+            settingsNewPassword.value = '';
+            settingsConfirmPassword.value = '';
+            settingsStatus.textContent = '';
+            settingsStatus.className = 'settings-status';
+            
+            // Hiển thị trạng thái tài khoản
+            const users = getUsers();
+            const userData = users[currentUser];
+            if (userData) {
+                settingsAccountStatus.textContent = '🟢 Đang hoạt động';
+                settingsAccountStatus.style.color = '#4caf50';
+                
+                if (isAdmin(currentUser)) {
+                    settingsAccountRole.textContent = '👑 Admin';
+                    settingsAccountRole.style.color = '#ff6b6b';
+                } else if (isVip(currentUser)) {
+                    const expiryText = getVipExpiryText(currentUser);
+                    settingsAccountRole.textContent = `⭐ VIP (${expiryText || 'Vô hạn'})`;
+                    settingsAccountRole.style.color = '#ffd700';
+                } else {
+                    settingsAccountRole.textContent = '📹 Thường';
+                    settingsAccountRole.style.color = '#8888a0';
+                }
+            }
+            
+            settingsModal.classList.add('show');
+        }
+
+        function closeSettings() {
+            settingsModal.classList.remove('show');
+            settingsStatus.textContent = '';
+            settingsStatus.className = 'settings-status';
+        }
+
+        openSettingsBtn.addEventListener('click', openSettings);
+        closeSettingsBtn.addEventListener('click', closeSettings);
+        settingsModal.addEventListener('click', function(e) { if (e.target === this) closeSettings(); });
+
+        saveSettingsBtn.addEventListener('click', function() {
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                settingsStatus.textContent = '❌ Không tìm thấy người dùng!';
+                settingsStatus.className = 'settings-status error';
+                return;
+            }
+
+            const newUsername = settingsNewUsername.value.trim();
+            const newPassword = settingsNewPassword.value.trim();
+            const confirmPassword = settingsConfirmPassword.value.trim();
+
+            // Kiểm tra nếu có thay đổi
+            if (!newUsername && !newPassword) {
+                settingsStatus.textContent = '⚠️ Vui lòng nhập thông tin cần thay đổi.';
+                settingsStatus.className = 'settings-status error';
+                return;
+            }
+
+            const users = getUsers();
+            
+            // Kiểm tra nếu đổi tên
+            if (newUsername && newUsername !== currentUser) {
+                // Admin không được đổi tên
+                if (isAdmin(currentUser)) {
+                    settingsStatus.textContent = '❌ Admin không được đổi tên!';
+                    settingsStatus.className = 'settings-status error';
+                    return;
+                }
+                
+                // Kiểm tra tên đã tồn tại
+                if (users[newUsername]) {
+                    settingsStatus.textContent = '❌ Tên đăng nhập đã tồn tại!';
+                    settingsStatus.className = 'settings-status error';
+                    return;
+                }
+            }
+
+            // Kiểm tra nếu đổi mật khẩu
+            if (newPassword) {
+                if (newPassword.length < 4) {
+                    settingsStatus.textContent = '⚠️ Mật khẩu phải có ít nhất 4 ký tự!';
+                    settingsStatus.className = 'settings-status error';
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    settingsStatus.textContent = '⚠️ Mật khẩu xác nhận không khớp!';
+                    settingsStatus.className = 'settings-status error';
+                    return;
+                }
+            }
+
+            try {
+                // Lấy dữ liệu user cũ
+                const userData = users[currentUser];
+                if (!userData) {
+                    settingsStatus.textContent = '❌ Không tìm thấy dữ liệu người dùng!';
+                    settingsStatus.className = 'settings-status error';
+                    return;
+                }
+
+                // Nếu đổi tên
+                if (newUsername && newUsername !== currentUser) {
+                    // Tạo user mới với dữ liệu cũ
+                    users[newUsername] = {
+                        password: newPassword || userData.password,
+                        vip: userData.vip || false,
+                        vipExpiry: userData.vipExpiry || null
+                    };
+                    // Xóa user cũ
+                    delete users[currentUser];
+                    // Cập nhật current user
+                    setCurrentUser(newUsername);
+                } else if (newPassword) {
+                    // Chỉ đổi mật khẩu
+                    users[currentUser].password = newPassword;
+                }
+
+                saveUsers(users);
+                updateUI(getCurrentUser());
+                
+                settingsStatus.textContent = '✅ Cập nhật thành công!';
+                settingsStatus.className = 'settings-status success';
+                
+                // Reset form sau 1.5s
+                setTimeout(() => {
+                    settingsNewUsername.value = '';
+                    settingsNewPassword.value = '';
+                    settingsConfirmPassword.value = '';
+                    settingsStatus.textContent = '';
+                    settingsStatus.className = 'settings-status';
+                    closeSettings();
+                }, 1500);
+
+            } catch (error) {
+                settingsStatus.textContent = '❌ Lỗi: ' + error.message;
+                settingsStatus.className = 'settings-status error';
+            }
+        });
+
+        // ========================================
+        // 5. TẠO VIP
         // ========================================
 
         function generateRandomNumber(length = 4) {
@@ -1993,13 +2434,12 @@
         });
 
         // ========================================
-        // 5. QUẢN LÝ VIDEO IndexedDB (FIX LỖI)
+        // 6. QUẢN LÝ VIDEO IndexedDB (FIX LỖI)
         // ========================================
 
         const DB_NAME = 'VideoDB';
         const STORE_NAME = 'videos';
 
-        // Hàm retry khi mất kết nối DB
         async function safeDBOperation(operation, retries = 3) {
             for (let i = 0; i < retries; i++) {
                 try {
@@ -2011,14 +2451,12 @@
                             error.message.includes('InvalidStateError') ||
                             error.name === 'InvalidStateError'
                         )) {
-                        // Đóng kết nối cũ
                         try {
                             if (window._dbConnection) {
                                 window._dbConnection.close();
                                 window._dbConnection = null;
                             }
                         } catch (e) {}
-                        // Đợi 1s rồi thử lại
                         await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
                         continue;
                     }
@@ -2031,7 +2469,6 @@
         function openDB() {
             return new Promise((resolve, reject) => {
                 try {
-                    // Đóng kết nối cũ nếu có
                     if (window._dbConnection) {
                         try {
                             window._dbConnection.close();
@@ -2045,7 +2482,6 @@
                         if (!d.objectStoreNames.contains(STORE_NAME)) {
                             d.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
                         }
-                        // Xóa object store cũ nếu có
                         if (d.objectStoreNames.contains('videos_old')) {
                             d.deleteObjectStore('videos_old');
                         }
@@ -2059,7 +2495,6 @@
                         resolve(window._dbConnection);
                     };
                     request.onerror = function(e) {
-                        // Nếu lỗi, thử xóa DB cũ và tạo mới
                         if (e.target.error && e.target.error.name === 'InvalidStateError') {
                             indexedDB.deleteDatabase(DB_NAME);
                             setTimeout(() => {
@@ -2154,14 +2589,12 @@
             try {
                 console.log('🔍 Đang kiểm tra video cũ...');
                 
-                // Kiểm tra xem đã có video trong DB chưa
                 const existing = await getVideosFromDB();
                 if (existing && existing.length > 0) {
                     console.log(`📹 Đã có ${existing.length} video trong DB`);
                     return existing;
                 }
 
-                // Thử lấy từ backup localStorage
                 const backup = localStorage.getItem('video_backup_cache');
                 if (backup) {
                     try {
@@ -2185,7 +2618,6 @@
                     }
                 }
 
-                // Thử lấy từ localStorage cũ (video_backup)
                 const oldBackup = localStorage.getItem('video_backup');
                 if (oldBackup) {
                     try {
@@ -2218,7 +2650,7 @@
         }
 
         // ========================================
-        // 6. THUMBNAIL
+        // 7. THUMBNAIL
         // ========================================
 
         function generateThumbnail(videoFile, time = 1.0) {
@@ -2254,7 +2686,7 @@
         }
 
         // ========================================
-        // 7. STORAGE INFO
+        // 8. STORAGE INFO
         // ========================================
 
         async function updateStorageInfo() {
@@ -2274,7 +2706,7 @@
         }
 
         // ========================================
-        // 8. HIỂN THỊ VIDEO + DOWNLOAD
+        // 9. HIỂN THỊ VIDEO + DOWNLOAD
         // ========================================
 
         const videoGrid = document.getElementById('videoGrid');
@@ -2584,18 +3016,13 @@
 
         async function loadAndRenderVideosFast() {
             try {
-                // KIỂM TRA VÀ KHÔI PHỤC VIDEO CŨ
                 await restoreOldVideos();
-                
                 await loadAndCacheVideos();
                 renderCurrentTab();
                 updateStorageInfo();
-                
-                // Lưu backup tự động
                 try {
                     localStorage.setItem('video_backup_cache', JSON.stringify(allVideos));
                 } catch(e) {}
-                
             } catch (error) {
                 console.error('Lỗi tải video:', error);
                 videoGrid.innerHTML =
@@ -2605,7 +3032,7 @@
         }
 
         // ========================================
-        // 9. TAB SWITCHING
+        // 10. TAB SWITCHING
         // ========================================
 
         document.querySelectorAll('.tab').forEach(tab => {
@@ -2624,7 +3051,7 @@
         });
 
         // ========================================
-        // 10. UPLOAD VIDEO (FIX LỖI)
+        // 11. UPLOAD VIDEO (FIX LỖI)
         // ========================================
 
         const uploadModal = document.getElementById('uploadModal');
@@ -2742,7 +3169,6 @@
                     createdAt: new Date().toISOString()
                 };
 
-                // Lưu video với retry
                 let saved = false;
                 for (let attempt = 0; attempt < 3; attempt++) {
                     try {
@@ -2769,7 +3195,6 @@
                 statusMsg.textContent = '✅ Đăng video thành công!';
                 statusMsg.className = 'status-msg success';
 
-                // Lưu backup
                 try {
                     const all = await getVideosFromDB();
                     localStorage.setItem('video_backup_cache', JSON.stringify(all));
@@ -2790,13 +3215,12 @@
         });
 
         // ========================================
-        // 11. KHỞI ĐỘNG
+        // 12. KHỞI ĐỘNG
         // ========================================
 
         async function init() {
             checkAndExpireVip();
             
-            // Yêu cầu quyền lưu trữ
             if (navigator.storage && navigator.storage.persist) {
                 try {
                     const persistent = await navigator.storage.persist();
@@ -2813,11 +3237,8 @@
                     mainContent.classList.add('vip-theme');
                 }
                 updateUI(currentUser);
-                
-                // Load video và khôi phục video cũ
                 await loadAndRenderVideosFast();
 
-                // Kiểm tra VIP định kỳ
                 setInterval(() => {
                     if (checkAndExpireVip()) {
                         const user = getCurrentUser();
@@ -2854,6 +3275,7 @@
         console.log('✅ Video được lưu vĩnh viễn trong IndexedDB');
         console.log('🔄 Tự động khôi phục video cũ từ backup');
         console.log('⬇️ Nhấn nút "Tải về" để download video');
+        console.log('⚙️ Nhấn "Cài đặt" để đổi tên và mật khẩu');
         console.log('💾 Dữ liệu chỉ mất khi xóa dữ liệu trình duyệt');
     </script>
 
