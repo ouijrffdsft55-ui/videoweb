@@ -6,7 +6,6 @@
     <title>VidHub - Kho Video Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* ====== TẤT CẢ CSS ====== */
         * {
             margin: 0;
             padding: 0;
@@ -39,7 +38,6 @@
             border-radius: 10px;
         }
 
-        /* ===== FORM ĐĂNG NHẬP ===== */
         .auth-wrapper {
             min-height: 100vh;
             display: flex;
@@ -201,7 +199,6 @@
             min-height: 22px;
         }
 
-        /* ===== MAIN CONTENT ===== */
         .main-content {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -256,7 +253,6 @@
             }
         }
 
-        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -405,22 +401,6 @@
             box-shadow: 0 8px 30px rgba(255, 107, 107, 0.35);
         }
 
-        .btn-upload-header.green {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-        }
-
-        .btn-upload-header.green:hover {
-            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.35);
-        }
-
-        .btn-upload-header.orange {
-            background: linear-gradient(135deg, #FF9800, #E65100);
-        }
-
-        .btn-upload-header.orange:hover {
-            box-shadow: 0 8px 30px rgba(255, 152, 0, 0.35);
-        }
-
         .btn-logout {
             background: transparent;
             color: #8888a0;
@@ -440,7 +420,6 @@
             color: #fff;
         }
 
-        /* ===== STORAGE INFO ===== */
         .storage-info {
             background: #16161f;
             border-radius: 12px;
@@ -482,7 +461,6 @@
             color: #eee;
         }
 
-        /* ===== BỘ LỌC (TABS) ===== */
         .filter-bar {
             display: flex;
             gap: 10px;
@@ -563,7 +541,6 @@
             white-space: nowrap;
         }
 
-        /* ===== VIP CREATE PANEL ===== */
         .vip-create-panel {
             display: none;
             padding: 30px 20px;
@@ -805,7 +782,6 @@
             min-height: 20px;
         }
 
-        /* ===== VIDEO GRID ===== */
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1034,7 +1010,6 @@
             font-size: 0.9rem;
         }
 
-        /* ===== MODAL UPLOAD ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -1243,7 +1218,6 @@
             color: #ff4444;
         }
 
-        /* ===== VIDEO PLAYER MODAL ===== */
         .video-modal-overlay {
             display: none;
             position: fixed;
@@ -1316,7 +1290,6 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .video-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -1469,9 +1442,6 @@
                         <span class="vip-expiry" id="vipExpiry" style="display:none;"></span>
                     </div>
                     <div class="header-actions">
-                        <button class="btn-upload-header green" id="backupBtn">💾 Sao lưu</button>
-                        <button class="btn-upload-header orange" id="restoreBtn">📂 Khôi phục</button>
-                        <input type="file" id="restoreFileInput" accept=".json" style="display:none;" />
                         <button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button>
                         <button class="btn-logout" id="logoutBtn">Đăng xuất</button>
                     </div>
@@ -2023,68 +1993,228 @@
         });
 
         // ========================================
-        // 5. QUẢN LÝ VIDEO IndexedDB
+        // 5. QUẢN LÝ VIDEO IndexedDB (FIX LỖI)
         // ========================================
 
         const DB_NAME = 'VideoDB';
         const STORE_NAME = 'videos';
 
+        // Hàm retry khi mất kết nối DB
+        async function safeDBOperation(operation, retries = 3) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    return await operation();
+                } catch (error) {
+                    console.warn(`⚠️ Lần thử ${i + 1} thất bại:`, error);
+                    if (error.message && (
+                            error.message.includes('Connection to Indexed Database server lost') ||
+                            error.message.includes('InvalidStateError') ||
+                            error.name === 'InvalidStateError'
+                        )) {
+                        // Đóng kết nối cũ
+                        try {
+                            if (window._dbConnection) {
+                                window._dbConnection.close();
+                                window._dbConnection = null;
+                            }
+                        } catch (e) {}
+                        // Đợi 1s rồi thử lại
+                        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+                        continue;
+                    }
+                    throw error;
+                }
+            }
+            throw new Error('Không thể kết nối đến cơ sở dữ liệu sau ' + retries + ' lần thử');
+        }
+
         function openDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 4);
-                request.onupgradeneeded = function(e) {
-                    const d = e.target.result;
-                    if (!d.objectStoreNames.contains(STORE_NAME)) {
-                        d.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                try {
+                    // Đóng kết nối cũ nếu có
+                    if (window._dbConnection) {
+                        try {
+                            window._dbConnection.close();
+                        } catch (e) {}
+                        window._dbConnection = null;
                     }
-                };
-                request.onsuccess = function(e) { resolve(e.target.result); };
-                request.onerror = function(e) { reject(e.target.error); };
+
+                    const request = indexedDB.open(DB_NAME, 5);
+                    request.onupgradeneeded = function(e) {
+                        const d = e.target.result;
+                        if (!d.objectStoreNames.contains(STORE_NAME)) {
+                            d.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                        }
+                        // Xóa object store cũ nếu có
+                        if (d.objectStoreNames.contains('videos_old')) {
+                            d.deleteObjectStore('videos_old');
+                        }
+                    };
+                    request.onsuccess = function(e) {
+                        window._dbConnection = e.target.result;
+                        window._dbConnection.onclose = function() {
+                            console.warn('⚠️ Database bị đóng, sẽ tự động kết nối lại');
+                            window._dbConnection = null;
+                        };
+                        resolve(window._dbConnection);
+                    };
+                    request.onerror = function(e) {
+                        // Nếu lỗi, thử xóa DB cũ và tạo mới
+                        if (e.target.error && e.target.error.name === 'InvalidStateError') {
+                            indexedDB.deleteDatabase(DB_NAME);
+                            setTimeout(() => {
+                                const req2 = indexedDB.open(DB_NAME, 5);
+                                req2.onsuccess = function(ev) {
+                                    window._dbConnection = ev.target.result;
+                                    resolve(window._dbConnection);
+                                };
+                                req2.onerror = function() { reject(req2.error); };
+                            }, 500);
+                        } else {
+                            reject(e.target.error);
+                        }
+                    };
+                } catch (error) {
+                    reject(error);
+                }
             });
         }
 
         async function getVideosFromDB() {
-            const db = await openDB();
-            return new Promise((resolve) => {
-                const tx = db.transaction(STORE_NAME, 'readonly');
-                const store = tx.objectStore(STORE_NAME);
-                const req = store.getAll();
-                req.onsuccess = function() { resolve(req.result || []); };
-                req.onerror = function() { resolve([]); };
+            return await safeDBOperation(async () => {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    try {
+                        const tx = db.transaction(STORE_NAME, 'readonly');
+                        const store = tx.objectStore(STORE_NAME);
+                        const req = store.getAll();
+                        req.onsuccess = function() { resolve(req.result || []); };
+                        req.onerror = function() { reject(req.error); };
+                        setTimeout(() => reject(new Error('Timeout')), 10000);
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
             });
         }
 
         async function saveVideoToDB(videoData) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const tx = db.transaction(STORE_NAME, 'readwrite');
-                const store = tx.objectStore(STORE_NAME);
-                const req = store.add(videoData);
-                req.onsuccess = function() { resolve(req.result); };
-                req.onerror = function() { reject(req.error); };
+            return await safeDBOperation(async () => {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    try {
+                        const tx = db.transaction(STORE_NAME, 'readwrite');
+                        const store = tx.objectStore(STORE_NAME);
+                        const req = store.add(videoData);
+                        req.onsuccess = function() { resolve(req.result); };
+                        req.onerror = function() { reject(req.error); };
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
             });
         }
 
         async function updateVideoInDB(video) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const tx = db.transaction(STORE_NAME, 'readwrite');
-                const store = tx.objectStore(STORE_NAME);
-                const req = store.put(video);
-                req.onsuccess = function() { resolve(req.result); };
-                req.onerror = function() { reject(req.error); };
+            return await safeDBOperation(async () => {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    try {
+                        const tx = db.transaction(STORE_NAME, 'readwrite');
+                        const store = tx.objectStore(STORE_NAME);
+                        const req = store.put(video);
+                        req.onsuccess = function() { resolve(req.result); };
+                        req.onerror = function() { reject(req.error); };
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
             });
         }
 
         async function deleteVideoFromDB(id) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const tx = db.transaction(STORE_NAME, 'readwrite');
-                const store = tx.objectStore(STORE_NAME);
-                const req = store.delete(id);
-                req.onsuccess = function() { resolve(); };
-                req.onerror = function() { reject(req.error); };
+            return await safeDBOperation(async () => {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    try {
+                        const tx = db.transaction(STORE_NAME, 'readwrite');
+                        const store = tx.objectStore(STORE_NAME);
+                        const req = store.delete(id);
+                        req.onsuccess = function() { resolve(); };
+                        req.onerror = function() { reject(req.error); };
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
             });
+        }
+
+        // ====== KHÔI PHỤC VIDEO CŨ ======
+        async function restoreOldVideos() {
+            try {
+                console.log('🔍 Đang kiểm tra video cũ...');
+                
+                // Kiểm tra xem đã có video trong DB chưa
+                const existing = await getVideosFromDB();
+                if (existing && existing.length > 0) {
+                    console.log(`📹 Đã có ${existing.length} video trong DB`);
+                    return existing;
+                }
+
+                // Thử lấy từ backup localStorage
+                const backup = localStorage.getItem('video_backup_cache');
+                if (backup) {
+                    try {
+                        const parsed = JSON.parse(backup);
+                        if (parsed && parsed.length > 0) {
+                            console.log(`📹 Phục hồi ${parsed.length} video từ backup...`);
+                            let count = 0;
+                            for (const video of parsed) {
+                                try {
+                                    await saveVideoToDB(video);
+                                    count++;
+                                } catch (e) {
+                                    console.warn('Không thể khôi phục video:', video.title);
+                                }
+                            }
+                            console.log(`✅ Đã phục hồi ${count}/${parsed.length} video`);
+                            return await getVideosFromDB();
+                        }
+                    } catch (e) {
+                        console.warn('Backup bị lỗi:', e);
+                    }
+                }
+
+                // Thử lấy từ localStorage cũ (video_backup)
+                const oldBackup = localStorage.getItem('video_backup');
+                if (oldBackup) {
+                    try {
+                        const parsed = JSON.parse(oldBackup);
+                        if (parsed && parsed.length > 0) {
+                            console.log(`📹 Phục hồi ${parsed.length} video từ backup cũ...`);
+                            let count = 0;
+                            for (const video of parsed) {
+                                try {
+                                    await saveVideoToDB(video);
+                                    count++;
+                                } catch (e) {
+                                    console.warn('Không thể khôi phục video:', video.title);
+                                }
+                            }
+                            console.log(`✅ Đã phục hồi ${count}/${parsed.length} video`);
+                            return await getVideosFromDB();
+                        }
+                    } catch (e) {
+                        console.warn('Backup cũ bị lỗi:', e);
+                    }
+                }
+
+                console.log('📹 Không tìm thấy video cũ để khôi phục');
+                return [];
+            } catch (error) {
+                console.error('Lỗi khôi phục video:', error);
+                return [];
+            }
         }
 
         // ========================================
@@ -2206,15 +2336,13 @@
             }
         }
 
-        // ====== DOWNLOAD VIDEO ======
         function downloadVideo(videoData) {
             try {
                 let videoSrc = videoData.data;
                 let mimeType = videoData.type || 'video/mp4';
                 let fileName = videoData.title || 'video';
-                // Loại bỏ ký tự đặc biệt
                 fileName = fileName.replace(/[^a-zA-Z0-9\u00C0-\u1EF9 ]/g, '').trim() || 'video';
-                
+
                 let blob;
                 if (typeof videoSrc === 'string' && videoSrc.startsWith('data:video')) {
                     const base64 = videoSrc.split(',')[1] || videoSrc;
@@ -2228,10 +2356,8 @@
                     }
                     blob = new Blob(byteArrays, { type: mimeType });
                 } else if (typeof videoSrc === 'string' && videoSrc.startsWith('blob:')) {
-                    // Nếu là blob URL, tải từ cache
                     const cachedUrl = blobCache.get(videoData.data);
                     if (cachedUrl) {
-                        // Tạo link tải
                         const link = document.createElement('a');
                         link.href = cachedUrl;
                         link.download = fileName + '.mp4';
@@ -2240,7 +2366,6 @@
                         document.body.removeChild(link);
                         return;
                     }
-                    // Fallback: dùng fetch
                     fetch(videoSrc)
                         .then(res => res.blob())
                         .then(blob => {
@@ -2255,12 +2380,10 @@
                         .catch(err => console.error('Lỗi tải video:', err));
                     return;
                 } else {
-                    // Dữ liệu không hợp lệ
                     alert('❌ Không thể tải video này.');
                     return;
                 }
 
-                // Tạo link tải
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
@@ -2390,7 +2513,6 @@
             videoGrid.innerHTML = '';
             videoGrid.appendChild(fragment);
 
-            // ====== XÓA VIDEO ======
             videoGrid.querySelectorAll('.btn-delete-video').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
@@ -2410,19 +2532,15 @@
                 });
             });
 
-            // ====== TẢI VIDEO VỀ MÁY ======
             videoGrid.querySelectorAll('.btn-download-video').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const id = parseInt(this.dataset.id);
                     const video = allVideos.find(v => v.id === id);
-                    if (video) {
-                        downloadVideo(video);
-                    }
+                    if (video) downloadVideo(video);
                 });
             });
 
-            // ====== PHÁT VIDEO ======
             videoGrid.querySelectorAll('.video-card').forEach((card) => {
                 card.addEventListener('click', function() {
                     const id = parseInt(this.dataset.id);
@@ -2466,9 +2584,18 @@
 
         async function loadAndRenderVideosFast() {
             try {
+                // KIỂM TRA VÀ KHÔI PHỤC VIDEO CŨ
+                await restoreOldVideos();
+                
                 await loadAndCacheVideos();
                 renderCurrentTab();
                 updateStorageInfo();
+                
+                // Lưu backup tự động
+                try {
+                    localStorage.setItem('video_backup_cache', JSON.stringify(allVideos));
+                } catch(e) {}
+                
             } catch (error) {
                 console.error('Lỗi tải video:', error);
                 videoGrid.innerHTML =
@@ -2497,7 +2624,7 @@
         });
 
         // ========================================
-        // 10. UPLOAD VIDEO
+        // 10. UPLOAD VIDEO (FIX LỖI)
         // ========================================
 
         const uploadModal = document.getElementById('uploadModal');
@@ -2615,10 +2742,38 @@
                     createdAt: new Date().toISOString()
                 };
 
-                await saveVideoToDB(videoObj);
+                // Lưu video với retry
+                let saved = false;
+                for (let attempt = 0; attempt < 3; attempt++) {
+                    try {
+                        await saveVideoToDB(videoObj);
+                        saved = true;
+                        break;
+                    } catch (err) {
+                        console.warn(`Lần thử ${attempt+1} thất bại:`, err);
+                        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                        try { 
+                            if (window._dbConnection) {
+                                window._dbConnection.close();
+                                window._dbConnection = null;
+                            }
+                        } catch(e) {}
+                    }
+                }
+
+                if (!saved) {
+                    throw new Error('Không thể lưu video sau 3 lần thử');
+                }
+
                 progressBar.style.width = '100%';
                 statusMsg.textContent = '✅ Đăng video thành công!';
                 statusMsg.className = 'status-msg success';
+
+                // Lưu backup
+                try {
+                    const all = await getVideosFromDB();
+                    localStorage.setItem('video_backup_cache', JSON.stringify(all));
+                } catch(e) {}
 
                 await loadAndCacheVideos();
                 renderCurrentTab();
@@ -2627,96 +2782,21 @@
                 setTimeout(() => closeModal(), 1000);
 
             } catch (error) {
-                statusMsg.textContent = '❌ Lỗi: ' + error;
+                statusMsg.textContent = '❌ Lỗi: ' + error.message;
                 statusMsg.className = 'status-msg error';
                 submitBtn.disabled = false;
+                console.error('Upload error:', error);
             }
         });
 
         // ========================================
-        // 11. SAO LƯU VÀ KHÔI PHỤC
-        // ========================================
-
-        async function exportVideos() {
-            try {
-                const videos = await getVideosFromDB();
-                const dataStr = JSON.stringify(videos);
-                const blob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `video_backup_${new Date().toISOString().slice(0,10)}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-                document.getElementById('vipSuccessMsg').textContent = '✅ Đã sao lưu ' + videos.length + ' video!';
-                document.getElementById('vipSuccessMsg').style.color = '#4caf50';
-                setTimeout(() => document.getElementById('vipSuccessMsg').textContent = '', 3000);
-            } catch (error) { alert('❌ Lỗi sao lưu: ' + error); }
-        }
-
-        async function importVideos(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    try {
-                        const videos = JSON.parse(e.target.result);
-                        if (!Array.isArray(videos)) throw new Error('Dữ liệu không hợp lệ');
-                        const db = await openDB();
-                        const tx = db.transaction(STORE_NAME, 'readwrite');
-                        const store = tx.objectStore(STORE_NAME);
-                        await new Promise((resolve, reject) => {
-                            const req = store.clear();
-                            req.onsuccess = resolve;
-                            req.onerror = reject;
-                        });
-                        let count = 0;
-                        for (const video of videos) {
-                            if (!video.title) video.title = 'Video không tiêu đề';
-                            if (!video.videoType) video.videoType = 'normal';
-                            if (!video.createdAt) video.createdAt = new Date().toISOString();
-                            if (!video.views) video.views = 0;
-                            await new Promise((resolve, reject) => {
-                                const req = store.add(video);
-                                req.onsuccess = resolve;
-                                req.onerror = reject;
-                            });
-                            count++;
-                        }
-                        resolve(count);
-                    } catch (error) { reject(error); }
-                };
-                reader.onerror = reject;
-                reader.readAsText(file);
-            });
-        }
-
-        document.getElementById('backupBtn').addEventListener('click', exportVideos);
-        document.getElementById('restoreBtn').addEventListener('click', function() {
-            document.getElementById('restoreFileInput').click();
-        });
-        document.getElementById('restoreFileInput').addEventListener('change', async function(e) {
-            if (this.files.length > 0) {
-                if (confirm('⚠️ Việc khôi phục sẽ thay thế tất cả video hiện có. Tiếp tục?')) {
-                    try {
-                        const count = await importVideos(this.files[0]);
-                        await loadAndCacheVideos();
-                        renderCurrentTab();
-                        updateStorageInfo();
-                        document.getElementById('vipSuccessMsg').textContent = '✅ Đã khôi phục ' + count + ' video!';
-                        document.getElementById('vipSuccessMsg').style.color = '#4caf50';
-                        setTimeout(() => document.getElementById('vipSuccessMsg').textContent = '', 3000);
-                    } catch (error) { alert('❌ Lỗi khôi phục: ' + error); }
-                }
-                this.value = '';
-            }
-        });
-
-        // ========================================
-        // 12. KHỞI ĐỘNG
+        // 11. KHỞI ĐỘNG
         // ========================================
 
         async function init() {
             checkAndExpireVip();
+            
+            // Yêu cầu quyền lưu trữ
             if (navigator.storage && navigator.storage.persist) {
                 try {
                     const persistent = await navigator.storage.persist();
@@ -2733,8 +2813,11 @@
                     mainContent.classList.add('vip-theme');
                 }
                 updateUI(currentUser);
+                
+                // Load video và khôi phục video cũ
                 await loadAndRenderVideosFast();
 
+                // Kiểm tra VIP định kỳ
                 setInterval(() => {
                     if (checkAndExpireVip()) {
                         const user = getCurrentUser();
@@ -2769,7 +2852,7 @@
 
         console.log('🎬 VidHub đã sẵn sàng!');
         console.log('✅ Video được lưu vĩnh viễn trong IndexedDB');
-        console.log('👑 Admin có thể tạo VIP với thời hạn và số lượng');
+        console.log('🔄 Tự động khôi phục video cũ từ backup');
         console.log('⬇️ Nhấn nút "Tải về" để download video');
         console.log('💾 Dữ liệu chỉ mất khi xóa dữ liệu trình duyệt');
     </script>
