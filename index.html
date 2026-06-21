@@ -6,7 +6,7 @@
     <title>VidHub - Kho Video Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* ====== TẤT CẢ CSS GIỮ NGUYÊN ====== */
+        /* ====== TẤT CẢ CSS ====== */
         * {
             margin: 0;
             padding: 0;
@@ -360,10 +360,27 @@
             letter-spacing: 0.5px;
         }
 
+        .header .user-info .vip-expiry {
+            color: #ffd700;
+            font-size: 0.65rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            white-space: nowrap;
+        }
+
+        .header .user-info .vip-expiry.expired {
+            color: #ff4444;
+            border-color: rgba(255, 68, 68, 0.2);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
         .header-actions {
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn-upload-header {
@@ -388,6 +405,22 @@
             box-shadow: 0 8px 30px rgba(255, 107, 107, 0.35);
         }
 
+        .btn-upload-header.green {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        }
+
+        .btn-upload-header.green:hover {
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.35);
+        }
+
+        .btn-upload-header.orange {
+            background: linear-gradient(135deg, #FF9800, #E65100);
+        }
+
+        .btn-upload-header.orange:hover {
+            box-shadow: 0 8px 30px rgba(255, 152, 0, 0.35);
+        }
+
         .btn-logout {
             background: transparent;
             color: #8888a0;
@@ -405,6 +438,48 @@
             background: #ff4444;
             border-color: #ff4444;
             color: #fff;
+        }
+
+        /* ===== STORAGE INFO ===== */
+        .storage-info {
+            background: #16161f;
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #8888a0;
+        }
+
+        .storage-info .storage-bar {
+            flex: 1;
+            min-width: 120px;
+            height: 6px;
+            background: #2a2a3e;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .storage-info .storage-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #ff6b6b);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .storage-info .storage-text {
+            white-space: nowrap;
+            font-size: 0.8rem;
+        }
+
+        .storage-info .storage-text strong {
+            color: #eee;
         }
 
         /* ===== BỘ LỌC (TABS) ===== */
@@ -521,13 +596,95 @@
             margin-bottom: 24px;
         }
 
+        /* Thời hạn VIP */
+        .vip-create-panel .vip-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .vip-create-panel .vip-options .vip-option {
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .vip-create-panel .vip-options .vip-option:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .vip-create-panel .vip-options .vip-option.selected {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.12);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .vip-create-panel .vip-options .vip-option .duration {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .vip-create-panel .vip-options .vip-option .label {
+            font-size: 0.7rem;
+            color: #8888a0;
+            margin-top: 4px;
+        }
+
+        /* Số lượng tạo */
+        .vip-create-panel .vip-quantity {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .vip-create-panel .vip-quantity label {
+            color: #8888a0;
+            font-size: 0.9rem;
+        }
+
+        .vip-create-panel .vip-quantity input[type="number"] {
+            background: #11111b;
+            border: 1px solid #2a2a3e;
+            border-radius: 10px;
+            padding: 8px 14px;
+            color: #fff;
+            font-size: 1rem;
+            width: 80px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+        }
+
+        .vip-create-panel .vip-quantity input[type="number"]:focus {
+            border-color: #00d4ff;
+        }
+
+        .vip-create-panel .vip-quantity input[type="number"]::-webkit-inner-spin-button,
+        .vip-create-panel .vip-quantity input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
         .vip-create-panel .vip-account-box {
             background: rgba(0, 212, 255, 0.05);
             border: 1px solid rgba(0, 212, 255, 0.15);
             border-radius: 12px;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             display: none;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .vip-create-panel .vip-account-box.show {
@@ -538,7 +695,7 @@
         .vip-create-panel .vip-account-box .vip-creds {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .vip-create-panel .vip-account-box .vip-creds .vip-row {
@@ -546,22 +703,56 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
-            padding: 8px 12px;
+            gap: 6px;
+            padding: 6px 12px;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         .vip-create-panel .vip-account-box .vip-creds .vip-row span {
             color: #ccc;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .vip-create-panel .vip-account-box .vip-creds .vip-row strong {
             color: #00d4ff;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            font-size: 0.9rem;
             letter-spacing: 0.5px;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-row .expiry-info {
+            color: #ffd700;
+            font-size: 0.75rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-header-row {
+            background: rgba(0, 212, 255, 0.08);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 6px 6px 0 0;
+            font-weight: 600;
+            color: #00d4ff;
+            font-size: 0.8rem;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-header-row span:first-child {
+            color: #00d4ff;
+        }
+        .vip-create-panel .vip-account-box .vip-creds .vip-header-row span:last-child {
+            color: #ffd700;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin: 4px 0;
+        }
+
+        .vip-create-panel .vip-account-box .vip-creds .vip-row .vip-index {
+            color: #666;
+            font-size: 0.7rem;
+            margin-right: 4px;
         }
 
         .btn-random-vip {
@@ -583,6 +774,12 @@
             box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
         }
 
+        .btn-random-vip:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         .btn-copy-vip {
             background: rgba(0, 212, 255, 0.1);
             color: #00d4ff;
@@ -600,11 +797,35 @@
             background: rgba(0, 212, 255, 0.2);
         }
 
+        .btn-copy-all-vip {
+            background: rgba(0, 212, 255, 0.15);
+            color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .btn-copy-all-vip:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
         .vip-create-panel .vip-success-msg {
             color: #4caf50;
             font-size: 0.9rem;
             margin-top: 12px;
             min-height: 24px;
+        }
+
+        .vip-create-panel .vip-progress-text {
+            color: #8888a0;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            min-height: 20px;
         }
 
         /* ===== VIDEO GRID ===== */
@@ -1137,6 +1358,16 @@
                 font-size: 1rem;
                 right: 10px;
             }
+            .vip-create-panel .vip-options .vip-option {
+                padding: 10px 16px;
+                min-width: 60px;
+            }
+            .vip-create-panel .vip-options .vip-option .duration {
+                font-size: 1rem;
+            }
+            .vip-create-panel .vip-quantity input[type="number"] {
+                width: 60px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1174,6 +1405,10 @@
             .filter-bar .video-count {
                 font-size: 0.7rem;
                 padding: 4px 12px;
+            }
+            .storage-info {
+                font-size: 0.7rem;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -1226,13 +1461,27 @@
                         <span class="name" id="displayUsername">User</span>
                         <span class="admin-badge" id="adminBadge" style="display:none;">👑 Admin</span>
                         <span class="vip-badge" id="vipBadge" style="display:none;">⭐ VIP</span>
+                        <span class="vip-expiry" id="vipExpiry" style="display:none;"></span>
                     </div>
                     <div class="header-actions">
+                        <button class="btn-upload-header green" id="backupBtn">💾 Sao lưu</button>
+                        <button class="btn-upload-header orange" id="restoreBtn">📂 Khôi phục</button>
+                        <input type="file" id="restoreFileInput" accept=".json" style="display:none;" />
                         <button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button>
                         <button class="btn-logout" id="logoutBtn">Đăng xuất</button>
                     </div>
                 </div>
             </header>
+
+            <!-- STORAGE INFO -->
+            <div class="storage-info" id="storageInfo">
+                <span>💾 Dung lượng lưu trữ:</span>
+                <div class="storage-bar">
+                    <div class="fill" id="storageFill"></div>
+                </div>
+                <span class="storage-text" id="storageText"><strong>0 MB</strong> / <span id="storageTotal">0 MB</span></span>
+                <span style="font-size:0.7rem; color:#666;">📌 Video lưu vĩnh viễn</span>
+            </div>
 
             <!-- BỘ LỌC (TABS) -->
             <div class="filter-bar" id="filterBar">
@@ -1255,25 +1504,47 @@
             <div class="vip-create-panel" id="vipCreatePanel">
                 <span class="vip-icon">👑</span>
                 <h3>Tạo tài khoản VIP</h3>
-                <p class="sub-text">Tạo tài khoản VIP ngẫu nhiên để cấp cho người dùng</p>
+                <p class="sub-text">Chọn thời hạn và số lượng tài khoản VIP cần tạo</p>
 
+                <!-- Thời hạn -->
+                <div class="vip-options" id="vipOptions">
+                    <div class="vip-option selected" data-days="1">
+                        <div class="duration">1</div>
+                        <div class="label">Ngày</div>
+                    </div>
+                    <div class="vip-option" data-days="7">
+                        <div class="duration">7</div>
+                        <div class="label">Ngày</div>
+                    </div>
+                    <div class="vip-option" data-days="30">
+                        <div class="duration">30</div>
+                        <div class="label">Ngày</div>
+                    </div>
+                    <div class="vip-option" data-days="0">
+                        <div class="duration">∞</div>
+                        <div class="label">Vô hạn</div>
+                    </div>
+                </div>
+
+                <!-- Số lượng -->
+                <div class="vip-quantity">
+                    <label for="vipQuantity">📊 Số lượng tài khoản:</label>
+                    <input type="number" id="vipQuantity" min="1" max="100" value="1" />
+                    <span style="color:#55556b; font-size:0.8rem;">(tối đa 100)</span>
+                </div>
+
+                <!-- Danh sách tài khoản tạo ra -->
                 <div class="vip-account-box" id="vipAccountDisplay">
-                    <div class="vip-creds">
-                        <div class="vip-row">
-                            <span>👤 Tài khoản:</span>
-                            <strong id="vipUsernameDisplay">---</strong>
-                        </div>
-                        <div class="vip-row">
-                            <span>🔑 Mật khẩu:</span>
-                            <strong id="vipPasswordDisplay">---</strong>
-                        </div>
-                        <div class="vip-row" style="justify-content:flex-end; margin-top:4px; background:transparent; padding:0;">
-                            <button class="btn-copy-vip" id="copyVipBtn">📋 Sao chép thông tin</button>
-                        </div>
+                    <div class="vip-creds" id="vipCredsList">
+                        <!-- Sẽ được tạo động -->
+                    </div>
+                    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap;">
+                        <button class="btn-copy-all-vip" id="copyAllVipBtn">📋 Sao chép tất cả</button>
                     </div>
                 </div>
 
                 <button class="btn-random-vip" id="randomVipBtn">🎲 Tạo tài khoản VIP</button>
+                <div class="vip-progress-text" id="vipProgressText"></div>
                 <div class="vip-success-msg" id="vipSuccessMsg"></div>
             </div>
         </div>
@@ -1319,7 +1590,7 @@
 
     <script>
         // ========================================
-        // 1. QUẢN LÝ TÀI KHOẢN
+        // 1. QUẢN LÝ TÀI KHOẢN VỚI THỜI HẠN VIP
         // ========================================
 
         const ADMIN_USER = 'Nduc';
@@ -1349,11 +1620,64 @@
         function isVip(username) {
             if (!username) return false;
             const users = getUsers();
-            return users[username] && users[username].vip === true;
+            const user = users[username];
+            if (!user || !user.vip) return false;
+            
+            if (user.vipExpiry === undefined || user.vipExpiry === null) {
+                return true;
+            }
+            
+            if (user.vipExpiry === 0) {
+                return true;
+            }
+            
+            const now = Date.now();
+            return now < user.vipExpiry;
         }
 
-        function canUploadVip(username) {
-            return isAdmin(username) || isVip(username);
+        function getVipExpiry(username) {
+            if (!username) return null;
+            const users = getUsers();
+            const user = users[username];
+            if (!user || !user.vip) return null;
+            return user.vipExpiry || 0;
+        }
+
+        function getVipExpiryText(username) {
+            const expiry = getVipExpiry(username);
+            if (expiry === null) return null;
+            if (expiry === 0) return '♾️ Vô hạn';
+            
+            const now = Date.now();
+            if (now >= expiry) return '❌ Đã hết hạn';
+            
+            const diff = expiry - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            if (days > 0) return `⏳ ${days} ngày ${hours} giờ`;
+            if (hours > 0) return `⏳ ${hours} giờ`;
+            return '⏳ Sắp hết hạn';
+        }
+
+        function checkAndExpireVip() {
+            const users = getUsers();
+            let changed = false;
+            
+            for (const [username, data] of Object.entries(users)) {
+                if (data.vip && data.vipExpiry && data.vipExpiry !== 0) {
+                    if (Date.now() >= data.vipExpiry) {
+                        data.vip = false;
+                        data.vipExpiry = null;
+                        changed = true;
+                    }
+                }
+            }
+            
+            if (changed) {
+                saveUsers(users);
+            }
+            return changed;
         }
 
         // ========================================
@@ -1389,6 +1713,7 @@
         const userAvatar = document.getElementById('userAvatar');
         const adminBadge = document.getElementById('adminBadge');
         const vipBadge = document.getElementById('vipBadge');
+        const vipExpiry = document.getElementById('vipExpiry');
         const userInfoBox = document.getElementById('userInfoBox');
         const vipTabBtn = document.getElementById('vipTabBtn');
         const createVipTabBtn = document.getElementById('createVipTabBtn');
@@ -1403,7 +1728,9 @@
             vip: []
         };
         let isDataLoaded = false;
-        let viewedVideos = new Set(); // Lưu ID video đã tăng lượt xem
+        let viewedVideos = new Set();
+        let selectedVipDays = 1;
+        let createdVipAccounts = [];
 
         function showError(msg) { authError.textContent = msg;
             authSuccess.textContent = ''; }
@@ -1455,12 +1782,20 @@
             const users = getUsers();
             if (isLoginMode) {
                 if (users[username] && users[username].password === password) {
+                    if (users[username].vip && users[username].vipExpiry && users[username].vipExpiry !== 0) {
+                        if (Date.now() >= users[username].vipExpiry) {
+                            users[username].vip = false;
+                            users[username].vipExpiry = null;
+                            saveUsers(users);
+                        }
+                    }
+                    
                     setCurrentUser(username);
                     showSuccess('✅ Đăng nhập thành công!');
                     setTimeout(() => {
                         authBox.style.display = 'none';
                         mainContent.classList.add('active');
-                        if (users[username].vip) {
+                        if (users[username].vip && isVip(username)) {
                             mainContent.classList.add('vip-theme');
                         } else {
                             mainContent.classList.remove('vip-theme');
@@ -1473,7 +1808,7 @@
                 }
             } else {
                 if (users[username]) { showError('❌ Tên đăng nhập đã tồn tại.'); return; }
-                users[username] = { password: password, vip: false };
+                users[username] = { password: password, vip: false, vipExpiry: null };
                 saveUsers(users);
                 showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
                 isLoginMode = true;
@@ -1491,7 +1826,8 @@
             displayUsername.textContent = username;
             userAvatar.textContent = username.charAt(0).toUpperCase();
             const users = getUsers();
-            const isVipUser = users[username] && users[username].vip === true;
+            const isVipUser = isVip(username);
+            const expiryText = getVipExpiryText(username);
 
             if (canUploadVip(username)) {
                 videoTypeSelect.innerHTML = `
@@ -1507,18 +1843,26 @@
             if (isAdmin(username)) {
                 adminBadge.style.display = 'inline-block';
                 vipBadge.style.display = 'none';
+                vipExpiry.style.display = 'none';
                 userInfoBox.classList.remove('vip-avatar');
                 vipTabBtn.classList.remove('hidden');
                 createVipTabBtn.classList.remove('hidden');
             } else if (isVipUser) {
                 adminBadge.style.display = 'none';
                 vipBadge.style.display = 'inline-block';
+                vipExpiry.style.display = 'inline-block';
+                vipExpiry.textContent = expiryText || '♾️ Vô hạn';
+                vipExpiry.className = 'vip-expiry';
+                if (expiryText && expiryText.includes('Hết hạn')) {
+                    vipExpiry.classList.add('expired');
+                }
                 userInfoBox.classList.add('vip-avatar');
                 vipTabBtn.classList.remove('hidden');
                 createVipTabBtn.classList.add('hidden');
             } else {
                 adminBadge.style.display = 'none';
                 vipBadge.style.display = 'none';
+                vipExpiry.style.display = 'none';
                 userInfoBox.classList.remove('vip-avatar');
                 vipTabBtn.classList.add('hidden');
                 createVipTabBtn.classList.add('hidden');
@@ -1553,6 +1897,7 @@
             document.getElementById('videoCount').textContent = '0 video';
             adminBadge.style.display = 'none';
             vipBadge.style.display = 'none';
+            vipExpiry.style.display = 'none';
             userInfoBox.classList.remove('vip-avatar');
             vipTabBtn.classList.add('hidden');
             createVipTabBtn.classList.add('hidden');
@@ -1566,6 +1911,9 @@
             allVideos = [];
             filteredVideosCache = { normal: [], vip: [] };
             isDataLoaded = false;
+            updateStorageInfo();
+            createdVipAccounts = [];
+            document.getElementById('vipAccountDisplay').classList.remove('show');
         }
 
         authMainBtn.addEventListener('click', handleAuth);
@@ -1576,7 +1924,7 @@
         document.getElementById('logoutBtn').addEventListener('click', logout);
 
         // ========================================
-        // 4. TẠO TÀI KHOẢN VIP NGẪU NHIÊN
+        // 4. TẠO TÀI KHOẢN VIP CÓ THỜI HẠN VÀ SỐ LƯỢNG
         // ========================================
 
         function generateRandomNumber(length = 4) {
@@ -1587,63 +1935,205 @@
             return result;
         }
 
-        function createVipAccount() {
-            const users = getUsers();
-            let username, password;
+        function generateVipUsername(existingUsers) {
+            let username;
             let attempts = 0;
-
             do {
                 const number = generateRandomNumber(4);
                 username = 'VIP-' + number;
                 attempts++;
-            } while (users[username] && attempts < 100);
-
-            const number = generateRandomNumber(4);
-            password = 'VIP-' + number;
-
-            users[username] = { password: password, vip: true };
-            saveUsers(users);
-
-            document.getElementById('vipUsernameDisplay').textContent = username;
-            document.getElementById('vipPasswordDisplay').textContent = password;
-            document.getElementById('vipAccountDisplay').classList.add('show');
-
-            window._vipCreds = { username, password };
-
-            const msg = document.getElementById('vipSuccessMsg');
-            msg.textContent = '✅ Tạo tài khoản VIP thành công!';
-            msg.style.color = '#4caf50';
-
-            document.getElementById('vipAccountDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            return { username, password };
+            } while (existingUsers[username] && attempts < 100);
+            return username;
         }
 
-        document.getElementById('randomVipBtn').addEventListener('click', function() {
-            createVipAccount();
+        function createSingleVipAccount(days, existingUsers) {
+            const username = generateVipUsername(existingUsers);
+            const password = 'VIP-' + generateRandomNumber(4);
+
+            let vipExpiry = null;
+            let expiryText = '♾️ Vô hạn';
+            
+            if (days === 0) {
+                vipExpiry = 0;
+                expiryText = '♾️ Vô hạn';
+            } else {
+                const expiryTime = Date.now() + days * 24 * 60 * 60 * 1000;
+                vipExpiry = expiryTime;
+                const expiryDate = new Date(expiryTime);
+                expiryText = expiryDate.toLocaleDateString('vi-VN') + ' ' + expiryDate.toLocaleTimeString('vi-VN');
+            }
+
+            existingUsers[username] = { 
+                password: password, 
+                vip: true, 
+                vipExpiry: vipExpiry 
+            };
+
+            return { username, password, expiry: expiryText };
+        }
+
+        function createMultipleVipAccounts(days, count) {
+            const users = getUsers();
+            const accounts = [];
+            const maxAttempts = 1000;
+            let attempts = 0;
+
+            for (let i = 0; i < count && attempts < maxAttempts; i++) {
+                try {
+                    const account = createSingleVipAccount(days, users);
+                    accounts.push(account);
+                } catch (e) {
+                    attempts++;
+                    i--;
+                    if (attempts > maxAttempts) break;
+                }
+            }
+
+            saveUsers(users);
+            return accounts;
+        }
+
+        // Hiển thị danh sách tài khoản VIP
+        function displayVipAccounts(accounts) {
+            const container = document.getElementById('vipCredsList');
+            const display = document.getElementById('vipAccountDisplay');
+            
+            if (!accounts || accounts.length === 0) {
+                display.classList.remove('show');
+                return;
+            }
+
+            let html = `
+                <div class="vip-header-row" style="display:flex; justify-content:space-between; padding:6px 12px; background:rgba(0,212,255,0.08); border-radius:6px 6px 0 0; font-weight:600; color:#00d4ff; font-size:0.8rem;">
+                    <span># Tài khoản</span>
+                    <span>Mật khẩu</span>
+                    <span style="color:#ffd700;">Thời hạn</span>
+                </div>
+            `;
+
+            accounts.forEach((acc, index) => {
+                html += `
+                    <div class="vip-row" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; padding:6px 12px; background:${index % 2 === 0 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.3)'}; border-radius:4px;">
+                        <span style="color:#ccc; font-size:0.85rem;"><span class="vip-index" style="color:#666; font-size:0.7rem;">#${index + 1}</span> ${acc.username}</span>
+                        <strong style="color:#00d4ff; font-family:'Courier New',monospace; font-size:0.9rem;">${acc.password}</strong>
+                        <span class="expiry-info" style="color:#ffd700; font-size:0.75rem;">${acc.expiry}</span>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:10px; flex-wrap:wrap;">
+                    <button class="btn-copy-all-vip" id="copyAllVipBtn">📋 Sao chép tất cả</button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            display.classList.add('show');
+
+            // Lưu accounts để sao chép
+            window._vipAccounts = accounts;
+
+            // Gán lại sự kiện copy
+            document.getElementById('copyAllVipBtn').addEventListener('click', function() {
+                copyAllVipAccounts();
+            });
+
+            // Scroll vào view
+            display.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function copyAllVipAccounts() {
+            if (!window._vipAccounts || window._vipAccounts.length === 0) return;
+            
+            let text = '📋 DANH SÁCH TÀI KHOẢN VIP\n';
+            text += '='.repeat(40) + '\n\n';
+            
+            window._vipAccounts.forEach((acc, index) => {
+                text += `[${index + 1}] Tài khoản: ${acc.username}\n`;
+                text += `    Mật khẩu: ${acc.password}\n`;
+                text += `    Thời hạn: ${acc.expiry}\n\n`;
+            });
+            
+            text += '='.repeat(40) + '\n';
+            text += `Tổng cộng: ${window._vipAccounts.length} tài khoản VIP`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copyAllVipBtn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Đã sao chép!';
+                setTimeout(() => { btn.textContent = originalText; }, 2000);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                const btn = document.getElementById('copyAllVipBtn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Đã sao chép!';
+                setTimeout(() => { btn.textContent = originalText; }, 2000);
+            });
+        }
+
+        // VIP option selection
+        document.querySelectorAll('.vip-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.vip-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedVipDays = parseInt(this.dataset.days);
+            });
         });
 
-        document.getElementById('copyVipBtn').addEventListener('click', function() {
-            if (window._vipCreds) {
-                const text = `Tài khoản: ${window._vipCreds.username}\nMật khẩu: ${window._vipCreds.password}`;
-                navigator.clipboard.writeText(text).then(() => {
-                    const btn = this;
-                    const originalText = btn.textContent;
-                    btn.textContent = '✅ Đã sao chép!';
-                    setTimeout(() => { btn.textContent = originalText; }, 2000);
-                }).catch(() => {
-                    const textarea = document.createElement('textarea');
-                    textarea.value = text;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    const btn = this;
-                    const originalText = btn.textContent;
-                    btn.textContent = '✅ Đã sao chép!';
-                    setTimeout(() => { btn.textContent = originalText; }, 2000);
-                });
-            }
+        document.getElementById('randomVipBtn').addEventListener('click', function() {
+            const btn = this;
+            const quantityInput = document.getElementById('vipQuantity');
+            let quantity = parseInt(quantityInput.value) || 1;
+            
+            if (quantity < 1) quantity = 1;
+            if (quantity > 100) quantity = 100;
+            quantityInput.value = quantity;
+
+            btn.disabled = true;
+            const progressText = document.getElementById('vipProgressText');
+            const msg = document.getElementById('vipSuccessMsg');
+            msg.textContent = '';
+            progressText.textContent = `⏳ Đang tạo ${quantity} tài khoản VIP...`;
+
+            // Sử dụng setTimeout để UI kịp cập nhật
+            setTimeout(() => {
+                try {
+                    const accounts = createMultipleVipAccounts(selectedVipDays, quantity);
+                    createdVipAccounts = accounts;
+                    
+                    displayVipAccounts(accounts);
+                    
+                    progressText.textContent = `✅ Đã tạo thành công ${accounts.length} tài khoản VIP!`;
+                    msg.textContent = `✅ Tạo thành công ${accounts.length} tài khoản VIP!`;
+                    msg.style.color = '#4caf50';
+                    
+                    // Cập nhật UI nếu đang là VIP
+                    const currentUser = getCurrentUser();
+                    if (currentUser) {
+                        updateUI(currentUser);
+                    }
+                } catch (error) {
+                    const msg = document.getElementById('vipSuccessMsg');
+                    msg.textContent = '❌ Lỗi: ' + error;
+                    msg.style.color = '#ff4444';
+                    document.getElementById('vipProgressText').textContent = '❌ Tạo thất bại';
+                } finally {
+                    btn.disabled = false;
+                }
+            }, 100);
+        });
+
+        // Xử lý nhập số lượng
+        document.getElementById('vipQuantity').addEventListener('change', function() {
+            let val = parseInt(this.value) || 1;
+            if (val < 1) val = 1;
+            if (val > 100) val = 100;
+            this.value = val;
         });
 
         // ========================================
@@ -1766,7 +2256,31 @@
         }
 
         // ========================================
-        // 7. HIỂN THỊ VIDEO - TABS (TỐI ƯU)
+        // 7. STORAGE INFO
+        // ========================================
+
+        async function updateStorageInfo() {
+            try {
+                if (navigator.storage && navigator.storage.estimate) {
+                    const estimate = await navigator.storage.estimate();
+                    const usage = estimate.usage || 0;
+                    const quota = estimate.quota || 0;
+                    
+                    const usageMB = (usage / (1024 * 1024)).toFixed(1);
+                    const quotaMB = (quota / (1024 * 1024)).toFixed(1);
+                    const percent = quota > 0 ? (usage / quota * 100) : 0;
+                    
+                    document.getElementById('storageText').innerHTML = `<strong>${usageMB} MB</strong> / ${quotaMB} MB`;
+                    document.getElementById('storageFill').style.width = Math.min(percent, 100) + '%';
+                    document.getElementById('storageTotal').textContent = quotaMB + ' MB';
+                }
+            } catch (e) {
+                console.warn('Không thể lấy thông tin lưu trữ:', e);
+            }
+        }
+
+        // ========================================
+        // 8. HIỂN THỊ VIDEO - TABS
         // ========================================
 
         const videoGrid = document.getElementById('videoGrid');
@@ -1838,23 +2352,18 @@
             }
         }
 
-        // ====== TĂNG LƯỢT XEM ======
         async function increaseViewCount(videoId) {
-            // Nếu đã tăng lượt xem cho video này rồi thì bỏ qua
             if (viewedVideos.has(videoId)) return;
             
             const video = allVideos.find(v => v.id === videoId);
             if (!video) return;
             
-            // Tăng lượt xem
             video.views = (video.views || 0) + 1;
             
-            // Cập nhật trong DB
             try {
                 await updateVideoInDB(video);
                 viewedVideos.add(videoId);
                 
-                // Cập nhật lại cache
                 const normalIndex = filteredVideosCache.normal.findIndex(v => v.id === videoId);
                 if (normalIndex !== -1) {
                     filteredVideosCache.normal[normalIndex].views = video.views;
@@ -1864,14 +2373,12 @@
                     filteredVideosCache.vip[vipIndex].views = video.views;
                 }
                 
-                // Cập nhật lại UI cho card này
                 updateViewCountOnCard(videoId, video.views);
             } catch (error) {
                 console.error('Lỗi tăng lượt xem:', error);
             }
         }
 
-        // Cập nhật số lượt xem trên card mà không cần render lại toàn bộ
         function updateViewCountOnCard(videoId, newViews) {
             const card = document.querySelector(`.video-card[data-id="${videoId}"]`);
             if (card) {
@@ -1890,12 +2397,9 @@
                 videoSrc = base64ToBlobURL(videoSrc, mimeType);
             }
 
-            // Tạo URL mới để tránh cache
             if (videoSrc.startsWith('blob:')) {
-                // Nếu là blob URL, tạo mới để đảm bảo load nhanh
                 const base64Data = videoData.data;
                 const mimeType = videoData.type || 'video/mp4';
-                // Giải phóng blob cũ nếu có
                 if (blobCache.has(base64Data)) {
                     URL.revokeObjectURL(blobCache.get(base64Data));
                     blobCache.delete(base64Data);
@@ -1908,7 +2412,6 @@
             videoModal.classList.add('show');
             videoPlayer.play();
 
-            // Tăng lượt xem sau 2 giây (coi như đã xem)
             setTimeout(() => {
                 increaseViewCount(videoData.id);
             }, 2000);
@@ -1925,7 +2428,6 @@
             if (e.target === this) closeVideoModal();
         });
 
-        // Tạo HTML cho video card (tối ưu)
         function createVideoCardHTML(video, showDelete) {
             const duration = video.duration || '0:00';
             const views = video.views || 0;
@@ -1959,7 +2461,6 @@
                     `;
         }
 
-        // Render video grid với cache - TỐI ƯU HIỂN THỊ NGAY
         function renderVideoGrid(videos, showDelete) {
             if (!videos || videos.length === 0) {
                 const isVip = currentTab === 'vip';
@@ -1976,7 +2477,6 @@
                 return;
             }
 
-            // Sử dụng DocumentFragment để tối ưu performance
             const fragment = document.createDocumentFragment();
             const tempDiv = document.createElement('div');
 
@@ -1992,28 +2492,25 @@
             videoGrid.innerHTML = '';
             videoGrid.appendChild(fragment);
 
-            // ====== NÚT XÓA VIDEO CHO ADMIN ======
             videoGrid.querySelectorAll('.btn-delete-video').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     const id = parseInt(this.dataset.id);
                     if (confirm('Bạn có chắc muốn xóa video này?')) {
                         await deleteVideoFromDB(id);
-                        // Xóa cache blob nếu có
                         const videoToDelete = allVideos.find(v => v.id === id);
                         if (videoToDelete && blobCache.has(videoToDelete.data)) {
                             URL.revokeObjectURL(blobCache.get(videoToDelete.data));
                             blobCache.delete(videoToDelete.data);
                         }
                         viewedVideos.delete(id);
-                        // Cập nhật cache
                         await loadAndCacheVideos();
                         renderCurrentTab();
+                        updateStorageInfo();
                     }
                 });
             });
 
-            // Click to play - MỞ VIDEO NGAY LẬP TỨC
             videoGrid.querySelectorAll('.video-card').forEach((card) => {
                 card.addEventListener('click', function() {
                     const id = parseInt(this.dataset.id);
@@ -2025,11 +2522,9 @@
             });
         }
 
-        // Load và cache dữ liệu
         async function loadAndCacheVideos() {
             allVideos = await getVideosFromDB();
 
-            // Phân loại và cache
             filteredVideosCache.normal = allVideos
                 .filter(v => v.videoType !== 'vip')
                 .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
@@ -2042,7 +2537,6 @@
             return allVideos;
         }
 
-        // Render theo tab hiện tại (sử dụng cache)
         function renderCurrentTab() {
             const currentUser = getCurrentUser();
             const isAdminUser = isAdmin(currentUser);
@@ -2072,13 +2566,10 @@
             renderVideoGrid(videosToShow, showDelete);
         }
 
-        // ====== HÀM LOAD VÀ RENDER NHANH (KHÔNG ĐỢI) ======
         async function loadAndRenderVideosFast() {
             try {
-                // Lấy dữ liệu từ DB ngay lập tức
                 allVideos = await getVideosFromDB();
                 
-                // Phân loại ngay
                 filteredVideosCache.normal = allVideos
                     .filter(v => v.videoType !== 'vip')
                     .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
@@ -2088,13 +2579,11 @@
                     .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
                 
                 isDataLoaded = true;
-                
-                // Render ngay lập tức
                 renderCurrentTab();
+                updateStorageInfo();
                 
             } catch (error) {
                 console.error('Lỗi tải video:', error);
-                // Vẫn hiển thị giao diện
                 videoGrid.innerHTML = `
                     <div class="empty-state">
                         <span class="icon">⚠️</span>
@@ -2107,7 +2596,7 @@
         }
 
         // ========================================
-        // 8. TAB SWITCHING (CHUYỂN TAB NGAY LẬP TỨC)
+        // 9. TAB SWITCHING
         // ========================================
 
         document.querySelectorAll('.tab').forEach(tab => {
@@ -2124,18 +2613,16 @@
                     return;
                 }
 
-                // Đổi active tab ngay lập tức
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 currentTab = tabName;
 
-                // Render ngay lập tức (không cần đợi)
                 renderCurrentTab();
             });
         });
 
         // ========================================
-        // 9. UPLOAD VIDEO
+        // 10. UPLOAD VIDEO
         // ========================================
 
         const uploadModal = document.getElementById('uploadModal');
@@ -2272,9 +2759,9 @@
                 statusMsg.textContent = '✅ Đăng video thành công!';
                 statusMsg.className = 'status-msg success';
 
-                // Cập nhật cache và render lại
                 await loadAndCacheVideos();
                 renderCurrentTab();
+                updateStorageInfo();
 
                 setTimeout(() => {
                     closeModal();
@@ -2288,58 +2775,159 @@
         });
 
         // ========================================
-        // 10. KHỞI ĐỘNG - TỐI ƯU HIỂN THỊ NGAY
+        // 11. SAO LƯU VÀ KHÔI PHỤC
         // ========================================
 
-        (async function init() {
+        async function exportVideos() {
+            try {
+                const videos = await getVideosFromDB();
+                const dataStr = JSON.stringify(videos);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `video_backup_${new Date().toISOString().slice(0,10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                const msg = document.getElementById('vipSuccessMsg');
+                if (msg) {
+                    msg.textContent = '✅ Đã sao lưu ' + videos.length + ' video thành công!';
+                    msg.style.color = '#4caf50';
+                    setTimeout(() => { msg.textContent = ''; }, 3000);
+                }
+            } catch (error) {
+                alert('❌ Lỗi sao lưu: ' + error);
+            }
+        }
+
+        async function importVideos(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    try {
+                        const videos = JSON.parse(e.target.result);
+                        if (!Array.isArray(videos)) {
+                            throw new Error('Dữ liệu không hợp lệ');
+                        }
+                        
+                        const db = await openDB();
+                        const tx = db.transaction(STORE_NAME, 'readwrite');
+                        const store = tx.objectStore(STORE_NAME);
+                        
+                        await new Promise((resolve, reject) => {
+                            const req = store.clear();
+                            req.onsuccess = resolve;
+                            req.onerror = reject;
+                        });
+                        
+                        let count = 0;
+                        for (const video of videos) {
+                            if (!video.title) video.title = 'Video không tiêu đề';
+                            if (!video.videoType) video.videoType = 'normal';
+                            if (!video.createdAt) video.createdAt = new Date().toISOString();
+                            if (!video.views) video.views = 0;
+                            
+                            await new Promise((resolve, reject) => {
+                                const req = store.add(video);
+                                req.onsuccess = resolve;
+                                req.onerror = reject;
+                            });
+                            count++;
+                        }
+                        
+                        resolve(count);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.onerror = reject;
+                reader.readAsText(file);
+            });
+        }
+
+        document.getElementById('backupBtn').addEventListener('click', exportVideos);
+
+        document.getElementById('restoreBtn').addEventListener('click', function() {
+            document.getElementById('restoreFileInput').click();
+        });
+
+        document.getElementById('restoreFileInput').addEventListener('change', async function(e) {
+            if (this.files.length > 0) {
+                if (confirm('⚠️ Việc khôi phục sẽ thay thế tất cả video hiện có. Tiếp tục?')) {
+                    try {
+                        const count = await importVideos(this.files[0]);
+                        await loadAndCacheVideos();
+                        renderCurrentTab();
+                        updateStorageInfo();
+                        
+                        const msg = document.getElementById('vipSuccessMsg');
+                        if (msg) {
+                            msg.textContent = '✅ Đã khôi phục ' + count + ' video thành công!';
+                            msg.style.color = '#4caf50';
+                            setTimeout(() => { msg.textContent = ''; }, 3000);
+                        }
+                    } catch (error) {
+                        alert('❌ Lỗi khôi phục: ' + error);
+                    }
+                }
+                this.value = '';
+            }
+        });
+
+        // ========================================
+        // 12. KHỞI ĐỘNG
+        // ========================================
+
+        function canUploadVip(username) {
+            return isAdmin(username) || isVip(username);
+        }
+
+        async function init() {
+            checkAndExpireVip();
+            
+            if (navigator.storage && navigator.storage.persist) {
+                try {
+                    const persistent = await navigator.storage.persist();
+                    console.log('Storage persistence:', persistent ? '✅ Đã bật' : '❌ Chưa bật');
+                } catch (e) {
+                    console.warn('Không thể yêu cầu quyền lưu trữ:', e);
+                }
+            }
+            
             const currentUser = getCurrentUser();
             
             if (currentUser) {
-                // 1. Ẩn form đăng nhập, hiện main content NGAY LẬP TỨC
                 authBox.style.display = 'none';
                 mainContent.classList.add('active');
                 
-                // 2. Cập nhật UI cơ bản
                 const users = getUsers();
-                if (users[currentUser] && users[currentUser].vip) {
+                if (users[currentUser] && users[currentUser].vip && isVip(currentUser)) {
                     mainContent.classList.add('vip-theme');
                 }
                 updateUI(currentUser);
                 
-                // 3. Tải video và render ĐỒNG THỜI - KHÔNG ĐỢI
-                try {
-                    // Lấy dữ liệu từ DB
-                    allVideos = await getVideosFromDB();
-                    
-                    // Phân loại ngay lập tức
-                    filteredVideosCache.normal = allVideos
-                        .filter(v => v.videoType !== 'vip')
-                        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-                    
-                    filteredVideosCache.vip = allVideos
-                        .filter(v => v.videoType === 'vip')
-                        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-                    
-                    isDataLoaded = true;
-                    
-                    // 4. RENDER NGAY LẬP TỨC
-                    renderCurrentTab();
-                    
-                } catch (error) {
-                    console.error('Lỗi tải video:', error);
-                    // Vẫn hiển thị giao diện nhưng thông báo lỗi
-                    videoGrid.innerHTML = `
-                        <div class="empty-state">
-                            <span class="icon">⚠️</span>
-                            <h3>Không thể tải video</h3>
-                            <p>Vui lòng thử lại sau</p>
-                        </div>
-                    `;
-                    videoCount.textContent = '0 video';
-                }
+                await loadAndRenderVideosFast();
+                
+                setInterval(() => {
+                    if (checkAndExpireVip()) {
+                        const user = getCurrentUser();
+                        if (user) {
+                            updateUI(user);
+                            if (!isVip(user)) {
+                                renderCurrentTab();
+                            }
+                        }
+                    }
+                    if (currentUser) {
+                        const expiryText = getVipExpiryText(currentUser);
+                        if (expiryText && document.getElementById('vipExpiry').style.display !== 'none') {
+                            document.getElementById('vipExpiry').textContent = expiryText;
+                        }
+                    }
+                }, 300000);
                 
             } else {
-                // Chưa đăng nhập
                 authBox.style.display = 'flex';
                 mainContent.classList.remove('active');
                 document.getElementById('videoGrid').innerHTML =
@@ -2350,7 +2938,17 @@
                 vipCreatePanel.classList.remove('active');
                 document.getElementById('videoGrid').classList.remove('hidden-grid');
             }
-        })();
+        }
+
+        init();
+        setInterval(updateStorageInfo, 60000);
+
+        console.log('🎬 VidHub đã sẵn sàng!');
+        console.log('📌 Video được lưu vĩnh viễn trong IndexedDB');
+        console.log('👑 Admin có thể tạo VIP với:');
+        console.log('   - Thời hạn: 1 ngày, 1 tuần, 1 tháng, Vô hạn');
+        console.log('   - Số lượng: 1 - 100 tài khoản');
+        console.log('💾 Dữ liệu chỉ mất khi xóa dữ liệu trình duyệt');
     </script>
 
 </body>
