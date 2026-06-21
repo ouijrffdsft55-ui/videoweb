@@ -420,7 +420,6 @@
             color: #fff;
         }
 
-        /* ===== SETTINGS BUTTON ===== */
         .btn-settings {
             background: rgba(255, 255, 255, 0.05);
             color: #8888a0;
@@ -443,190 +442,6 @@
             color: #fff;
         }
 
-        /* ===== SETTINGS MODAL ===== */
-        .settings-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 1500;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .settings-modal-overlay.show {
-            display: flex;
-            animation: fadeIn 0.2s ease;
-        }
-
-        .settings-modal {
-            background: linear-gradient(145deg, #1a1a28, #222236);
-            border-radius: 24px;
-            padding: 32px 28px;
-            max-width: 480px;
-            width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .settings-modal .settings-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .settings-modal .settings-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .settings-modal .close-settings {
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            color: #8888a0;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            transition: background 0.2s ease, color 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .settings-modal .close-settings:hover {
-            background: rgba(255, 68, 68, 0.15);
-            color: #fff;
-        }
-
-        .settings-modal .setting-group {
-            margin-bottom: 20px;
-        }
-
-        .settings-modal .setting-group label {
-            display: block;
-            color: #8888a0;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        .settings-modal .setting-group .input-with-icon {
-            position: relative;
-        }
-
-        .settings-modal .setting-group .input-with-icon input {
-            width: 100%;
-            padding: 12px 16px;
-            padding-right: 50px;
-            border-radius: 12px;
-            border: 1px solid #2a2a3e;
-            background: #11111b;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            font-family: inherit;
-        }
-
-        .settings-modal .setting-group .input-with-icon input:focus {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
-        }
-
-        .settings-modal .setting-group .input-with-icon .toggle-settings-password {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: #666680;
-            font-size: 1.1rem;
-            cursor: pointer;
-            padding: 4px;
-            transition: color 0.2s ease;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            will-change: color;
-        }
-
-        .settings-modal .setting-group .input-with-icon .toggle-settings-password:hover {
-            color: #fff;
-        }
-
-        .settings-modal .setting-group .info-text {
-            color: #55556b;
-            font-size: 0.75rem;
-            margin-top: 4px;
-        }
-
-        .settings-modal .setting-group .info-text .highlight {
-            color: #ff6b6b;
-        }
-
-        .settings-modal .btn-save-settings {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            color: #fff;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-            font-family: inherit;
-            will-change: transform;
-            margin-top: 8px;
-        }
-
-        .settings-modal .btn-save-settings:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.35);
-        }
-
-        .settings-modal .btn-save-settings:disabled {
-            background: #2a2a3e;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .settings-modal .settings-status {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 0.9rem;
-            min-height: 24px;
-        }
-
-        .settings-modal .settings-status.success {
-            color: #4caf50;
-        }
-
-        .settings-modal .settings-status.error {
-            color: #ff4444;
-        }
-
-        /* ===== STORAGE INFO ===== */
         .storage-info {
             background: #16161f;
             border-radius: 12px;
@@ -939,23 +754,6 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none !important;
-        }
-
-        .btn-copy-vip {
-            background: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            padding: 6px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: background 0.2s ease;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-
-        .btn-copy-vip:hover {
-            background: rgba(0, 212, 255, 0.2);
         }
 
         .btn-copy-all-vip {
@@ -1425,6 +1223,184 @@
             color: #ff4444;
         }
 
+        .settings-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .settings-modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .settings-modal {
+            background: linear-gradient(145deg, #1a1a28, #222236);
+            border-radius: 24px;
+            padding: 32px 28px;
+            max-width: 480px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .settings-modal .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .settings-modal .settings-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-modal .close-settings {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #8888a0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            transition: background 0.2s ease, color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-modal .close-settings:hover {
+            background: rgba(255, 68, 68, 0.15);
+            color: #fff;
+        }
+
+        .settings-modal .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-modal .setting-group label {
+            display: block;
+            color: #8888a0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .settings-modal .setting-group .input-with-icon {
+            position: relative;
+        }
+
+        .settings-modal .setting-group .input-with-icon input {
+            width: 100%;
+            padding: 12px 16px;
+            padding-right: 50px;
+            border-radius: 12px;
+            border: 1px solid #2a2a3e;
+            background: #11111b;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-family: inherit;
+        }
+
+        .settings-modal .setting-group .input-with-icon input:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        .settings-modal .setting-group .input-with-icon .toggle-settings-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666680;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: color;
+        }
+
+        .settings-modal .setting-group .input-with-icon .toggle-settings-password:hover {
+            color: #fff;
+        }
+
+        .settings-modal .setting-group .info-text {
+            color: #55556b;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        .settings-modal .btn-save-settings {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            font-family: inherit;
+            will-change: transform;
+            margin-top: 8px;
+        }
+
+        .settings-modal .btn-save-settings:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.35);
+        }
+
+        .settings-modal .btn-save-settings:disabled {
+            background: #2a2a3e;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .settings-modal .settings-status {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            min-height: 24px;
+        }
+
+        .settings-modal .settings-status.success {
+            color: #4caf50;
+        }
+
+        .settings-modal .settings-status.error {
+            color: #ff4444;
+        }
+
         .video-modal-overlay {
             display: none;
             position: fixed;
@@ -1831,7 +1807,12 @@
         const ADMIN_PASS = 'Ducanh05092008';
 
         function getUsers() {
-            try { return JSON.parse(localStorage.getItem('users')) || {}; } catch { return {}; }
+            try {
+                const data = localStorage.getItem('users');
+                return data ? JSON.parse(data) : {};
+            } catch {
+                return {};
+            }
         }
 
         function saveUsers(users) {
@@ -1910,23 +1891,26 @@
             this.textContent = type === 'password' ? '👁️' : '🙈';
         });
 
-        // Settings password toggle
         const toggleSettingsPassword = document.getElementById('toggleSettingsPassword');
         const settingsNewPassword = document.getElementById('settingsNewPassword');
         const toggleSettingsConfirm = document.getElementById('toggleSettingsConfirm');
         const settingsConfirmPassword = document.getElementById('settingsConfirmPassword');
 
-        toggleSettingsPassword.addEventListener('click', function() {
-            const type = settingsNewPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            settingsNewPassword.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️' : '🙈';
-        });
+        if (toggleSettingsPassword) {
+            toggleSettingsPassword.addEventListener('click', function() {
+                const type = settingsNewPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                settingsNewPassword.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🙈';
+            });
+        }
 
-        toggleSettingsConfirm.addEventListener('click', function() {
-            const type = settingsConfirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            settingsConfirmPassword.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️' : '🙈';
-        });
+        if (toggleSettingsConfirm) {
+            toggleSettingsConfirm.addEventListener('click', function() {
+                const type = settingsConfirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                settingsConfirmPassword.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🙈';
+            });
+        }
 
         // ========================================
         // 3. ĐĂNG NHẬP / ĐĂNG KÝ
@@ -1961,14 +1945,20 @@
         let viewedVideos = new Set();
         let selectedVipDays = 1;
 
-        function showError(msg) { authError.textContent = msg;
-            authSuccess.textContent = ''; }
+        function showError(msg) {
+            authError.textContent = msg;
+            authSuccess.textContent = '';
+        }
 
-        function showSuccess(msg) { authSuccess.textContent = msg;
-            authError.textContent = ''; }
+        function showSuccess(msg) {
+            authSuccess.textContent = msg;
+            authError.textContent = '';
+        }
 
-        function clearMessages() { authError.textContent = '';
-            authSuccess.textContent = ''; }
+        function clearMessages() {
+            authError.textContent = '';
+            authSuccess.textContent = '';
+        }
 
         function switchMode() {
             isLoginMode = !isLoginMode;
@@ -1987,14 +1977,23 @@
                 authSwitchText.innerHTML = 'Đã có tài khoản? <span id="authSwitchLink">Đăng nhập</span>';
                 clearMessages();
             }
-            document.getElementById('authSwitchLink').addEventListener('click', switchMode);
+            const link = document.getElementById('authSwitchLink');
+            if (link) {
+                link.removeEventListener('click', switchMode);
+                link.addEventListener('click', switchMode);
+            }
         }
 
         function handleAuth() {
             const username = authUsername.value.trim();
             const password = authPasswordInput.value.trim();
-            if (!username || !password) { showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.'); return; }
 
+            if (!username || !password) {
+                showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.');
+                return;
+            }
+
+            // Kiểm tra ADMIN
             if (username === ADMIN_USER && password === ADMIN_PASS) {
                 setCurrentUser(username);
                 showSuccess('✅ Đăng nhập Admin thành công!');
@@ -2009,34 +2008,57 @@
             }
 
             const users = getUsers();
+
             if (isLoginMode) {
-                if (users[username] && users[username].password === password) {
-                    if (users[username].vip && users[username].vipExpiry && users[username].vipExpiry !== 0) {
-                        if (Date.now() >= users[username].vipExpiry) {
-                            users[username].vip = false;
-                            users[username].vipExpiry = null;
-                            saveUsers(users);
+                // ĐĂNG NHẬP
+                if (users[username]) {
+                    if (users[username].password === password) {
+                        if (users[username].vip && users[username].vipExpiry && users[username].vipExpiry !== 0) {
+                            if (Date.now() >= users[username].vipExpiry) {
+                                users[username].vip = false;
+                                users[username].vipExpiry = null;
+                                saveUsers(users);
+                            }
                         }
+                        setCurrentUser(username);
+                        showSuccess('✅ Đăng nhập thành công!');
+                        setTimeout(() => {
+                            authBox.style.display = 'none';
+                            mainContent.classList.add('active');
+                            const updatedUsers = getUsers();
+                            if (updatedUsers[username] && updatedUsers[username].vip && isVip(username)) {
+                                mainContent.classList.add('vip-theme');
+                            } else {
+                                mainContent.classList.remove('vip-theme');
+                            }
+                            updateUI(username);
+                            loadAndRenderVideosFast();
+                        }, 300);
+                    } else {
+                        showError('❌ Sai mật khẩu.');
                     }
-                    setCurrentUser(username);
-                    showSuccess('✅ Đăng nhập thành công!');
-                    setTimeout(() => {
-                        authBox.style.display = 'none';
-                        mainContent.classList.add('active');
-                        if (users[username].vip && isVip(username)) {
-                            mainContent.classList.add('vip-theme');
-                        } else {
-                            mainContent.classList.remove('vip-theme');
-                        }
-                        updateUI(username);
-                        loadAndRenderVideosFast();
-                    }, 300);
                 } else {
-                    showError('❌ Sai tên đăng nhập hoặc mật khẩu.');
+                    showError('❌ Tên đăng nhập không tồn tại.');
                 }
             } else {
-                if (users[username]) { showError('❌ Tên đăng nhập đã tồn tại.'); return; }
-                users[username] = { password: password, vip: false, vipExpiry: null };
+                // ĐĂNG KÝ
+                if (users[username]) {
+                    showError('❌ Tên đăng nhập đã tồn tại.');
+                    return;
+                }
+                if (username === ADMIN_USER) {
+                    showError('❌ Tên đăng nhập không hợp lệ.');
+                    return;
+                }
+                if (password.length < 4) {
+                    showError('⚠️ Mật khẩu phải có ít nhất 4 ký tự!');
+                    return;
+                }
+                users[username] = {
+                    password: password,
+                    vip: false,
+                    vipExpiry: null
+                };
                 saveUsers(users);
                 showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
                 isLoginMode = true;
@@ -2045,8 +2067,13 @@
                 authMainBtn.textContent = 'Đăng nhập';
                 authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
                 authSwitchText.innerHTML = 'Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
-                document.getElementById('authSwitchLink').addEventListener('click', switchMode);
+                const link = document.getElementById('authSwitchLink');
+                if (link) {
+                    link.removeEventListener('click', switchMode);
+                    link.addEventListener('click', switchMode);
+                }
                 authPasswordInput.value = '';
+                authUsername.value = '';
             }
         }
 
@@ -2118,7 +2145,11 @@
             authMainBtn.textContent = 'Đăng nhập';
             authSwitchBtn.textContent = 'Chưa có tài khoản? Đăng ký';
             authSwitchText.innerHTML = 'Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
-            document.getElementById('authSwitchLink').addEventListener('click', switchMode);
+            const link = document.getElementById('authSwitchLink');
+            if (link) {
+                link.removeEventListener('click', switchMode);
+                link.addEventListener('click', switchMode);
+            }
             clearMessages();
             document.getElementById('videoGrid').innerHTML =
                 `<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>`;
@@ -2144,12 +2175,16 @@
         authMainBtn.addEventListener('click', handleAuth);
         authSwitchBtn.addEventListener('click', switchMode);
         document.getElementById('authSwitchLink').addEventListener('click', switchMode);
-        authPasswordInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
-        authUsername.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuth(); });
+        authPasswordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleAuth();
+        });
+        authUsername.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleAuth();
+        });
         document.getElementById('logoutBtn').addEventListener('click', logout);
 
         // ========================================
-        // 4. CÀI ĐẶT - ĐỔI TÊN & MẬT KHẨU
+        // 4. CÀI ĐẶT
         // ========================================
 
         const settingsModal = document.getElementById('settingsModal');
@@ -2166,21 +2201,17 @@
         function openSettings() {
             const currentUser = getCurrentUser();
             if (!currentUser) return;
-            
-            // Reset form
             settingsNewUsername.value = '';
             settingsNewPassword.value = '';
             settingsConfirmPassword.value = '';
             settingsStatus.textContent = '';
             settingsStatus.className = 'settings-status';
-            
-            // Hiển thị trạng thái tài khoản
+
             const users = getUsers();
             const userData = users[currentUser];
             if (userData) {
                 settingsAccountStatus.textContent = '🟢 Đang hoạt động';
                 settingsAccountStatus.style.color = '#4caf50';
-                
                 if (isAdmin(currentUser)) {
                     settingsAccountRole.textContent = '👑 Admin';
                     settingsAccountRole.style.color = '#ff6b6b';
@@ -2193,7 +2224,6 @@
                     settingsAccountRole.style.color = '#8888a0';
                 }
             }
-            
             settingsModal.classList.add('show');
         }
 
@@ -2205,7 +2235,9 @@
 
         openSettingsBtn.addEventListener('click', openSettings);
         closeSettingsBtn.addEventListener('click', closeSettings);
-        settingsModal.addEventListener('click', function(e) { if (e.target === this) closeSettings(); });
+        settingsModal.addEventListener('click', function(e) {
+            if (e.target === this) closeSettings();
+        });
 
         saveSettingsBtn.addEventListener('click', function() {
             const currentUser = getCurrentUser();
@@ -2219,7 +2251,6 @@
             const newPassword = settingsNewPassword.value.trim();
             const confirmPassword = settingsConfirmPassword.value.trim();
 
-            // Kiểm tra nếu có thay đổi
             if (!newUsername && !newPassword) {
                 settingsStatus.textContent = '⚠️ Vui lòng nhập thông tin cần thay đổi.';
                 settingsStatus.className = 'settings-status error';
@@ -2227,17 +2258,13 @@
             }
 
             const users = getUsers();
-            
-            // Kiểm tra nếu đổi tên
+
             if (newUsername && newUsername !== currentUser) {
-                // Admin không được đổi tên
                 if (isAdmin(currentUser)) {
                     settingsStatus.textContent = '❌ Admin không được đổi tên!';
                     settingsStatus.className = 'settings-status error';
                     return;
                 }
-                
-                // Kiểm tra tên đã tồn tại
                 if (users[newUsername]) {
                     settingsStatus.textContent = '❌ Tên đăng nhập đã tồn tại!';
                     settingsStatus.className = 'settings-status error';
@@ -2245,7 +2272,6 @@
                 }
             }
 
-            // Kiểm tra nếu đổi mật khẩu
             if (newPassword) {
                 if (newPassword.length < 4) {
                     settingsStatus.textContent = '⚠️ Mật khẩu phải có ít nhất 4 ký tự!';
@@ -2260,7 +2286,6 @@
             }
 
             try {
-                // Lấy dữ liệu user cũ
                 const userData = users[currentUser];
                 if (!userData) {
                     settingsStatus.textContent = '❌ Không tìm thấy dữ liệu người dùng!';
@@ -2268,30 +2293,24 @@
                     return;
                 }
 
-                // Nếu đổi tên
                 if (newUsername && newUsername !== currentUser) {
-                    // Tạo user mới với dữ liệu cũ
                     users[newUsername] = {
                         password: newPassword || userData.password,
                         vip: userData.vip || false,
                         vipExpiry: userData.vipExpiry || null
                     };
-                    // Xóa user cũ
                     delete users[currentUser];
-                    // Cập nhật current user
                     setCurrentUser(newUsername);
                 } else if (newPassword) {
-                    // Chỉ đổi mật khẩu
                     users[currentUser].password = newPassword;
                 }
 
                 saveUsers(users);
                 updateUI(getCurrentUser());
-                
+
                 settingsStatus.textContent = '✅ Cập nhật thành công!';
                 settingsStatus.className = 'settings-status success';
-                
-                // Reset form sau 1.5s
+
                 setTimeout(() => {
                     settingsNewUsername.value = '';
                     settingsNewPassword.value = '';
@@ -2434,7 +2453,7 @@
         });
 
         // ========================================
-        // 6. QUẢN LÝ VIDEO IndexedDB (FIX LỖI)
+        // 6. QUẢN LÝ VIDEO IndexedDB
         // ========================================
 
         const DB_NAME = 'VideoDB';
@@ -2588,7 +2607,7 @@
         async function restoreOldVideos() {
             try {
                 console.log('🔍 Đang kiểm tra video cũ...');
-                
+
                 const existing = await getVideosFromDB();
                 if (existing && existing.length > 0) {
                     console.log(`📹 Đã có ${existing.length} video trong DB`);
@@ -2883,7 +2902,9 @@
         }
 
         closeVideoBtn.addEventListener('click', closeVideoModal);
-        videoModal.addEventListener('click', function(e) { if (e.target === this) closeVideoModal(); });
+        videoModal.addEventListener('click', function(e) {
+            if (e.target === this) closeVideoModal();
+        });
 
         function createVideoCardHTML(video, showDelete) {
             const duration = video.duration || '0:00';
@@ -3022,7 +3043,7 @@
                 updateStorageInfo();
                 try {
                     localStorage.setItem('video_backup_cache', JSON.stringify(allVideos));
-                } catch(e) {}
+                } catch (e) {}
             } catch (error) {
                 console.error('Lỗi tải video:', error);
                 videoGrid.innerHTML =
@@ -3051,7 +3072,7 @@
         });
 
         // ========================================
-        // 11. UPLOAD VIDEO (FIX LỖI)
+        // 11. UPLOAD VIDEO
         // ========================================
 
         const uploadModal = document.getElementById('uploadModal');
@@ -3069,11 +3090,15 @@
 
         let selectedVideoFile = null;
 
-        function openModal() { uploadModal.classList.add('show');
-            resetUploadForm(); }
+        function openModal() {
+            uploadModal.classList.add('show');
+            resetUploadForm();
+        }
 
-        function closeModal() { uploadModal.classList.remove('show');
-            resetUploadForm(); }
+        function closeModal() {
+            uploadModal.classList.remove('show');
+            resetUploadForm();
+        }
 
         function resetUploadForm() {
             videoFileInput.value = '';
@@ -3089,7 +3114,9 @@
 
         openUploadBtn.addEventListener('click', openModal);
         closeModalBtn.addEventListener('click', closeModal);
-        uploadModal.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+        uploadModal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
 
         videoFileInput.addEventListener('change', function(e) {
             const file = this.files[0];
@@ -3135,8 +3162,10 @@
 
             try {
                 let thumbnail = null;
-                try { thumbnail = await generateThumbnail(videoFile);
-                    progressBar.style.width = '50%'; } catch (e) { console.warn('Không tạo được thumbnail:', e); }
+                try {
+                    thumbnail = await generateThumbnail(videoFile);
+                    progressBar.style.width = '50%';
+                } catch (e) { console.warn('Không tạo được thumbnail:', e); }
 
                 const reader = new FileReader();
                 const videoData = await new Promise((resolve, reject) => {
@@ -3178,12 +3207,12 @@
                     } catch (err) {
                         console.warn(`Lần thử ${attempt+1} thất bại:`, err);
                         await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
-                        try { 
+                        try {
                             if (window._dbConnection) {
                                 window._dbConnection.close();
                                 window._dbConnection = null;
                             }
-                        } catch(e) {}
+                        } catch (e) {}
                     }
                 }
 
@@ -3198,7 +3227,7 @@
                 try {
                     const all = await getVideosFromDB();
                     localStorage.setItem('video_backup_cache', JSON.stringify(all));
-                } catch(e) {}
+                } catch (e) {}
 
                 await loadAndCacheVideos();
                 renderCurrentTab();
@@ -3220,7 +3249,7 @@
 
         async function init() {
             checkAndExpireVip();
-            
+
             if (navigator.storage && navigator.storage.persist) {
                 try {
                     const persistent = await navigator.storage.persist();
