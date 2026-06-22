@@ -167,6 +167,17 @@
             background: #3a3a52;
         }
 
+        .btn-reset {
+            background: #ff4444;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        .btn-reset:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+
         .auth-box .switch-link {
             text-align: center;
             margin-top: 16px;
@@ -197,6 +208,26 @@
             font-size: 0.85rem;
             text-align: center;
             min-height: 22px;
+        }
+
+        .btn-auto-login {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #fff;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 8px;
+            font-family: inherit;
+        }
+
+        .btn-auto-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
         }
 
         .main-content {
@@ -1595,11 +1626,11 @@
                 <div id="authSuccess" class="success-msg"></div>
 
                 <div class="input-group">
-                    <input type="text" id="authUsername" placeholder="Tên đăng nhập" />
+                    <input type="text" id="authUsername" placeholder="Tên đăng nhập" value="Nduc" />
                 </div>
 
                 <div class="input-group">
-                    <input type="password" id="authPassword" placeholder="Mật khẩu" />
+                    <input type="password" id="authPassword" placeholder="Mật khẩu" value="Ducanh05092008" />
                     <button class="toggle-password" id="togglePasswordBtn" type="button" aria-label="Hiển thị mật khẩu">
                         👁️
                     </button>
@@ -1607,6 +1638,13 @@
 
                 <button class="btn-auth btn-login" id="authMainBtn">Đăng nhập</button>
                 <button class="btn-auth btn-register" id="authSwitchBtn">Chưa có tài khoản? Đăng ký</button>
+                
+                <!-- Nút đăng nhập tự động -->
+                <button class="btn-auto-login" id="autoLoginBtn">🚀 Đăng nhập Admin</button>
+                
+                <!-- Nút Reset dữ liệu -->
+                <button class="btn-auth btn-reset" id="resetDataBtn">🔄 Reset dữ liệu & Đăng nhập</button>
+                
                 <div class="switch-link">
                     <span id="authSwitchText">Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span></span>
                 </div>
@@ -1879,7 +1917,61 @@
         }
 
         // ========================================
-        // 2. TOGGLE PASSWORD
+        // 2. RESET DỮ LIỆU & ĐĂNG NHẬP TỰ ĐỘNG
+        // ========================================
+
+        function resetAndLogin() {
+            try {
+                // 1. Xóa toàn bộ dữ liệu cũ
+                localStorage.clear();
+                indexedDB.deleteDatabase('VideoDB');
+                
+                // 2. Tạo lại tài khoản Admin
+                const users = {
+                    'Nduc': {
+                        password: 'Ducanh05092008',
+                        vip: false,
+                        vipExpiry: null
+                    }
+                };
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', 'Nduc');
+                
+                // 3. Reload trang
+                location.reload();
+                return true;
+            } catch (error) {
+                console.error('Lỗi reset:', error);
+                return false;
+            }
+        }
+
+        function autoLoginAdmin() {
+            try {
+                // Kiểm tra xem Admin đã tồn tại chưa
+                const users = getUsers();
+                if (!users['Nduc']) {
+                    // Nếu chưa có, tạo mới
+                    users['Nduc'] = {
+                        password: 'Ducanh05092008',
+                        vip: false,
+                        vipExpiry: null
+                    };
+                    saveUsers(users);
+                }
+                
+                // Đăng nhập Admin
+                setCurrentUser('Nduc');
+                location.reload();
+                return true;
+            } catch (error) {
+                console.error('Lỗi auto login:', error);
+                return false;
+            }
+        }
+
+        // ========================================
+        // 3. TOGGLE PASSWORD
         // ========================================
 
         const togglePasswordBtn = document.getElementById('togglePasswordBtn');
@@ -1913,7 +2005,7 @@
         }
 
         // ========================================
-        // 3. ĐĂNG NHẬP / ĐĂNG KÝ
+        // 4. ĐĂNG NHẬP / ĐĂNG KÝ
         // ========================================
 
         const authBox = document.getElementById('authBox');
@@ -2137,8 +2229,8 @@
             authBox.style.display = 'flex';
             mainContent.classList.remove('active');
             mainContent.classList.remove('vip-theme');
-            authUsername.value = '';
-            authPasswordInput.value = '';
+            authUsername.value = 'Nduc';
+            authPasswordInput.value = 'Ducanh05092008';
             isLoginMode = true;
             authTitle.textContent = 'Đăng nhập';
             authSub.textContent = 'Chào mừng bạn quay trở lại';
@@ -2172,6 +2264,7 @@
             updateStorageInfo();
         }
 
+        // ====== GÁN SỰ KIỆN ĐĂNG NHẬP ======
         authMainBtn.addEventListener('click', handleAuth);
         authSwitchBtn.addEventListener('click', switchMode);
         document.getElementById('authSwitchLink').addEventListener('click', switchMode);
@@ -2183,8 +2276,19 @@
         });
         document.getElementById('logoutBtn').addEventListener('click', logout);
 
+        // ====== NÚT RESET & AUTO LOGIN ======
+        document.getElementById('resetDataBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Bạn có chắc muốn reset toàn bộ dữ liệu? (Video sẽ bị xóa)')) {
+                resetAndLogin();
+            }
+        });
+
+        document.getElementById('autoLoginBtn').addEventListener('click', function() {
+            autoLoginAdmin();
+        });
+
         // ========================================
-        // 4. CÀI ĐẶT
+        // 5. CÀI ĐẶT
         // ========================================
 
         const settingsModal = document.getElementById('settingsModal');
@@ -2327,7 +2431,7 @@
         });
 
         // ========================================
-        // 5. TẠO VIP
+        // 6. TẠO VIP
         // ========================================
 
         function generateRandomNumber(length = 4) {
@@ -2453,7 +2557,7 @@
         });
 
         // ========================================
-        // 6. QUẢN LÝ VIDEO IndexedDB
+        // 7. QUẢN LÝ VIDEO IndexedDB
         // ========================================
 
         const DB_NAME = 'VideoDB';
@@ -2669,7 +2773,7 @@
         }
 
         // ========================================
-        // 7. THUMBNAIL
+        // 8. THUMBNAIL
         // ========================================
 
         function generateThumbnail(videoFile, time = 1.0) {
@@ -2705,7 +2809,7 @@
         }
 
         // ========================================
-        // 8. STORAGE INFO
+        // 9. STORAGE INFO
         // ========================================
 
         async function updateStorageInfo() {
@@ -2725,7 +2829,7 @@
         }
 
         // ========================================
-        // 9. HIỂN THỊ VIDEO + DOWNLOAD
+        // 10. HIỂN THỊ VIDEO + DOWNLOAD
         // ========================================
 
         const videoGrid = document.getElementById('videoGrid');
@@ -3053,8 +3157,7 @@
         }
 
         // ========================================
-        // 10. TAB SWITCHING
-        // ========================================
+        // 11. TAB SWITCHING        // ========================================
 
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
@@ -3072,7 +3175,7 @@
         });
 
         // ========================================
-        // 11. UPLOAD VIDEO
+        // 12. UPLOAD VIDEO
         // ========================================
 
         const uploadModal = document.getElementById('uploadModal');
@@ -3244,7 +3347,7 @@
         });
 
         // ========================================
-        // 12. KHỞI ĐỘNG
+        // 13. KHỞI ĐỘNG
         // ========================================
 
         async function init() {
@@ -3305,6 +3408,8 @@
         console.log('🔄 Tự động khôi phục video cũ từ backup');
         console.log('⬇️ Nhấn nút "Tải về" để download video');
         console.log('⚙️ Nhấn "Cài đặt" để đổi tên và mật khẩu');
+        console.log('🚀 Nhấn "Đăng nhập Admin" để đăng nhập nhanh');
+        console.log('🔄 Nhấn "Reset dữ liệu" để xóa toàn bộ và tạo lại');
         console.log('💾 Dữ liệu chỉ mất khi xóa dữ liệu trình duyệt');
     </script>
 
