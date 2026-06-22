@@ -7,21 +7,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100vh;padding:16px}
+body{font-family:'Inter',sans-serif;background:#000;color:#fff;min-height:100vh;padding:16px}
 .container{max-width:1280px;margin:0 auto}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:#1a1a24}
 ::-webkit-scrollbar-thumb{background:#ff6b6b;border-radius:10px}
+
+/* ===== CHỮ CHẠY VÀNG + THANH NGANG ===== */
+.marquee-wrap{position:relative;background:linear-gradient(90deg,transparent,#ffd70022,transparent);padding:8px 0;margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,215,0,0.1)}
+.marquee-wrap .marquee-line{position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#ffd700,#ffd700,transparent);animation:lineMove 3s linear infinite;box-shadow:0 0 20px rgba(255,215,0,0.3)}
+@keyframes lineMove{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.marquee-wrap .marquee-line-bottom{position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#ffd700,#ffd700,transparent);animation:lineMove 3s linear infinite reverse;box-shadow:0 0 20px rgba(255,215,0,0.3)}
+.marquee-wrap .marquee{display:flex;animation:marquee 15s linear infinite;white-space:nowrap;gap:80px;color:#ffd700;font-weight:700;font-size:1rem;padding:4px 0;text-shadow:0 0 30px rgba(255,215,0,0.2)}
+.marquee-wrap .marquee span{padding:0 20px}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
 .auth-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.auth-box{background:linear-gradient(145deg,#16161f,#1e1e2a);border-radius:24px;padding:40px 36px;max-width:440px;width:100%;border:1px solid rgba(255,107,107,0.15);box-shadow:0 25px 60px rgba(0,0,0,0.6)}
+.auth-box{background:linear-gradient(145deg,#0d0d0d,#1a1a1a);border-radius:24px;padding:40px 36px;max-width:440px;width:100%;border:1px solid rgba(255,107,107,0.15);box-shadow:0 25px 60px rgba(0,0,0,0.6)}
 .auth-box .logo-icon{text-align:center;font-size:3.5rem;margin-bottom:4px}
 .auth-box h2{text-align:center;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#ff6b6b,#ee5a24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
 .auth-box .sub-title{text-align:center;color:#8888a0;font-size:.9rem;margin-bottom:24px}
 .auth-box .input-group{position:relative;margin-bottom:14px}
-.auth-box .input-group input{width:100%;padding:14px 18px;padding-right:50px;border-radius:14px;border:1px solid #2a2a3e;background:#11111b;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.auth-box .input-group input{width:100%;padding:14px 18px;padding-right:50px;border-radius:14px;border:1px solid #2a2a3e;background:#0d0d0d;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
 .auth-box .input-group input::placeholder{color:#55556b}
 .auth-box .input-group input:focus{border-color:#ff6b6b;box-shadow:0 0 0 4px rgba(255,107,107,0.15)}
-.auth-box .input-group .toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0 0;border:none;color:#666680;font-size:1.2rem;cursor:pointer;padding:4px;font-family:inherit;display:flex;align-items:center;justify-content:center}
+.auth-box .input-group .toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0 0;border:none;color:#666680;font-size:1.2rem;cursor:pointer;padding:4px;font-family:inherit}
 .auth-box .input-group .toggle-password:hover{color:#fff}
 .auth-box .btn-auth{width:100%;padding:14px;border:none;border-radius:14px;font-size:1rem;font-weight:600;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:4px;font-family:inherit}
 .btn-login{background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff}
@@ -33,21 +43,18 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .auth-box .switch-link span:hover{color:#ee5a24}
 .auth-box .error-msg{color:#ff4444;font-size:.85rem;text-align:center;min-height:22px}
 .auth-box .success-msg{color:#4caf50;font-size:.85rem;text-align:center;min-height:22px}
-
-/* ===== CAPTCHA ===== */
-.captcha-group{margin-bottom:14px;background:rgba(0,0,0,0.2);border-radius:14px;padding:14px 16px}
+.captcha-group{margin-bottom:14px;background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px}
 .captcha-group .captcha-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .captcha-group .captcha-box{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;padding:8px 16px;font-family:'Courier New',monospace;font-size:1.6rem;font-weight:700;letter-spacing:6px;color:#00d4ff;text-shadow:0 0 20px rgba(0,212,255,0.3);user-select:none;min-width:130px;text-align:center;border:2px solid rgba(0,212,255,0.2);flex-shrink:0}
 .captcha-group .captcha-box .char{display:inline-block}
 .captcha-group .captcha-input{flex:1;min-width:120px}
-.captcha-group .captcha-input input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid #2a2a3e;background:#11111b;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.captcha-group .captcha-input input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid #2a2a3e;background:#0d0d0d;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
 .captcha-group .captcha-input input:focus{border-color:#ff6b6b;box-shadow:0 0 0 4px rgba(255,107,107,0.1)}
-.captcha-group .captcha-refresh{background:0 0;border:none;color:#8888a0;font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:10px;transition:background .2s,color .2s;font-family:inherit;display:flex;align-items:center;gap:4px}
+.captcha-group .captcha-refresh{background:0 0;border:none;color:#8888a0;font-size:1.3rem;cursor:pointer;padding:6px 10px;border-radius:10px;transition:background .2s,color .2s;font-family:inherit}
 .captcha-group .captcha-refresh:hover{background:rgba(255,255,255,0.05);color:#fff}
-
 .main-content{display:none;animation:fadeIn .3s ease}
 .main-content.active{display:block}
-.main-content.vip-theme{background:linear-gradient(135deg,#0b0b0f,#1a0a0a)}
+.main-content.vip-theme{background:linear-gradient(135deg,#000,#1a0a0a)}
 .main-content.vip-theme .header .logo h1{background:linear-gradient(135deg,#ffd700,#f0a500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .main-content.vip-theme .video-card{border-color:rgba(255,215,0,0.15)}
 .main-content.vip-theme .video-card:hover{border-color:rgba(255,215,0,0.4);box-shadow:0 20px 50px rgba(255,215,0,0.1)}
@@ -61,7 +68,7 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .header .logo h1{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#ff6b6b,#ee5a24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .header .logo .version{font-size:.6rem;color:#555;background:#1a1a2a;padding:2px 8px;border-radius:10px;-webkit-text-fill-color:#666}
 .header .user-section{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.header .user-info{display:flex;align-items:center;gap:8px;background:#16161f;padding:6px 16px 6px 12px;border-radius:40px;border:1px solid #2a2a3e}
+.header .user-info{display:flex;align-items:center;gap:8px;background:#0d0d0d;padding:6px 16px 6px 12px;border-radius:40px;border:1px solid #2a2a3e}
 .header .user-info .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ff6b6b,#ee5a24);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:#fff;flex-shrink:0}
 .header .user-info.vip-avatar .avatar{background:linear-gradient(135deg,#ffd700,#f0a500);box-shadow:0 0 20px rgba(255,215,0,0.3)}
 .header .user-info .name{color:#eee;font-size:.9rem;font-weight:500}
@@ -87,7 +94,7 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .filter-bar .tab.create-vip-tab.active{border-color:#00d4ff;color:#00d4ff;background:rgba(0,212,255,0.08)}
 .filter-bar .tab.create-vip-tab:hover{border-color:#00d4ff;color:#00d4ff}
 .filter-bar .tab.hidden{display:none}
-.filter-bar .video-count{color:#55556b;font-size:.85rem;margin-left:auto;background:#16161f;padding:6px 16px;border-radius:40px;white-space:nowrap}
+.filter-bar .video-count{color:#55556b;font-size:.85rem;margin-left:auto;background:#0d0d0d;padding:6px 16px;border-radius:40px;white-space:nowrap}
 .vip-create-panel{display:none;padding:30px 20px;text-align:center;background:rgba(0,212,255,0.03);border-radius:16px;border:1px solid rgba(0,212,255,0.08)}
 .vip-create-panel.active{display:block;animation:fadeIn .3s ease}
 .vip-create-panel .vip-icon{font-size:4rem;margin-bottom:16px;display:block}
@@ -101,7 +108,7 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .vip-create-panel .vip-options .vip-option .label{font-size:.7rem;color:#8888a0;margin-top:4px}
 .vip-create-panel .vip-quantity{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
 .vip-create-panel .vip-quantity label{color:#8888a0;font-size:.9rem}
-.vip-create-panel .vip-quantity input[type=number]{background:#11111b;border:1px solid #2a2a3e;border-radius:10px;padding:8px 14px;color:#fff;font-size:1rem;width:80px;text-align:center;outline:none;transition:border-color .2s;font-family:inherit}
+.vip-create-panel .vip-quantity input[type=number]{background:#0d0d0d;border:1px solid #2a2a3e;border-radius:10px;padding:8px 14px;color:#fff;font-size:1rem;width:80px;text-align:center;outline:none;transition:border-color .2s;font-family:inherit}
 .vip-create-panel .vip-quantity input[type=number]:focus{border-color:#00d4ff}
 .vip-create-panel .vip-account-box{background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:20px;margin-bottom:16px;display:none;max-height:400px;overflow-y:auto}
 .vip-create-panel .vip-account-box.show{display:block;animation:fadeIn .3s ease}
@@ -120,10 +127,10 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .vip-create-panel .vip-progress-text{color:#8888a0;font-size:.85rem;margin-top:8px;min-height:20px}
 .video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
 .video-grid.hidden-grid{display:none}
-.video-card{background:#13131e;border-radius:16px;overflow:hidden;transition:transform .3s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s;border:1px solid rgba(255,255,255,0.04);cursor:pointer;position:relative}
+.video-card{background:#0d0d0d;border-radius:16px;overflow:hidden;transition:transform .3s cubic-bezier(.175,.885,.32,1.275),border-color .3s,box-shadow .3s;border:1px solid rgba(255,255,255,0.04);cursor:pointer;position:relative}
 .video-card:hover{transform:translateY(-8px);border-color:rgba(255,107,107,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.5)}
 .video-card.vip-card:hover{border-color:rgba(255,215,0,0.4);box-shadow:0 20px 50px rgba(255,215,0,0.1)}
-.video-card .thumbnail{width:100%;aspect-ratio:16/9;background:#0b0b12;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.video-card .thumbnail{width:100%;aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .video-card .thumbnail img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .video-card:hover .thumbnail img{transform:scale(1.05)}
 .video-card .thumbnail .duration{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.85);color:#fff;padding:3px 10px;border-radius:6px;font-size:.7rem;font-weight:600;backdrop-filter:blur(4px)}
@@ -148,20 +155,20 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .empty-state p{font-size:.9rem}
 .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:1000;justify-content:center;align-items:center;padding:20px;backdrop-filter:blur(8px)}
 .modal-overlay.show{display:flex;animation:fadeIn .2s ease}
-.modal{background:linear-gradient(145deg,#1a1a28,#222236);border-radius:24px;padding:32px 28px;max-width:520px;width:100%;border:1px solid rgba(255,255,255,0.06);box-shadow:0 30px 80px rgba(0,0,0,0.6);max-height:90vh;overflow-y:auto}
+.modal{background:linear-gradient(145deg,#0d0d0d,#1a1a1a);border-radius:24px;padding:32px 28px;max-width:520px;width:100%;border:1px solid rgba(255,255,255,0.06);box-shadow:0 30px 80px rgba(0,0,0,0.6);max-height:90vh;overflow-y:auto}
 .modal .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .modal .modal-header h2{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#ff6b6b,#ee5a24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .modal .close-modal{background:rgba(255,255,255,0.05);border:none;color:#8888a0;font-size:1.5rem;cursor:pointer;width:44px;height:44px;border-radius:50%;transition:background .2s,color .2s;display:flex;align-items:center;justify-content:center}
 .modal .close-modal:hover{background:rgba(255,68,68,0.15);color:#fff}
 .modal label{display:block;color:#8888a0;font-size:.85rem;font-weight:500;margin-bottom:6px;margin-top:16px}
 .modal label:first-of-type{margin-top:0}
-.modal input[type=text],.modal input[type=file],.modal select{width:100%;padding:12px 16px;border-radius:12px;border:1px solid #2a2a3e;background:#11111b;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.modal input[type=text],.modal input[type=file],.modal select{width:100%;padding:12px 16px;border-radius:12px;border:1px solid #2a2a3e;background:#0d0d0d;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
 .modal input[type=text]:focus,.modal select:focus{border-color:#ff6b6b;box-shadow:0 0 0 4px rgba(255,107,107,0.1)}
 .modal select option{background:#1a1a28;color:#fff}
-.modal input[type=file]{padding:10px;background:#11111b;border:1px dashed #2a2a3e}
+.modal input[type=file]{padding:10px;background:#0d0d0d;border:1px dashed #2a2a3e}
 .modal input[type=file]::file-selector-button{background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;border:none;padding:6px 18px;border-radius:20px;cursor:pointer;font-weight:600;font-family:inherit;transition:transform .2s}
 .modal input[type=file]::file-selector-button:hover{transform:scale(1.05)}
-.modal .file-info{background:#11111b;padding:10px 16px;border-radius:12px;margin-top:10px;font-size:.85rem;color:#666680;border:1px solid #1a1a2a}
+.modal .file-info{background:#0d0d0d;padding:10px 16px;border-radius:12px;margin-top:10px;font-size:.85rem;color:#666680;border:1px solid #1a1a2a}
 .modal .file-info strong{color:#eee}
 .modal .btn-submit-upload{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;font-weight:600;font-size:1rem;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s;margin-top:20px;font-family:inherit}
 .modal .btn-submit-upload:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,107,107,0.35)}
@@ -174,7 +181,7 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .modal .status-msg.error{color:#ff4444}
 .settings-modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:1500;justify-content:center;align-items:center;padding:20px;backdrop-filter:blur(8px)}
 .settings-modal-overlay.show{display:flex;animation:fadeIn .2s ease}
-.settings-modal{background:linear-gradient(145deg,#1a1a28,#222236);border-radius:24px;padding:32px 28px;max-width:480px;width:100%;border:1px solid rgba(255,255,255,0.06);box-shadow:0 30px 80px rgba(0,0,0,0.6);max-height:90vh;overflow-y:auto}
+.settings-modal{background:linear-gradient(145deg,#0d0d0d,#1a1a1a);border-radius:24px;padding:32px 28px;max-width:480px;width:100%;border:1px solid rgba(255,255,255,0.06);box-shadow:0 30px 80px rgba(0,0,0,0.6);max-height:90vh;overflow-y:auto}
 .settings-modal .settings-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
 .settings-modal .settings-header h2{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#ff6b6b,#ee5a24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;gap:10px}
 .settings-modal .close-settings{background:rgba(255,255,255,0.05);border:none;color:#8888a0;font-size:1.5rem;cursor:pointer;width:44px;height:44px;border-radius:50%;transition:background .2s,color .2s;display:flex;align-items:center;justify-content:center}
@@ -182,9 +189,9 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 .settings-modal .setting-group{margin-bottom:20px}
 .settings-modal .setting-group label{display:block;color:#8888a0;font-size:.85rem;font-weight:500;margin-bottom:6px}
 .settings-modal .setting-group .input-with-icon{position:relative}
-.settings-modal .setting-group .input-with-icon input{width:100%;padding:12px 16px;padding-right:50px;border-radius:12px;border:1px solid #2a2a3e;background:#11111b;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.settings-modal .setting-group .input-with-icon input{width:100%;padding:12px 16px;padding-right:50px;border-radius:12px;border:1px solid #2a2a3e;background:#0d0d0d;color:#fff;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
 .settings-modal .setting-group .input-with-icon input:focus{border-color:#ff6b6b;box-shadow:0 0 0 4px rgba(255,107,107,0.1)}
-.settings-modal .setting-group .input-with-icon .toggle-settings-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0 0;border:none;color:#666680;font-size:1.1rem;cursor:pointer;padding:4px;transition:color .2s;font-family:inherit;display:flex;align-items:center;justify-content:center}
+.settings-modal .setting-group .input-with-icon .toggle-settings-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0 0;border:none;color:#666680;font-size:1.1rem;cursor:pointer;padding:4px;transition:color .2s;font-family:inherit}
 .settings-modal .setting-group .input-with-icon .toggle-settings-password:hover{color:#fff}
 .settings-modal .setting-group .info-text{color:#55556b;font-size:.75rem;margin-top:4px}
 .settings-modal .btn-save-settings{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:#fff;font-weight:600;font-size:1rem;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s;font-family:inherit;margin-top:8px}
@@ -206,6 +213,18 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 <body>
 <div class="container">
 
+<!-- ====== CHỮ CHẠY VÀNG + THANH NGANG ====== -->
+<div class="marquee-wrap">
+<div class="marquee-line"></div>
+<div class="marquee-line-bottom"></div>
+<div class="marquee">
+<span>💎 Mua tài khoản VIP IB zalo: 0325976017 💎</span>
+<span>💎 Mua tài khoản VIP IB zalo: 0325976017 💎</span>
+<span>💎 Mua tài khoản VIP IB zalo: 0325976017 💎</span>
+<span>💎 Mua tài khoản VIP IB zalo: 0325976017 💎</span>
+</div>
+</div>
+
 <!-- ====== FORM ĐĂNG NHẬP ====== -->
 <div id="authBox" class="auth-wrapper">
 <div class="auth-box">
@@ -221,8 +240,6 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 <input type="password" id="authPassword" placeholder="Mật khẩu" />
 <button class="toggle-password" id="togglePasswordBtn" type="button">👁️</button>
 </div>
-
-<!-- ====== CAPTCHA ====== -->
 <div class="captcha-group">
 <div class="captcha-row">
 <div class="captcha-box" id="captchaDisplay"></div>
@@ -230,7 +247,6 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 <button class="captcha-refresh" id="captchaRefresh" title="Làm mới mã">🔄</button>
 </div>
 </div>
-
 <button class="btn-auth btn-login" id="authMainBtn">Đăng nhập</button>
 <button class="btn-auth btn-register" id="authSwitchBtn">Chưa có tài khoản? Đăng ký</button>
 <div class="switch-link"><span id="authSwitchText">Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span></span></div>
@@ -239,7 +255,6 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 
 <!-- ====== MAIN CONTENT ====== -->
 <div id="mainContent" class="main-content">
-
 <header class="header">
 <div class="logo"><span class="icon">🎬</span><h1>VidHub</h1><span class="version">v2.0</span></div>
 <div class="user-section">
@@ -257,9 +272,6 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 </div>
 </div>
 </header>
-
-<!-- ====== KHÔNG HIỂN THỊ DUNG LƯỢNG ====== -->
-<!-- Đã ẨN -->
 
 <div class="filter-bar" id="filterBar">
 <button class="tab active" data-tab="normal">📹 Thường</button>
@@ -366,487 +378,141 @@ body{font-family:'Inter',sans-serif;background:#0b0b0f;color:#fff;min-height:100
 
 <script>
 // ====== CAPTCHA ======
-let captchaText = '';
-
-function generateCaptcha() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let result = '';
-    for (let i = 0; i < 6; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    captchaText = result;
-    const display = document.getElementById('captchaDisplay');
-    display.innerHTML = result.split('').map(c => `<span class="char">${c}</span>`).join('');
-    document.getElementById('captchaInput').value = '';
-    document.getElementById('captchaInput').style.borderColor = '#2a2a3e';
+let captchaText='';
+function generateCaptcha(){
+const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='';
+for(let i=0;i<6;i++)r+=chars.charAt(Math.floor(Math.random()*chars.length));
+captchaText=r;document.getElementById('captchaDisplay').innerHTML=r.split('').map(c=>`<span class="char">${c}</span>`).join('');
+document.getElementById('captchaInput').value='';
 }
-
-function refreshCaptcha() {
-    generateCaptcha();
-}
-
-document.addEventListener('DOMContentLoaded', generateCaptcha);
-document.getElementById('captchaRefresh').addEventListener('click', refreshCaptcha);
+document.addEventListener('DOMContentLoaded',generateCaptcha);
+document.getElementById('captchaRefresh').addEventListener('click',generateCaptcha);
 
 // ====== QUẢN LÝ TÀI KHOẢN ======
 const ADMIN_USER='Nduc',ADMIN_PASS='Ducanh05092008';
-const $=id=>document.getElementById(id), Q=(s,p=document)=>p.querySelector(s), QA=(s,p=document)=>p.querySelectorAll(s);
-
-function getUsers(){try{const d=localStorage.getItem('users');return d?JSON.parse(d):{}}catch{return{}}}
+const $=id=>document.getElementById(id);
+function getUsers(){try{return JSON.parse(localStorage.getItem('users'))||{}}catch{return{}}}
 function saveUsers(u){localStorage.setItem('users',JSON.stringify(u))}
 function getCurrentUser(){return localStorage.getItem('currentUser')||null}
 function setCurrentUser(u){u?localStorage.setItem('currentUser',u):localStorage.removeItem('currentUser')}
 function isAdmin(u){return u===ADMIN_USER}
 function isVip(u){if(!u)return!1;const us=getUsers(),d=us[u];if(!d||!d.vip)return!1;if(d.vipExpiry===undefined||d.vipExpiry===null||d.vipExpiry===0)return!0;return Date.now()<d.vipExpiry}
-function getVipExpiryText(u){if(!u)return null;const us=getUsers(),d=us[u];if(!d||!d.vip)return null;const e=d.vipExpiry||0;if(e===0)return'♾️ Vô hạn';if(Date.now()>=e)return'❌ Đã hết hạn';const diff=e-Date.now(),days=Math.floor(diff/86400000),hours=Math.floor((diff%86400000)/3600000);return days>0?`⏳ ${days} ngày ${hours} giờ`:hours>0?`⏳ ${hours} giờ`:'⏳ Sắp hết hạn'}
-function checkAndExpireVip(){const us=getUsers();let c=!1;for(const[u,d]of Object.entries(us)){if(d.vip&&d.vipExpiry&&d.vipExpiry!==0&&Date.now()>=d.vipExpiry){d.vip=!1;d.vipExpiry=null;c=!0}}if(c)saveUsers(us);return c}
 function canUploadVip(u){return isAdmin(u)||isVip(u)}
 
-// ====== TOGGLE PASSWORD ======
-$('togglePasswordBtn').addEventListener('click',function(){const t=$('authPassword').getAttribute('type')==='password'?'text':'password';$('authPassword').setAttribute('type',t);this.textContent=t==='password'?'👁️':'🙈'});
-['toggleSettingsPassword','toggleSettingsConfirm'].forEach(id=>{const btn=$(id);if(btn){const input=btn.parentElement.querySelector('input');btn.addEventListener('click',function(){const t=input.getAttribute('type')==='password'?'text':'password';input.setAttribute('type',t);this.textContent=t==='password'?'👁️':'🙈'})}});
-
-// ====== ĐĂNG NHẬP (CÓ CAPTCHA) ======
+// ====== ĐĂNG NHẬP ======
 const authBox=$('authBox'),mainContent=$('mainContent'),authTitle=$('authTitle'),authSub=$('authSub'),authError=$('authError'),authSuccess=$('authSuccess'),authUsername=$('authUsername'),authPassword=$('authPassword'),authMainBtn=$('authMainBtn'),authSwitchBtn=$('authSwitchBtn'),authSwitchLink=$('authSwitchLink'),authSwitchText=$('authSwitchText'),displayUsername=$('displayUsername'),userAvatar=$('userAvatar'),adminBadge=$('adminBadge'),vipBadge=$('vipBadge'),vipExpiry=$('vipExpiry'),userInfoBox=$('userInfoBox'),vipTabBtn=$('vipTabBtn'),createVipTabBtn=$('createVipTabBtn'),videoTypeSelect=$('videoTypeSelect'),vipCreatePanel=$('vipCreatePanel');
 let isLoginMode=!0,currentTab='normal',allVideos=[],filteredVideosCache={normal:[],vip:[]},viewedVideos=new Set,selectedVipDays=1;
 
 function showError(m){authError.textContent=m;authSuccess.textContent=''}
 function showSuccess(m){authSuccess.textContent=m;authError.textContent=''}
-function clearMessages(){authError.textContent='';authSuccess.textContent=''}
 
-function switchMode(){isLoginMode=!isLoginMode;if(isLoginMode){authTitle.textContent='Đăng nhập';authSub.textContent='Chào mừng bạn quay trở lại';authMainBtn.textContent='Đăng nhập';authSwitchBtn.textContent='Chưa có tài khoản? Đăng ký';authSwitchText.innerHTML='Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';clearMessages()}else{authTitle.textContent='Đăng ký';authSub.textContent='Tạo tài khoản mới';authMainBtn.textContent='Đăng ký';authSwitchBtn.textContent='Đã có tài khoản? Đăng nhập';authSwitchText.innerHTML='Đã có tài khoản? <span id="authSwitchLink">Đăng nhập</span>';clearMessages()}const link=$('authSwitchLink');if(link){link.removeEventListener('click',switchMode);link.addEventListener('click',switchMode)}}
-
-function handleAuth(e){if(e)e.preventDefault();
-const username=authUsername.value.trim(),password=authPassword.value.trim();
-if(!username||!password){showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.');return}
-
-// ====== KIỂM TRA CAPTCHA ======
-const captchaInput=document.getElementById('captchaInput').value.trim().toUpperCase();
-if(captchaInput!==captchaText){showError('❌ Mã xác minh không đúng. Vui lòng nhập lại.');refreshCaptcha();return}
-
-// ====== KIỂM TRA ADMIN ======
-if(username===ADMIN_USER&&password===ADMIN_PASS){
-    setCurrentUser(username);
-    showSuccess('✅ Đăng nhập Admin thành công!');
-    setTimeout(()=>{
-        authBox.style.display='none';
-        mainContent.classList.add('active');
-        mainContent.classList.remove('vip-theme');
-        updateUI(username);
-        loadAndRenderVideosFast();
-    },300);
-    return;
-}
-
+function handleAuth(e){if(e)e.preventDefault();const u=authUsername.value.trim(),p=authPassword.value.trim();if(!u||!p){showError('⚠️ Vui lòng nhập đầy đủ tên và mật khẩu.');return}
+const captcha=document.getElementById('captchaInput').value.trim().toUpperCase();
+if(captcha!==captchaText){showError('❌ Mã xác minh không đúng.');generateCaptcha();return}
+if(u===ADMIN_USER&&p===ADMIN_PASS){setCurrentUser(u);showSuccess('✅ Đăng nhập Admin thành công!');setTimeout(()=>{authBox.style.display='none';mainContent.classList.add('active');mainContent.classList.remove('vip-theme');updateUI(u);loadAndRenderVideosFast()},300);return}
 const users=getUsers();
 if(isLoginMode){
-    if(users[username]){
-        if(users[username].password===password){
-            if(users[username].vip&&users[username].vipExpiry&&users[username].vipExpiry!==0&&Date.now()>=users[username].vipExpiry){
-                users[username].vip=!1;
-                users[username].vipExpiry=null;
-                saveUsers(users);
-            }
-            setCurrentUser(username);
-            showSuccess('✅ Đăng nhập thành công!');
-            setTimeout(()=>{
-                authBox.style.display='none';
-                mainContent.classList.add('active');
-                const up=getUsers();
-                if(up[username]&&up[username].vip&&isVip(username))mainContent.classList.add('vip-theme');
-                else mainContent.classList.remove('vip-theme');
-                updateUI(username);
-                loadAndRenderVideosFast();
-            },300);
-        }else showError('❌ Sai mật khẩu.');
-    }else showError('❌ Tên đăng nhập không tồn tại.');
+if(users[u]&&users[u].password===p){
+setCurrentUser(u);showSuccess('✅ Đăng nhập thành công!');
+setTimeout(()=>{authBox.style.display='none';mainContent.classList.add('active');const up=getUsers();if(up[u]&&up[u].vip&&isVip(u))mainContent.classList.add('vip-theme');else mainContent.classList.remove('vip-theme');updateUI(u);loadAndRenderVideosFast()},300);
+}else showError('❌ Sai tên hoặc mật khẩu.');
 }else{
-    if(users[username]){showError('❌ Tên đăng nhập đã tồn tại.');return}
-    if(username===ADMIN_USER){showError('❌ Tên đăng nhập không hợp lệ.');return}
-    if(password.length<4){showError('⚠️ Mật khẩu phải có ít nhất 4 ký tự!');return}
-    users[username]={password,vip:!1,vipExpiry:null};
-    saveUsers(users);
-    showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
-    isLoginMode=!0;
-    authTitle.textContent='Đăng nhập';
-    authSub.textContent='Chào mừng bạn quay trở lại';
-    authMainBtn.textContent='Đăng nhập';
-    authSwitchBtn.textContent='Chưa có tài khoản? Đăng ký';
-    authSwitchText.innerHTML='Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
-    const link=$('authSwitchLink');
-    if(link){link.removeEventListener('click',switchMode);link.addEventListener('click',switchMode)}
-    authPassword.value='';
-    authUsername.value='';
-    refreshCaptcha();
+if(users[u]){showError('❌ Tên đã tồn tại.');return}
+if(u===ADMIN_USER){showError('❌ Tên không hợp lệ.');return}
+if(p.length<4){showError('⚠️ Mật khẩu tối thiểu 4 ký tự!');return}
+users[u]={password:p,vip:!1,vipExpiry:null};saveUsers(users);
+showSuccess('✅ Đăng ký thành công! Vui lòng đăng nhập.');
+isLoginMode=!0;authTitle.textContent='Đăng nhập';authSub.textContent='Chào mừng bạn quay trở lại';
+authMainBtn.textContent='Đăng nhập';authSwitchBtn.textContent='Chưa có tài khoản? Đăng ký';
+authSwitchText.innerHTML='Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';
+authPassword.value='';authUsername.value='';generateCaptcha();
 }}
 
-function updateUI(u){displayUsername.textContent=u;userAvatar.textContent=u.charAt(0).toUpperCase();const users=getUsers(),isVipUser=isVip(u),expiryText=getVipExpiryText(u);if(canUploadVip(u)){videoTypeSelect.innerHTML='<option value="normal">📹 Video thường</option><option value="vip">⭐ Video VIP</option>'}else{videoTypeSelect.innerHTML='<option value="normal">📹 Video thường</option>'}
-if(isAdmin(u)){adminBadge.style.display='inline-block';vipBadge.style.display='none';vipExpiry.style.display='none';userInfoBox.classList.remove('vip-avatar');vipTabBtn.classList.remove('hidden');createVipTabBtn.classList.remove('hidden')}else if(isVipUser){adminBadge.style.display='none';vipBadge.style.display='inline-block';vipExpiry.style.display='inline-block';vipExpiry.textContent=expiryText||'♾️ Vô hạn';vipExpiry.className='vip-expiry';if(expiryText&&expiryText.includes('Hết hạn'))vipExpiry.classList.add('expired');userInfoBox.classList.add('vip-avatar');vipTabBtn.classList.remove('hidden');createVipTabBtn.classList.add('hidden')}else{adminBadge.style.display='none';vipBadge.style.display='none';vipExpiry.style.display='none';userInfoBox.classList.remove('vip-avatar');vipTabBtn.classList.add('hidden');createVipTabBtn.classList.add('hidden');if(currentTab==='vip'||currentTab==='create-vip'){currentTab='normal';QA('.tab').forEach(t=>t.classList.remove('active'));Q('.tab[data-tab="normal"]').classList.add('active');vipCreatePanel.classList.remove('active');$('videoGrid').classList.remove('hidden-grid')}}}
+function updateUI(u){displayUsername.textContent=u;userAvatar.textContent=u.charAt(0).toUpperCase();const isVipUser=isVip(u),expiryText=isVipUser?getVipExpiryText(u):null;if(canUploadVip(u)){videoTypeSelect.innerHTML='<option value="normal">📹 Video thường</option><option value="vip">⭐ Video VIP</option>'}else{videoTypeSelect.innerHTML='<option value="normal">📹 Video thường</option>'}
+if(isAdmin(u)){adminBadge.style.display='inline-block';vipBadge.style.display='none';vipExpiry.style.display='none';userInfoBox.classList.remove('vip-avatar');vipTabBtn.classList.remove('hidden');createVipTabBtn.classList.remove('hidden')}else if(isVipUser){adminBadge.style.display='none';vipBadge.style.display='inline-block';vipExpiry.style.display='inline-block';vipExpiry.textContent=expiryText||'♾️ Vô hạn';vipExpiry.className='vip-expiry';userInfoBox.classList.add('vip-avatar');vipTabBtn.classList.remove('hidden');createVipTabBtn.classList.add('hidden')}else{adminBadge.style.display='none';vipBadge.style.display='none';vipExpiry.style.display='none';userInfoBox.classList.remove('vip-avatar');vipTabBtn.classList.add('hidden');createVipTabBtn.classList.add('hidden')}}
 
-function logout(){setCurrentUser(null);viewedVideos.clear();authBox.style.display='flex';mainContent.classList.remove('active');mainContent.classList.remove('vip-theme');authUsername.value='';authPassword.value='';isLoginMode=!0;authTitle.textContent='Đăng nhập';authSub.textContent='Chào mừng bạn quay trở lại';authMainBtn.textContent='Đăng nhập';authSwitchBtn.textContent='Chưa có tài khoản? Đăng ký';authSwitchText.innerHTML='Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';const link=$('authSwitchLink');if(link){link.removeEventListener('click',switchMode);link.addEventListener('click',switchMode)}clearMessages();$('videoGrid').innerHTML='<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>';$('videoCount').textContent='0 video';adminBadge.style.display='none';vipBadge.style.display='none';vipExpiry.style.display='none';userInfoBox.classList.remove('vip-avatar');vipTabBtn.classList.add('hidden');createVipTabBtn.classList.add('hidden');vipCreatePanel.classList.remove('active');$('videoGrid').classList.remove('hidden-grid');currentTab='normal';QA('.tab').forEach(t=>t.classList.remove('active'));Q('.tab[data-tab="normal"]').classList.add('active');authPassword.setAttribute('type','password');$('togglePasswordBtn').textContent='👁️';allVideos=[];filteredVideosCache={normal:[],vip:[]};refreshCaptcha()}
+function getVipExpiryText(u){if(!u)return null;const us=getUsers(),d=us[u];if(!d||!d.vip)return null;const e=d.vipExpiry||0;if(e===0)return'♾️ Vô hạn';if(Date.now()>=e)return'❌ Đã hết hạn';const diff=e-Date.now(),days=Math.floor(diff/86400000),hours=Math.floor((diff%86400000)/3600000);return days>0?`⏳ ${days} ngày ${hours} giờ`:hours>0?`⏳ ${hours} giờ`:'⏳ Sắp hết hạn'}
 
-// ====== SỰ KIỆN ĐĂNG NHẬP ======
+function logout(){setCurrentUser(null);viewedVideos.clear();authBox.style.display='flex';mainContent.classList.remove('active');authUsername.value='';authPassword.value='';isLoginMode=!0;authTitle.textContent='Đăng nhập';authSub.textContent='Chào mừng bạn quay trở lại';authMainBtn.textContent='Đăng nhập';authSwitchBtn.textContent='Chưa có tài khoản? Đăng ký';authSwitchText.innerHTML='Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';clearMessages();$('videoGrid').innerHTML='<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>';$('videoCount').textContent='0 video';adminBadge.style.display='none';vipBadge.style.display='none';vipExpiry.style.display='none';userInfoBox.classList.remove('vip-avatar');vipTabBtn.classList.add('hidden');createVipTabBtn.classList.add('hidden');vipCreatePanel.classList.remove('active');$('videoGrid').classList.remove('hidden-grid');currentTab='normal';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelector('.tab[data-tab="normal"]').classList.add('active');allVideos=[];filteredVideosCache={normal:[],vip:[]};generateCaptcha()}
+
 authMainBtn.addEventListener('click',handleAuth);
-authSwitchBtn.addEventListener('click',switchMode);
-document.addEventListener('DOMContentLoaded',function(){const link=$('authSwitchLink');if(link)link.addEventListener('click',switchMode)});
-authPassword.addEventListener('keydown',function(e){if(e.key==='Enter')handleAuth(e)});
-authUsername.addEventListener('keydown',function(e){if(e.key==='Enter')handleAuth(e)});
+authSwitchBtn.addEventListener('click',function(){isLoginMode=!isLoginMode;if(isLoginMode){authTitle.textContent='Đăng nhập';authSub.textContent='Chào mừng bạn quay trở lại';authMainBtn.textContent='Đăng nhập';authSwitchBtn.textContent='Chưa có tài khoản? Đăng ký';authSwitchText.innerHTML='Chưa có tài khoản? <span id="authSwitchLink">Đăng ký</span>';clearMessages()}else{authTitle.textContent='Đăng ký';authSub.textContent='Tạo tài khoản mới';authMainBtn.textContent='Đăng ký';authSwitchBtn.textContent='Đã có tài khoản? Đăng nhập';authSwitchText.innerHTML='Đã có tài khoản? <span id="authSwitchLink">Đăng nhập</span>';clearMessages()}});
+authPassword.addEventListener('keydown',e=>{if(e.key==='Enter')handleAuth(e)});
+authUsername.addEventListener('keydown',e=>{if(e.key==='Enter')handleAuth(e)});
 $('logoutBtn').addEventListener('click',logout);
+$('togglePasswordBtn').addEventListener('click',function(){const t=$('authPassword').getAttribute('type')==='password'?'text':'password';$('authPassword').setAttribute('type',t);this.textContent=t==='password'?'👁️':'🙈'});
 
 // ====== CÀI ĐẶT ======
 const settingsModal=$('settingsModal'),openSettingsBtn=$('openSettingsBtn'),closeSettingsBtn=$('closeSettingsBtn'),settingsNewUsername=$('settingsNewUsername'),settingsNewPassword=$('settingsNewPassword'),settingsConfirmPassword=$('settingsConfirmPassword'),saveSettingsBtn=$('saveSettingsBtn'),settingsStatus=$('settingsStatus'),settingsAccountStatus=$('settingsAccountStatus'),settingsAccountRole=$('settingsAccountRole');
 openSettingsBtn.addEventListener('click',function(){const cu=getCurrentUser();if(!cu)return;settingsNewUsername.value='';settingsNewPassword.value='';settingsConfirmPassword.value='';settingsStatus.textContent='';settingsStatus.className='settings-status';const users=getUsers(),ud=users[cu];if(ud){settingsAccountStatus.textContent='🟢 Đang hoạt động';settingsAccountStatus.style.color='#4caf50';if(isAdmin(cu)){settingsAccountRole.textContent='👑 Admin';settingsAccountRole.style.color='#ff6b6b'}else if(isVip(cu)){const et=getVipExpiryText(cu);settingsAccountRole.textContent=`⭐ VIP (${et||'Vô hạn'})`;settingsAccountRole.style.color='#ffd700'}else{settingsAccountRole.textContent='📹 Thường';settingsAccountRole.style.color='#8888a0'}}settingsModal.classList.add('show')});
 closeSettingsBtn.addEventListener('click',function(){settingsModal.classList.remove('show');settingsStatus.textContent='';settingsStatus.className='settings-status'});
 settingsModal.addEventListener('click',function(e){if(e.target===this){settingsModal.classList.remove('show');settingsStatus.textContent='';settingsStatus.className='settings-status'}});
-saveSettingsBtn.addEventListener('click',function(){const cu=getCurrentUser();if(!cu){settingsStatus.textContent='❌ Không tìm thấy người dùng!';settingsStatus.className='settings-status error';return}
-const nu=settingsNewUsername.value.trim(),np=settingsNewPassword.value.trim(),cp=settingsConfirmPassword.value.trim();if(!nu&&!np){settingsStatus.textContent='⚠️ Vui lòng nhập thông tin cần thay đổi.';settingsStatus.className='settings-status error';return}
-const users=getUsers();if(nu&&nu!==cu){if(isAdmin(cu)){settingsStatus.textContent='❌ Admin không được đổi tên!';settingsStatus.className='settings-status error';return}if(users[nu]){settingsStatus.textContent='❌ Tên đăng nhập đã tồn tại!';settingsStatus.className='settings-status error';return}}
-if(np){if(np.length<4){settingsStatus.textContent='⚠️ Mật khẩu phải có ít nhất 4 ký tự!';settingsStatus.className='settings-status error';return}if(np!==cp){settingsStatus.textContent='⚠️ Mật khẩu xác nhận không khớp!';settingsStatus.className='settings-status error';return}}
-try{const ud=users[cu];if(!ud){settingsStatus.textContent='❌ Không tìm thấy dữ liệu người dùng!';settingsStatus.className='settings-status error';return}
-if(nu&&nu!==cu){users[nu]={password:np||ud.password,vip:ud.vip||!1,vipExpiry:ud.vipExpiry||null};delete users[cu];setCurrentUser(nu)}else if(np){users[cu].password=np}
-saveUsers(users);updateUI(getCurrentUser());settingsStatus.textContent='✅ Cập nhật thành công!';settingsStatus.className='settings-status success';setTimeout(()=>{settingsNewUsername.value='';settingsNewPassword.value='';settingsConfirmPassword.value='';settingsStatus.textContent='';settingsStatus.className='settings-status';settingsModal.classList.remove('show')},1500)}catch(error){settingsStatus.textContent='❌ Lỗi: '+error.message;settingsStatus.className='settings-status error'}});
+saveSettingsBtn.addEventListener('click',function(){const cu=getCurrentUser();if(!cu){settingsStatus.textContent='❌ Không tìm thấy người dùng!';settingsStatus.className='settings-status error';return}const nu=settingsNewUsername.value.trim(),np=settingsNewPassword.value.trim(),cp=settingsConfirmPassword.value.trim();if(!nu&&!np){settingsStatus.textContent='⚠️ Vui lòng nhập thông tin cần thay đổi.';settingsStatus.className='settings-status error';return}const users=getUsers();if(nu&&nu!==cu){if(isAdmin(cu)){settingsStatus.textContent='❌ Admin không được đổi tên!';settingsStatus.className='settings-status error';return}if(users[nu]){settingsStatus.textContent='❌ Tên đăng nhập đã tồn tại!';settingsStatus.className='settings-status error';return}}if(np){if(np.length<4){settingsStatus.textContent='⚠️ Mật khẩu phải có ít nhất 4 ký tự!';settingsStatus.className='settings-status error';return}if(np!==cp){settingsStatus.textContent='⚠️ Mật khẩu xác nhận không khớp!';settingsStatus.className='settings-status error';return}}try{const ud=users[cu];if(!ud){settingsStatus.textContent='❌ Không tìm thấy dữ liệu người dùng!';settingsStatus.className='settings-status error';return}if(nu&&nu!==cu){users[nu]={password:np||ud.password,vip:ud.vip||!1,vipExpiry:ud.vipExpiry||null};delete users[cu];setCurrentUser(nu)}else if(np){users[cu].password=np}saveUsers(users);updateUI(getCurrentUser());settingsStatus.textContent='✅ Cập nhật thành công!';settingsStatus.className='settings-status success';setTimeout(()=>{settingsNewUsername.value='';settingsNewPassword.value='';settingsConfirmPassword.value='';settingsStatus.textContent='';settingsStatus.className='settings-status';settingsModal.classList.remove('show')},1500)}catch(error){settingsStatus.textContent='❌ Lỗi: '+error.message;settingsStatus.className='settings-status error'}});
+['toggleSettingsPassword','toggleSettingsConfirm'].forEach(id=>{const btn=$(id);if(btn){const input=btn.parentElement.querySelector('input');btn.addEventListener('click',function(){const t=input.getAttribute('type')==='password'?'text':'password';input.setAttribute('type',t);this.textContent=t==='password'?'👁️':'🙈'})}});
 
 // ====== TẠO VIP ======
 function genRand(l=4){let r='';for(let i=0;i<l;i++)r+=Math.floor(Math.random()*10);return r}
-function createMultipleVipAccounts(days,count){const users=getUsers(),accounts=[];for(let i=0;i<count;i++){let username,attempts=0;do{username='VIP-'+genRand(4);attempts++}while(users[username]&&attempts<100);const password='VIP-'+genRand(4);let vipExpiry=null,expiryText='♾️ Vô hạn';if(days===0){vipExpiry=0}else{vipExpiry=Date.now()+days*86400000;const ed=new Date(vipExpiry);expiryText=ed.toLocaleDateString('vi-VN')+' '+ed.toLocaleTimeString('vi-VN')}users[username]={password,vip:!0,vipExpiry};accounts.push({username,password,expiry:expiryText})}saveUsers(users);return accounts}
+function createMultipleVipAccounts(days,count){const users=getUsers(),accounts=[];for(let i=0;i<count;i++){let u,at=0;do{u='VIP-'+genRand(4);at++}while(users[u]&&at<100);const p='VIP-'+genRand(4);let e=null,t='♾️ Vô hạn';if(days===0){e=0}else{e=Date.now()+days*86400000;const d=new Date(e);t=d.toLocaleDateString('vi-VN')+' '+d.toLocaleTimeString('vi-VN')}users[u]={password:p,vip:!0,vipExpiry:e};accounts.push({username:u,password:p,expiry:t})}saveUsers(users);return accounts}
 function displayVipAccounts(accounts){const c=$('vipCredsList'),d=$('vipAccountDisplay');if(!accounts||accounts.length===0){d.classList.remove('show');return}let h='<div class="vip-header-row"><span># Tài khoản</span><span>Mật khẩu</span><span style="color:#ffd700;">Thời hạn</span></div>';accounts.forEach((a,i)=>{h+=`<div class="vip-row" style="background:${i%2===0?'rgba(0,0,0,0.2)':'rgba(0,0,0,0.3)'};"><span><span class="vip-index" style="color:#666;">#${i+1}</span> ${a.username}</span><strong>${a.password}</strong><span class="expiry-info">${a.expiry}</span></div>`});c.innerHTML=h;d.classList.add('show');window._vipAccounts=accounts}
-QA('.vip-option').forEach(o=>{o.addEventListener('click',function(){QA('.vip-option').forEach(x=>x.classList.remove('selected'));this.classList.add('selected');selectedVipDays=parseInt(this.dataset.days)})});
+document.querySelectorAll('.vip-option').forEach(o=>{o.addEventListener('click',function(){document.querySelectorAll('.vip-option').forEach(x=>x.classList.remove('selected'));this.classList.add('selected');selectedVipDays=parseInt(this.dataset.days)})});
 $('randomVipBtn').addEventListener('click',function(){const btn=this;let q=parseInt($('vipQuantity').value)||1;if(q<1)q=1;if(q>100)q=100;$('vipQuantity').value=q;btn.disabled=!0;$('vipProgressText').textContent=`⏳ Đang tạo ${q} tài khoản VIP...`;setTimeout(()=>{try{const a=createMultipleVipAccounts(selectedVipDays,q);displayVipAccounts(a);$('vipProgressText').textContent=`✅ Đã tạo ${a.length} tài khoản VIP!`;$('vipSuccessMsg').textContent=`✅ Tạo thành công ${a.length} tài khoản VIP!`;$('vipSuccessMsg').style.color='#4caf50'}catch(e){$('vipSuccessMsg').textContent='❌ Lỗi: '+e;$('vipSuccessMsg').style.color='#ff4444'}finally{btn.disabled=!1}},100)});
 $('copyAllVipBtn').addEventListener('click',function(){if(!window._vipAccounts||window._vipAccounts.length===0)return;let t='📋 DANH SÁCH TÀI KHOẢN VIP\n'+'='.repeat(40)+'\n\n';window._vipAccounts.forEach((a,i)=>{t+=`[${i+1}] Tài khoản: ${a.username}\n    Mật khẩu: ${a.password}\n    Thời hạn: ${a.expiry}\n\n`});t+='='.repeat(40)+`\nTổng cộng: ${window._vipAccounts.length} tài khoản VIP`;navigator.clipboard.writeText(t).then(()=>{const b=this,o=b.textContent;b.textContent='✅ Đã sao chép!';setTimeout(()=>b.textContent=o,2000)}).catch(()=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);const b=this,o=b.textContent;b.textContent='✅ Đã sao chép!';setTimeout(()=>b.textContent=o,2000)})});
 $('vipQuantity').addEventListener('change',function(){let v=parseInt(this.value)||1;if(v<1)v=1;if(v>100)v=100;this.value=v});
 
-// ====== INDEXEDDB (FIX LỖI CONNECTION LOST) ======
+// ====== INDEXEDDB ======
 const DB_NAME='VideoDB',STORE_NAME='videos';
-
-function openDB(){
-    return new Promise((resolve,reject)=>{
-        try{
-            if(window._dbConnection){
-                try{window._dbConnection.close()}catch(e){}
-                window._dbConnection=null;
-            }
-            // Tăng version để reset DB nếu cần
-            const req=indexedDB.open(DB_NAME,7);
-            req.onupgradeneeded=function(e){
-                const d=e.target.result;
-                if(!d.objectStoreNames.contains(STORE_NAME)){
-                    d.createObjectStore(STORE_NAME,{keyPath:'id',autoIncrement:!0});
-                }
-                if(d.objectStoreNames.contains('videos_old'))d.deleteObjectStore('videos_old');
-            };
-            req.onsuccess=function(e){
-                window._dbConnection=e.target.result;
-                window._dbConnection.onclose=function(){
-                    console.warn('⚠️ DB bị đóng, sẽ kết nối lại');
-                    window._dbConnection=null;
-                };
-                resolve(window._dbConnection);
-            };
-            req.onerror=function(e){
-                // Nếu lỗi, xóa DB cũ và tạo lại
-                if(e.target.error){
-                    indexedDB.deleteDatabase(DB_NAME);
-                    setTimeout(()=>{
-                        const r2=indexedDB.open(DB_NAME,7);
-                        r2.onsuccess=function(ev){
-                            window._dbConnection=ev.target.result;
-                            resolve(window._dbConnection);
-                        };
-                        r2.onerror=function(){reject(r2.error)};
-                    },500);
-                }else reject(e.target.error);
-            };
-        }catch(e){reject(e)}
-    });
-}
-
-// Hàm lưu video với retry 2 lần nếu lỗi connection
-async function saveVideoWithRetry(videoData, retries=2){
-    let lastError;
-    for(let i=0;i<retries;i++){
-        try{
-            const db=await openDB();
-            return await new Promise((resolve,reject)=>{
-                try{
-                    const tx=db.transaction(STORE_NAME,'readwrite');
-                    const store=tx.objectStore(STORE_NAME);
-                    const req=store.add(videoData);
-                    req.onsuccess=function(){resolve(req.result)};
-                    req.onerror=function(){reject(req.error)};
-                    // Timeout 5s
-                    setTimeout(()=>reject(new Error('Timeout')),5000);
-                }catch(e){reject(e)}
-            });
-        }catch(err){
-            lastError=err;
-            console.warn(`⚠️ Lần thử ${i+1} lưu video thất bại:`,err.message);
-            // Nếu lỗi connection, xóa DB cũ
-            if(err.message && err.message.includes('Connection')){
-                try{indexedDB.deleteDatabase(DB_NAME)}catch(e){}
-                await new Promise(r=>setTimeout(r,500));
-            }
-            if(i<retries-1){
-                await new Promise(r=>setTimeout(r,1000));
-            }
-        }
-    }
-    throw new Error('Không thể lưu video sau '+retries+' lần thử: '+lastError.message);
-}
-
-async function getVideosFromDB(){
-    try{
-        const db=await openDB();
-        return new Promise((resolve,reject)=>{
-            try{
-                const tx=db.transaction(STORE_NAME,'readonly');
-                const store=tx.objectStore(STORE_NAME);
-                const req=store.getAll();
-                req.onsuccess=function(){resolve(req.result||[])};
-                req.onerror=function(){reject(req.error)};
-                setTimeout(()=>reject(new Error('Timeout')),5000);
-            }catch(e){reject(e)}
-        });
-    }catch(e){
-        console.error('Lỗi lấy video:',e);
-        try{
-            indexedDB.deleteDatabase(DB_NAME);
-            await new Promise(r=>setTimeout(r,500));
-            return [];
-        }catch(err){return []}
-    }
-}
-
-async function updateVideoInDB(video){
-    const db=await openDB();
-    return new Promise((resolve,reject)=>{
-        try{
-            const tx=db.transaction(STORE_NAME,'readwrite');
-            const store=tx.objectStore(STORE_NAME);
-            const req=store.put(video);
-            req.onsuccess=function(){resolve(req.result)};
-            req.onerror=function(){reject(req.error)};
-        }catch(e){reject(e)}
-    });
-}
-
-async function deleteVideoFromDB(id){
-    const db=await openDB();
-    return new Promise((resolve,reject)=>{
-        try{
-            const tx=db.transaction(STORE_NAME,'readwrite');
-            const store=tx.objectStore(STORE_NAME);
-            const req=store.delete(id);
-            req.onsuccess=function(){resolve()};
-            req.onerror=function(){reject(req.error)};
-        }catch(e){reject(e)}
-    });
-}
-
-// ====== KHÔI PHỤC VIDEO CŨ ======
-async function restoreOldVideos(){
-    try{
-        const existing=await getVideosFromDB();
-        if(existing&&existing.length>0)return existing;
-        const backup=localStorage.getItem('video_backup_cache');
-        if(backup){
-            try{
-                const parsed=JSON.parse(backup);
-                if(parsed&&parsed.length>0){
-                    let c=0;
-                    for(const v of parsed){
-                        try{await saveVideoWithRetry(v,1);c++}catch(e){}
-                    }
-                    return await getVideosFromDB();
-                }
-            }catch(e){}
-        }
-        return[];
-    }catch(e){return[]}
-}
+function openDB(){return new Promise((resolve,reject)=>{try{if(window._dbConnection){try{window._dbConnection.close()}catch(e){}window._dbConnection=null}indexedDB.deleteDatabase(DB_NAME);setTimeout(()=>{const req=indexedDB.open(DB_NAME,8);req.onupgradeneeded=function(e){const d=e.target.result;if(!d.objectStoreNames.contains(STORE_NAME))d.createObjectStore(STORE_NAME,{keyPath:'id',autoIncrement:!0})};req.onsuccess=function(e){window._dbConnection=e.target.result;resolve(window._dbConnection)};req.onerror=function(e){reject(e.target.error)}},500)}catch(e){reject(e)}})}
+async function saveVideoToDB(v){const db=await openDB();return new Promise((resolve,reject)=>{try{const tx=db.transaction(STORE_NAME,'readwrite'),store=tx.objectStore(STORE_NAME),req=store.add(v);req.onsuccess=function(){resolve(req.result)};req.onerror=function(){reject(req.error)};setTimeout(()=>reject(new Error('Timeout')),30000)}catch(e){reject(e)}})}
+async function getVideosFromDB(){try{const db=await openDB();return new Promise((resolve,reject)=>{try{const tx=db.transaction(STORE_NAME,'readonly'),store=tx.objectStore(STORE_NAME),req=store.getAll();req.onsuccess=function(){resolve(req.result||[])};req.onerror=function(){reject(req.error)};setTimeout(()=>reject(new Error('Timeout')),10000)}catch(e){reject(e)}})}catch(e){try{indexedDB.deleteDatabase(DB_NAME);await new Promise(r=>setTimeout(r,500));return[]}catch(err){return[]}}}
+async function updateVideoInDB(v){const db=await openDB();return new Promise((resolve,reject)=>{try{const tx=db.transaction(STORE_NAME,'readwrite'),store=tx.objectStore(STORE_NAME),req=store.put(v);req.onsuccess=function(){resolve(req.result)};req.onerror=function(){reject(req.error)}}catch(e){reject(e)}})}
+async function deleteVideoFromDB(id){const db=await openDB();return new Promise((resolve,reject)=>{try{const tx=db.transaction(STORE_NAME,'readwrite'),store=tx.objectStore(STORE_NAME),req=store.delete(id);req.onsuccess=function(){resolve()};req.onerror=function(){reject(req.error)}}catch(e){reject(e)}})}
+async function restoreOldVideos(){try{const e=await getVideosFromDB();if(e&&e.length>0)return e;const b=localStorage.getItem('video_backup_cache');if(b){try{const p=JSON.parse(b);if(p&&p.length>0){let c=0;for(const v of p){try{await saveVideoToDB(v);c++}catch(e){}}return await getVideosFromDB()}}catch(e){}}return[]}catch(e){return[]}}
 
 // ====== THUMBNAIL ======
-function generateThumbnail(videoFile,time=1){
-    return new Promise((resolve,reject)=>{
-        const video=document.createElement('video');
-        const canvas=document.createElement('canvas');
-        const ctx=canvas.getContext('2d');
-        video.preload='metadata';
-        video.muted=!0;
-        video.playsInline=!0;
-        video.onloadeddata=function(){video.currentTime=Math.min(time,video.duration*0.3)};
-        video.onseeked=function(){
-            canvas.width=video.videoWidth||640;
-            canvas.height=video.videoHeight||360;
-            ctx.drawImage(video,0,0,canvas.width,canvas.height);
-            resolve(canvas.toDataURL('image/jpeg',0.8));
-            URL.revokeObjectURL(video.src);
-        };
-        video.onerror=function(e){reject('Không thể tạo thumbnail: '+e)};
-        const url=URL.createObjectURL(videoFile);
-        video.src=url;
-        video.load();
-        setTimeout(()=>{
-            if(video.readyState>=2){
-                canvas.width=video.videoWidth||640;
-                canvas.height=video.videoHeight||360;
-                ctx.drawImage(video,0,0,canvas.width,canvas.height);
-                resolve(canvas.toDataURL('image/jpeg',0.8));
-                URL.revokeObjectURL(video.src);
-            }
-        },3000);
-    });
-}
+function generateThumbnail(vf,t=1){return new Promise((resolve,reject)=>{const video=document.createElement('video'),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');video.preload='metadata';video.muted=!0;video.playsInline=!0;video.onloadeddata=function(){video.currentTime=Math.min(t,video.duration*0.3)};video.onseeked=function(){canvas.width=video.videoWidth||640;canvas.height=video.videoHeight||360;ctx.drawImage(video,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',0.8));URL.revokeObjectURL(video.src)};video.onerror=function(e){reject('Không thể tạo thumbnail: '+e)};const url=URL.createObjectURL(vf);video.src=url;video.load();setTimeout(()=>{if(video.readyState>=2){canvas.width=video.videoWidth||640;canvas.height=video.videoHeight||360;ctx.drawImage(video,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',0.8));URL.revokeObjectURL(video.src)}},3000)})}
 
 // ====== VIDEO GRID ======
 const videoGrid=$('videoGrid'),videoCount=$('videoCount'),videoModal=$('videoModal'),videoPlayer=$('videoPlayer'),closeVideoBtn=$('closeVideoBtn'),videoTitleOverlay=$('videoTitleOverlay');
 const blobCache=new Map;
-
-function formatFileSize(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';if(b<1073741824)return(b/1048576).toFixed(1)+' MB';return(b/1073741824).toFixed(2)+' GB'}
-function formatTime(s){if(!s||isNaN(s))return'0:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec}
+function fmtSize(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';if(b<1073741824)return(b/1048576).toFixed(1)+' MB';return(b/1073741824).toFixed(2)+' GB'}
+function fmtTime(s){if(!s||isNaN(s))return'0:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec}
 function getTimeAgo(c){if(!c)return'Vừa xong';const d=new Date(c),diff=Date.now()-d,mm=Math.floor(diff/6e4),hh=Math.floor(diff/36e5),dd=Math.floor(diff/864e5);if(mm<1)return'Vừa xong';if(mm<60)return mm+' phút trước';if(hh<24)return hh+' giờ trước';if(dd<7)return dd+' ngày trước';return d.toLocaleDateString('vi-VN')}
 function base64ToBlob(b64,mime='video/mp4'){if(blobCache.has(b64))return blobCache.get(b64);try{const base=b64.split(',')[1]||b64,chars=atob(base),arrs=[];for(let off=0;off<chars.length;off+=512){const slice=chars.slice(off,off+512),nums=new Array(slice.length);for(let i=0;i<slice.length;i++)nums[i]=slice.charCodeAt(i);arrs.push(new Uint8Array(nums))}const blob=new Blob(arrs,{type:mime}),url=URL.createObjectURL(blob);blobCache.set(b64,url);return url}catch(e){return b64}}
 function downloadVideo(vd){try{let src=vd.data,mime=vd.type||'video/mp4',name=(vd.title||'video').replace(/[^a-zA-Z0-9\u00C0-\u1EF9 ]/g,'').trim()||'video';let blob;if(typeof src==='string'&&src.startsWith('data:video')){const base=src.split(',')[1]||src,chars=atob(base),arrs=[];for(let off=0;off<chars.length;off+=512){const slice=chars.slice(off,off+512),nums=new Array(slice.length);for(let i=0;i<slice.length;i++)nums[i]=slice.charCodeAt(i);arrs.push(new Uint8Array(nums))}blob=new Blob(arrs,{type:mime})}else if(typeof src==='string'&&src.startsWith('blob:')){const cached=blobCache.get(vd.data);if(cached){const a=document.createElement('a');a.href=cached;a.download=name+'.mp4';document.body.appendChild(a);a.click();document.body.removeChild(a);return}fetch(src).then(r=>r.blob()).then(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name+'.mp4';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(a.href),5e3)}).catch(e=>console.error('Lỗi tải:',e));return}else{alert('❌ Không thể tải video này.');return}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name+'.mp4';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),5e3)}catch(e){alert('❌ Không thể tải video: '+e.message)}}
-async function increaseViewCount(id){if(viewedVideos.has(id))return;const v=allVideos.find(x=>x.id===id);if(!v)return;v.views=(v.views||0)+1;try{await updateVideoInDB(v);viewedVideos.add(id);const ni=filteredVideosCache.normal.findIndex(x=>x.id===id);if(ni!==-1)filteredVideosCache.normal[ni].views=v.views;const vi=filteredVideosCache.vip.findIndex(x=>x.id===id);if(vi!==-1)filteredVideosCache.vip[vi].views=v.views;updateViewCountOnCard(id,v.views)}catch(e){}}
+async function incView(id){if(viewedVideos.has(id))return;const v=allVideos.find(x=>x.id===id);if(!v)return;v.views=(v.views||0)+1;try{await updateVideoInDB(v);viewedVideos.add(id);const ni=filteredVideosCache.normal.findIndex(x=>x.id===id);if(ni!==-1)filteredVideosCache.normal[ni].views=v.views;const vi=filteredVideosCache.vip.findIndex(x=>x.id===id);if(vi!==-1)filteredVideosCache.vip[vi].views=v.views;updateViewCountOnCard(id,v.views)}catch(e){}}
 function updateViewCountOnCard(id,nv){const card=document.querySelector(`.video-card[data-id="${id}"]`);if(card){const span=card.querySelector('.views');if(span)span.textContent=`👁️ ${nv}`}}
-function openVideoModal(vd){let src=vd.data;if(typeof src==='string'&&src.startsWith('data:video')){src=base64ToBlob(src,vd.type||'video/mp4')}if(src.startsWith('blob:')){const b64=vd.data,mime=vd.type||'video/mp4';if(blobCache.has(b64)){URL.revokeObjectURL(blobCache.get(b64));blobCache.delete(b64)}src=base64ToBlob(b64,mime)}videoPlayer.src=src;videoTitleOverlay.textContent=vd.title||'Không có tiêu đề';videoModal.classList.add('show');videoPlayer.play();setTimeout(()=>increaseViewCount(vd.id),2000)}
+function openVideoModal(vd){let src=vd.data;if(typeof src==='string'&&src.startsWith('data:video')){src=base64ToBlob(src,vd.type||'video/mp4')}if(src.startsWith('blob:')){const b64=vd.data,mime=vd.type||'video/mp4';if(blobCache.has(b64)){URL.revokeObjectURL(blobCache.get(b64));blobCache.delete(b64)}src=base64ToBlob(b64,mime)}videoPlayer.src=src;videoTitleOverlay.textContent=vd.title||'Không có tiêu đề';videoModal.classList.add('show');videoPlayer.play();setTimeout(()=>incView(vd.id),2000)}
 function closeVideoModal(){videoModal.classList.remove('show');videoPlayer.pause();videoPlayer.src=''}
 closeVideoBtn.addEventListener('click',closeVideoModal);
 videoModal.addEventListener('click',function(e){if(e.target===this)closeVideoModal()});
 
-function createVideoCardHTML(v,showDel){const dur=v.duration||'0:00',views=v.views||0,thumb=v.thumbnail||'',uploader=v.username||'Unknown',timeAgo=getTimeAgo(v.createdAt),isVip=v.videoType==='vip',badgeClass=isVip?'vip-badge-thumb':'hd-badge',badgeText=isVip?'VIP':'HD',cardClass=isVip?'vip-card':'';return`<div class="video-card ${cardClass}" data-id="${v.id}"><div class="thumbnail">${thumb?`<img src="${thumb}" alt="${v.title||'Video'}" loading="lazy" />`:'<div style="color:#555;font-size:.8rem;">🎬</div>'}<span class="duration">${typeof dur==='number'?formatTime(dur):dur}</span><span class="${badgeClass}">${badgeText}</span><span class="play-icon">▶️</span><span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:.6rem;">👤 ${uploader}</span></div><div class="info"><div class="title">${v.title||'Không có tiêu đề'}</div><div class="meta"><span class="views">👁️ ${views}</span><span class="time">📁 ${formatFileSize(v.size||0)}</span><span class="time" style="color:#555;">🕐 ${timeAgo}</span></div><div class="card-actions">${showDel?`<button class="btn-delete-video" data-id="${v.id}">🗑️ Xóa</button>`:''}<button class="btn-download-video" data-id="${v.id}">⬇️ Tải về</button></div></div></div>`}
+function createVideoCardHTML(v,showDel){const dur=v.duration||'0:00',views=v.views||0,thumb=v.thumbnail||'',uploader=v.username||'Unknown',timeAgo=getTimeAgo(v.createdAt),isVip=v.videoType==='vip',badgeClass=isVip?'vip-badge-thumb':'hd-badge',badgeText=isVip?'VIP':'HD',cardClass=isVip?'vip-card':'';return`<div class="video-card ${cardClass}" data-id="${v.id}"><div class="thumbnail">${thumb?`<img src="${thumb}" alt="${v.title||'Video'}" loading="lazy" />`:'<div style="color:#555;font-size:.8rem;">🎬</div>'}<span class="duration">${typeof dur==='number'?fmtTime(dur):dur}</span><span class="${badgeClass}">${badgeText}</span><span class="play-icon">▶️</span><span style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:#888;padding:2px 10px;border-radius:6px;font-size:.6rem;">👤 ${uploader}</span></div><div class="info"><div class="title">${v.title||'Không có tiêu đề'}</div><div class="meta"><span class="views">👁️ ${views}</span><span class="time">📁 ${fmtSize(v.size||0)}</span><span class="time" style="color:#555;">🕐 ${timeAgo}</span></div><div class="card-actions">${showDel?`<button class="btn-delete-video" data-id="${v.id}">🗑️ Xóa</button>`:''}<button class="btn-download-video" data-id="${v.id}">⬇️ Tải về</button></div></div></div>`}
 function renderVideoGrid(videos,showDel){if(!videos||videos.length===0){const isVip=currentTab==='vip';videoGrid.innerHTML=`<div class="empty-state"><span class="icon">${isVip?'⭐':'📹'}</span><h3>${isVip?'Chưa có video VIP':'Chưa có video nào'}</h3><p>${isVip?'Video VIP sẽ được cập nhật sớm':'Hãy đăng video đầu tiên nhé!'}</p></div>`;return}const frag=document.createDocumentFragment(),tmp=document.createElement('div');for(const v of videos){tmp.innerHTML=createVideoCardHTML(v,showDel);const card=tmp.firstElementChild;if(card)frag.appendChild(card.cloneNode(!0));tmp.innerHTML=''}videoGrid.innerHTML='';videoGrid.appendChild(frag);videoGrid.querySelectorAll('.btn-delete-video').forEach(btn=>{btn.addEventListener('click',async function(e){e.stopPropagation();const id=parseInt(this.dataset.id);if(confirm('Bạn có chắc muốn xóa video này?')){await deleteVideoFromDB(id);const toDel=allVideos.find(x=>x.id===id);if(toDel&&blobCache.has(toDel.data)){URL.revokeObjectURL(blobCache.get(toDel.data));blobCache.delete(toDel.data)}viewedVideos.delete(id);await loadAndCacheVideos();renderCurrentTab()}})});videoGrid.querySelectorAll('.btn-download-video').forEach(btn=>{btn.addEventListener('click',function(e){e.stopPropagation();const id=parseInt(this.dataset.id),video=allVideos.find(x=>x.id===id);if(video)downloadVideo(video)})});videoGrid.querySelectorAll('.video-card').forEach(card=>{card.addEventListener('click',function(){const id=parseInt(this.dataset.id),video=allVideos.find(x=>x.id===id);if(video)openVideoModal(video)})})}
 async function loadAndCacheVideos(){allVideos=await getVideosFromDB();filteredVideosCache.normal=allVideos.filter(v=>v.videoType!=='vip').sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));filteredVideosCache.vip=allVideos.filter(v=>v.videoType==='vip').sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));return allVideos}
 function renderCurrentTab(){const cu=getCurrentUser(),isAdminUser=isAdmin(cu);if(currentTab==='create-vip'){videoGrid.classList.add('hidden-grid');vipCreatePanel.classList.add('active');videoCount.textContent=allVideos.length+' video';return}else{videoGrid.classList.remove('hidden-grid');vipCreatePanel.classList.remove('active')}let videosToShow=[];if(currentTab==='normal')videosToShow=filteredVideosCache.normal;else if(currentTab==='vip')videosToShow=filteredVideosCache.vip;videoCount.textContent=allVideos.length+' video';renderVideoGrid(videosToShow,isAdminUser)}
 async function loadAndRenderVideosFast(){try{await restoreOldVideos();await loadAndCacheVideos();renderCurrentTab();try{localStorage.setItem('video_backup_cache',JSON.stringify(allVideos))}catch(e){}}catch(e){console.error('Lỗi tải video:',e);videoGrid.innerHTML='<div class="empty-state"><span class="icon">⚠️</span><h3>Không thể tải video</h3><p>Vui lòng thử lại sau</p></div>';videoCount.textContent='0 video'}}
 
-// ====== TAB SWITCHING ======
-QA('.tab').forEach(t=>{t.addEventListener('click',function(){const tn=this.dataset.tab,cu=getCurrentUser(),ia=isAdmin(cu),iv=isVip(cu);if(tn==='vip'&&!ia&&!iv)return;if(tn==='create-vip'&&!ia)return;QA('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');currentTab=tn;renderCurrentTab()})});
+// ====== TAB ======
+document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',function(){const tn=this.dataset.tab,cu=getCurrentUser(),ia=isAdmin(cu),iv=isVip(cu);if(tn==='vip'&&!ia&&!iv)return;if(tn==='create-vip'&&!ia)return;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');currentTab=tn;renderCurrentTab()})});
 
-// ====== UPLOAD (FIX LỖI CONNECTION + NHANH 2-3s) ======
+// ====== UPLOAD ======
 const uploadModal=$('uploadModal'),openUploadBtn=$('openUploadBtn'),closeModalBtn=$('closeModalBtn'),videoFileInput=$('videoFileInput'),videoTitleInput=$('videoTitleInput'),fileInfo=$('fileInfo'),fileName=$('fileName'),fileSize=$('fileSize'),submitBtn=$('submitUploadBtn'),uploadProgress=$('uploadProgress'),progressBar=$('progressBar'),statusMsg=$('statusMsg');
 let selectedVideoFile=null;
-
 function openModal(){uploadModal.classList.add('show');resetUploadForm()}
 function closeModal(){uploadModal.classList.remove('show');resetUploadForm()}
 function resetUploadForm(){videoFileInput.value='';videoTitleInput.value='';fileInfo.style.display='none';uploadProgress.classList.remove('show');progressBar.style.width='0%';statusMsg.textContent='';statusMsg.className='status-msg';submitBtn.disabled=!1;selectedVideoFile=null}
-
 openUploadBtn.addEventListener('click',openModal);
 closeModalBtn.addEventListener('click',closeModal);
 uploadModal.addEventListener('click',function(e){if(e.target===this)closeModal()});
-videoFileInput.addEventListener('change',function(e){const file=this.files[0];if(!file)return;if(file.size>15*1024*1024*1024){statusMsg.textContent='❌ Video vượt quá 15GB.';statusMsg.className='status-msg error';this.value='';return}selectedVideoFile=file;fileName.textContent=file.name;fileSize.textContent=formatFileSize(file.size);fileInfo.style.display='block';statusMsg.textContent='';statusMsg.className='status-msg'});
-
-// ====== UPLOAD VỚI RETRY 2 LẦN, CÓ THUMBNAIL ======
-submitBtn.addEventListener('click',async function(){
-    const vf=selectedVideoFile,title=videoTitleInput.value.trim()||'Video không tiêu đề',vt=videoTypeSelect.value,username=getCurrentUser();
-    if(!vf){statusMsg.textContent='⚠️ Vui lòng chọn video.';statusMsg.className='status-msg error';return}
-    if(vt==='vip'&&!canUploadVip(username)){statusMsg.textContent='❌ Bạn không có quyền đăng video VIP.';statusMsg.className='status-msg error';return}
-    
-    submitBtn.disabled=!0;
-    statusMsg.textContent='⏳ Đang xử lý video...';
-    statusMsg.className='status-msg';
-    uploadProgress.classList.add('show');
-    progressBar.style.width='20%';
-
-    try{
-        // Tạo thumbnail (nhanh)
-        let thumb=null;
-        try{
-            thumb=await generateThumbnail(vf);
-            progressBar.style.width='40%';
-        }catch(e){console.warn('Không tạo được thumbnail:',e)}
-
-        // Đọc file video
-        const reader=new FileReader();
-        const videoData=await new Promise((resolve,reject)=>{
-            reader.onload=function(e){resolve(e.target.result)};
-            reader.onerror=function(){reject('Lỗi đọc file')};
-            reader.readAsDataURL(vf);
-        });
-        progressBar.style.width='70%';
-
-        // Lấy duration
-        const tv=document.createElement('video');
-        const url=URL.createObjectURL(vf);
-        tv.src=url;
-        const duration=await new Promise(r=>{
-            tv.addEventListener('loadedmetadata',function(){r(this.duration)});
-            tv.addEventListener('error',function(){r(0)});
-            setTimeout(()=>r(0),3000);
-        });
-        URL.revokeObjectURL(url);
-
-        const videoObj={
-            username,title,data:videoData,thumbnail:thumb,
-            size:vf.size,type:vf.type||'video/mp4',
-            duration:duration||0,views:0,
-            videoType:vt,createdAt:new Date().toISOString()
-        };
-
-        // ====== LƯU VIDEO VỚI RETRY 2 LẦN (FIX CONNECTION LOST) ======
-        await saveVideoWithRetry(videoObj, 2);
-        
-        progressBar.style.width='100%';
-        statusMsg.textContent='✅ Đăng video thành công!';
-        statusMsg.className='status-msg success';
-
-        try{
-            const all=await getVideosFromDB();
-            localStorage.setItem('video_backup_cache',JSON.stringify(all));
-        }catch(e){}
-
-        await loadAndCacheVideos();
-        renderCurrentTab();
-        setTimeout(()=>closeModal(),800);
-
-    }catch(error){
-        statusMsg.textContent='❌ Lỗi: '+error.message;
-        statusMsg.className='status-msg error';
-        submitBtn.disabled=!1;
-        console.error('Upload error:',error);
-    }
-});
+videoFileInput.addEventListener('change',function(e){const file=this.files[0];if(!file)return;if(file.size>15*1024*1024*1024){statusMsg.textContent='❌ Video vượt quá 15GB.';statusMsg.className='status-msg error';this.value='';return}selectedVideoFile=file;fileName.textContent=file.name;fileSize.textContent=fmtSize(file.size);fileInfo.style.display='block';statusMsg.textContent='';statusMsg.className='status-msg'});
+submitBtn.addEventListener('click',async function(){const vf=selectedVideoFile,title=videoTitleInput.value.trim()||'Video không tiêu đề',vt=videoTypeSelect.value,username=getCurrentUser();if(!vf){statusMsg.textContent='⚠️ Vui lòng chọn video.';statusMsg.className='status-msg error';return}if(vt==='vip'&&!canUploadVip(username)){statusMsg.textContent='❌ Bạn không có quyền đăng video VIP.';statusMsg.className='status-msg error';return}submitBtn.disabled=!0;statusMsg.textContent='⏳ Đang xử lý video...';statusMsg.className='status-msg';uploadProgress.classList.add('show');progressBar.style.width='20%';try{let thumb=null;try{thumb=await generateThumbnail(vf);progressBar.style.width='40%'}catch(e){}const reader=new FileReader();const videoData=await new Promise((resolve,reject)=>{reader.onload=function(e){resolve(e.target.result)};reader.onerror=function(){reject('Lỗi đọc file')};reader.readAsDataURL(vf)});progressBar.style.width='70%';const tv=document.createElement('video');const url=URL.createObjectURL(vf);tv.src=url;const duration=await new Promise(r=>{tv.addEventListener('loadedmetadata',function(){r(this.duration)});tv.addEventListener('error',function(){r(0)});setTimeout(()=>r(0),3000)});URL.revokeObjectURL(url);const videoObj={username,title,data:videoData,thumbnail:thumb,size:vf.size,type:vf.type||'video/mp4',duration:duration||0,views:0,videoType:vt,createdAt:new Date().toISOString()};let saved=!1;for(let a=0;a<3;a++){try{await saveVideoToDB(videoObj);saved=!0;break}catch(err){console.warn(`Lần ${a+1} thất bại:`,err);if(a<2){try{indexedDB.deleteDatabase('VideoDB')}catch(e){}await new Promise(r=>setTimeout(r,2000))}}}if(!saved)throw new Error('Không thể lưu video sau 3 lần thử');progressBar.style.width='100%';statusMsg.textContent='✅ Đăng video thành công!';statusMsg.className='status-msg success';try{const all=await getVideosFromDB();localStorage.setItem('video_backup_cache',JSON.stringify(all))}catch(e){}await loadAndCacheVideos();renderCurrentTab();setTimeout(()=>closeModal(),800)}catch(error){statusMsg.textContent='❌ Lỗi: '+error.message;statusMsg.className='status-msg error';submitBtn.disabled=!1;console.error('Upload error:',error)}});
 
 // ====== KHỞI ĐỘNG ======
-async function init(){
-    checkAndExpireVip();
-    if(navigator.storage&&navigator.storage.persist){
-        try{await navigator.storage.persist()}catch(e){}
-    }
-    const cu=getCurrentUser();
-    if(cu){
-        authBox.style.display='none';
-        mainContent.classList.add('active');
-        const users=getUsers();
-        if(users[cu]&&users[cu].vip&&isVip(cu))mainContent.classList.add('vip-theme');
-        updateUI(cu);
-        await loadAndRenderVideosFast();
-        setInterval(()=>{
-            if(checkAndExpireVip()){
-                const user=getCurrentUser();
-                if(user){updateUI(user);if(!isVip(user))renderCurrentTab()}
-            }
-            if(cu){
-                const et=getVipExpiryText(cu);
-                if(et&&vipExpiry.style.display!=='none')vipExpiry.textContent=et;
-            }
-        },300000);
-    }else{
-        authBox.style.display='flex';
-        mainContent.classList.remove('active');
-        $('videoGrid').innerHTML='<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>';
-        $('videoCount').textContent='0 video';
-        vipTabBtn.classList.add('hidden');
-        createVipTabBtn.classList.add('hidden');
-        vipCreatePanel.classList.remove('active');
-        $('videoGrid').classList.remove('hidden-grid');
-    }
-}
-
+async function init(){const cu=getCurrentUser();if(cu){authBox.style.display='none';mainContent.classList.add('active');const users=getUsers();if(users[cu]&&users[cu].vip&&isVip(cu))mainContent.classList.add('vip-theme');updateUI(cu);await loadAndRenderVideosFast();}else{authBox.style.display='flex';mainContent.classList.remove('active');$('videoGrid').innerHTML='<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>';$('videoCount').textContent='0 video';vipTabBtn.classList.add('hidden');createVipTabBtn.classList.add('hidden');vipCreatePanel.classList.remove('active');$('videoGrid').classList.remove('hidden-grid')}}
 init();
 console.log('🎬 VidHub đã sẵn sàng!');
-console.log('✅ Upload video trong 2-3s, có thumbnail');
-console.log('🔄 Tự động retry nếu lỗi kết nối IndexedDB');
-console.log('🔐 CAPTCHA khi đăng nhập');
+console.log('✅ Upload video nhanh, có thumbnail');
+console.log('💎 Mua VIP: zalo 0325976017');
 console.log('👑 Admin: Nduc / Ducanh05092008');
 </script>
 </body>
