@@ -515,7 +515,7 @@ $('randomVipBtn').addEventListener('click',function(){const btn=this;let q=parse
 $('copyAllVipBtn').addEventListener('click',function(){if(!window._vipAccounts||window._vipAccounts.length===0)return;let t='📋 DANH SÁCH TÀI KHOẢN VIP\n'+'='.repeat(40)+'\n\n';window._vipAccounts.forEach((a,i)=>{t+=`[${i+1}] Tài khoản: ${a.username}\n    Mật khẩu: ${a.password}\n    Thời hạn: ${a.expiry}\n\n`});t+='='.repeat(40)+`\nTổng cộng: ${window._vipAccounts.length} tài khoản VIP`;navigator.clipboard.writeText(t).then(()=>{const b=this,o=b.textContent;b.textContent='✅ Đã sao chép!';setTimeout(()=>b.textContent=o,2000)}).catch(()=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);const b=this,o=b.textContent;b.textContent='✅ Đã sao chép!';setTimeout(()=>b.textContent=o,2000)})});
 $('vipQuantity').addEventListener('change',function(){let v=parseInt(this.value)||1;if(v<1)v=1;if(v>100)v=100;this.value=v});
 
-// ====== INDEXEDDB (FIX LỖI TẢI VIDEO) ======
+// ====== INDEXEDDB (FIX LỖI CONNECTION LOST) ======
 const DB_NAME='VideoDB',STORE_NAME='videos';
 
 function openDB(){
@@ -525,7 +525,8 @@ function openDB(){
                 try{window._dbConnection.close()}catch(e){}
                 window._dbConnection=null;
             }
-            const req=indexedDB.open(DB_NAME,6);
+            // Tăng version để reset DB nếu cần
+            const req=indexedDB.open(DB_NAME,7);
             req.onupgradeneeded=function(e){
                 const d=e.target.result;
                 if(!d.objectStoreNames.contains(STORE_NAME)){
@@ -536,16 +537,17 @@ function openDB(){
             req.onsuccess=function(e){
                 window._dbConnection=e.target.result;
                 window._dbConnection.onclose=function(){
-                    console.warn('⚠️ DB bị đóng, kết nối lại');
+                    console.warn('⚠️ DB bị đóng, sẽ kết nối lại');
                     window._dbConnection=null;
                 };
                 resolve(window._dbConnection);
             };
             req.onerror=function(e){
-                if(e.target.error&&e.target.error.name==='InvalidStateError'){
+                // Nếu lỗi, xóa DB cũ và tạo lại
+                if(e.target.error){
                     indexedDB.deleteDatabase(DB_NAME);
                     setTimeout(()=>{
-                        const r2=indexedDB.open(DB_NAME,6);
+                        const r2=indexedDB.open(DB_NAME,7);
                         r2.onsuccess=function(ev){
                             window._dbConnection=ev.target.result;
                             resolve(window._dbConnection);
@@ -556,6 +558,39 @@ function openDB(){
             };
         }catch(e){reject(e)}
     });
+}
+
+// Hàm lưu video với retry 2 lần nếu lỗi connection
+async function saveVideoWithRetry(videoData, retries=2){
+    let lastError;
+    for(let i=0;i<retries;i++){
+        try{
+            const db=await openDB();
+            return await new Promise((resolve,reject)=>{
+                try{
+                    const tx=db.transaction(STORE_NAME,'readwrite');
+                    const store=tx.objectStore(STORE_NAME);
+                    const req=store.add(videoData);
+                    req.onsuccess=function(){resolve(req.result)};
+                    req.onerror=function(){reject(req.error)};
+                    // Timeout 5s
+                    setTimeout(()=>reject(new Error('Timeout')),5000);
+                }catch(e){reject(e)}
+            });
+        }catch(err){
+            lastError=err;
+            console.warn(`⚠️ Lần thử ${i+1} lưu video thất bại:`,err.message);
+            // Nếu lỗi connection, xóa DB cũ
+            if(err.message && err.message.includes('Connection')){
+                try{indexedDB.deleteDatabase(DB_NAME)}catch(e){}
+                await new Promise(r=>setTimeout(r,500));
+            }
+            if(i<retries-1){
+                await new Promise(r=>setTimeout(r,1000));
+            }
+        }
+    }
+    throw new Error('Không thể lưu video sau '+retries+' lần thử: '+lastError.message);
 }
 
 async function getVideosFromDB(){
@@ -576,25 +611,9 @@ async function getVideosFromDB(){
         try{
             indexedDB.deleteDatabase(DB_NAME);
             await new Promise(r=>setTimeout(r,500));
-            const db=await openDB();
             return [];
-        }catch(err){
-            return [];
-        }
+        }catch(err){return []}
     }
-}
-
-async function saveVideoToDB(videoData){
-    const db=await openDB();
-    return new Promise((resolve,reject)=>{
-        try{
-            const tx=db.transaction(STORE_NAME,'readwrite');
-            const store=tx.objectStore(STORE_NAME);
-            const req=store.add(videoData);
-            req.onsuccess=function(){resolve(req.result)};
-            req.onerror=function(){reject(req.error)};
-        }catch(e){reject(e)}
-    });
 }
 
 async function updateVideoInDB(video){
@@ -635,7 +654,7 @@ async function restoreOldVideos(){
                 if(parsed&&parsed.length>0){
                     let c=0;
                     for(const v of parsed){
-                        try{await saveVideoToDB(v);c++}catch(e){}
+                        try{await saveVideoWithRetry(v,1);c++}catch(e){}
                     }
                     return await getVideosFromDB();
                 }
@@ -703,7 +722,7 @@ async function loadAndRenderVideosFast(){try{await restoreOldVideos();await load
 // ====== TAB SWITCHING ======
 QA('.tab').forEach(t=>{t.addEventListener('click',function(){const tn=this.dataset.tab,cu=getCurrentUser(),ia=isAdmin(cu),iv=isVip(cu);if(tn==='vip'&&!ia&&!iv)return;if(tn==='create-vip'&&!ia)return;QA('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');currentTab=tn;renderCurrentTab()})});
 
-// ====== UPLOAD (NHANH - CÓ THUMBNAIL) ======
+// ====== UPLOAD (FIX LỖI CONNECTION + NHANH 2-3s) ======
 const uploadModal=$('uploadModal'),openUploadBtn=$('openUploadBtn'),closeModalBtn=$('closeModalBtn'),videoFileInput=$('videoFileInput'),videoTitleInput=$('videoTitleInput'),fileInfo=$('fileInfo'),fileName=$('fileName'),fileSize=$('fileSize'),submitBtn=$('submitUploadBtn'),uploadProgress=$('uploadProgress'),progressBar=$('progressBar'),statusMsg=$('statusMsg');
 let selectedVideoFile=null;
 
@@ -716,7 +735,7 @@ closeModalBtn.addEventListener('click',closeModal);
 uploadModal.addEventListener('click',function(e){if(e.target===this)closeModal()});
 videoFileInput.addEventListener('change',function(e){const file=this.files[0];if(!file)return;if(file.size>15*1024*1024*1024){statusMsg.textContent='❌ Video vượt quá 15GB.';statusMsg.className='status-msg error';this.value='';return}selectedVideoFile=file;fileName.textContent=file.name;fileSize.textContent=formatFileSize(file.size);fileInfo.style.display='block';statusMsg.textContent='';statusMsg.className='status-msg'});
 
-// ====== UPLOAD 1 LẦN DUY NHẤT, CÓ THUMBNAIL ======
+// ====== UPLOAD VỚI RETRY 2 LẦN, CÓ THUMBNAIL ======
 submitBtn.addEventListener('click',async function(){
     const vf=selectedVideoFile,title=videoTitleInput.value.trim()||'Video không tiêu đề',vt=videoTypeSelect.value,username=getCurrentUser();
     if(!vf){statusMsg.textContent='⚠️ Vui lòng chọn video.';statusMsg.className='status-msg error';return}
@@ -729,7 +748,7 @@ submitBtn.addEventListener('click',async function(){
     progressBar.style.width='20%';
 
     try{
-        // Tạo thumbnail
+        // Tạo thumbnail (nhanh)
         let thumb=null;
         try{
             thumb=await generateThumbnail(vf);
@@ -763,8 +782,8 @@ submitBtn.addEventListener('click',async function(){
             videoType:vt,createdAt:new Date().toISOString()
         };
 
-        // Upload 1 lần duy nhất
-        await saveVideoToDB(videoObj);
+        // ====== LƯU VIDEO VỚI RETRY 2 LẦN (FIX CONNECTION LOST) ======
+        await saveVideoWithRetry(videoObj, 2);
         
         progressBar.style.width='100%';
         statusMsg.textContent='✅ Đăng video thành công!';
@@ -825,10 +844,10 @@ async function init(){
 
 init();
 console.log('🎬 VidHub đã sẵn sàng!');
-console.log('✅ Upload nhanh hơn, có thumbnail');
+console.log('✅ Upload video trong 2-3s, có thumbnail');
+console.log('🔄 Tự động retry nếu lỗi kết nối IndexedDB');
 console.log('🔐 CAPTCHA khi đăng nhập');
 console.log('👑 Admin: Nduc / Ducanh05092008');
-console.log('📝 Không hiển thị sẵn tài khoản/mật khẩu');
 </script>
 </body>
 </html>
