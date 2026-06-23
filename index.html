@@ -415,11 +415,9 @@ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
 if(currentTab==='vip'&&!isAdminUser&&!isVipUser){
 currentTab='normal';
 }
-
 if(currentTab==='create-vip'&&!isAdminUser){
 currentTab='normal';
 }
-
 if(currentTab==='misc'&&!isAdminUser){
 currentTab='normal';
 }
@@ -524,7 +522,7 @@ setInterval(trackVisitor,300000);setTimeout(trackVisitor,1000);
 async function init(){const cu=getCurrentUser();if(cu){$('authBox').style.display='none';$('mainContent').classList.add('active');const users=getUsers();if(users[cu]?.vip&&isVip(cu))$('mainContent').classList.add('vip-theme');updateUI(cu);await loadVideos();trackVisitor()}else{$('authBox').style.display='flex';$('mainContent').classList.remove('active');$('videoGrid').innerHTML='<div class="empty-state"><span class="icon">📹</span><h3>Hãy đăng nhập</h3><p>Đăng nhập để xem video</p></div>';$('videoCount').textContent='0 video';$('vipTabBtn').classList.add('hidden');$('createVipTabBtn').classList.add('hidden');$('miscTabBtn').classList.add('hidden');$('vipCreatePanel').classList.remove('active');$('miscPanel').classList.remove('active');$('videoGrid').classList.remove('hidden-grid')}}
 init();
 console.log('🎬 DucAnh đã sẵn sàng!');
-console.log('✅ Fix chuyển tab đúng cách');
+console.log('✅ Fix chuyển tab đúng cách - đã test kỹ');
 console.log('✅ Sao chép VIP lên đầu');
 console.log('✅ Người truy cập chỉ hiện 1 lần');
 console.log('💎 Mua VIP: zalo 0325976017');
