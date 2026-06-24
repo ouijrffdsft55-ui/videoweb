@@ -277,10 +277,10 @@ body{font-family:'Inter',sans-serif;background:#000;color:#fff;min-height:100vh;
 <header class="header"><div class="logo"><span class="icon">🎬</span><h1>DucAnh</h1><span class="version">v2.0</span></div><div class="user-section"><div class="user-info" id="userInfoBox"><div class="avatar" id="userAvatar"><span class="avatar-text">N</span></div><span class="name" id="displayUsername">User</span><span class="admin-badge" id="adminBadge" style="display:none;">👑 Admin</span><span class="vip-badge" id="vipBadge" style="display:none;">⭐ VIP</span><span class="vip-expiry" id="vipExpiry" style="display:none;"></span></div><div class="header-actions"><button class="btn-settings" id="openSettingsBtn">⚙️ Cài đặt</button><button class="btn-upload-header" id="openUploadBtn">➕ Đăng video</button><button class="btn-logout" id="logoutBtn">Đăng xuất</button></div></div></header>
 
 <div class="filter-bar" id="filterBar">
-<button class="tab active" data-tab="normal" id="tabNormal">📹 Thường</button>
-<button class="tab vip-tab hidden" data-tab="vip" id="tabVip">⭐ VIP</button>
-<button class="tab create-vip-tab hidden" data-tab="create-vip" id="tabCreateVip">👑 Tạo VIP</button>
-<button class="tab misc-tab hidden" data-tab="misc" id="tabMisc">🔮 Misc</button>
+<button class="tab active" data-tab="normal">📹 Thường</button>
+<button class="tab vip-tab hidden" data-tab="vip" id="vipTabBtn">⭐ VIP</button>
+<button class="tab create-vip-tab hidden" data-tab="create-vip" id="createVipTabBtn">👑 Tạo VIP</button>
+<button class="tab misc-tab hidden" data-tab="misc" id="miscTabBtn">🔮 Misc</button>
 <div class="category-filter" id="categoryFilter">
 <label for="categorySelect">🏷️ Thể loại:</label>
 <select id="categorySelect"><option value="all">📋 Tất cả</option><option value="hocsinh">🏫 Học sinh + Sinh viên</option><option value="loanluan">🔥 Loạn Luân</option><option value="loli">🎀 Loli</option><option value="chuyengioi">🔄 Chuyển Giới</option><option value="bj">👄 BJ</option><option value="hj">✋ HJ</option></select>
@@ -448,17 +448,12 @@ $('videoGrid').querySelectorAll('.video-card').forEach(card=>{card.onclick=funct
 
 async function loadAndCache(){allVideos=await getVideosFromDB();filtered.normal=allVideos.filter(v=>v.videoType!=='vip').sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));filtered.vip=allVideos.filter(v=>v.videoType==='vip').sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));return allVideos}
 
-// ============================================================
 // ====== PHẦN QUAN TRỌNG: FIX CHUYỂN TAB VÀ NÚT ĐĂNG VIDEO ======
-// ============================================================
 
-// ====== FIX CHUYỂN TAB ======
 function renderCurrentTab() {
     const cu = getCurrentUser();
     const isAdminUser = isAdmin(cu);
     const isVipUser = isVip(cu);
-    
-    console.log('🔄 Render tab:', currentTab);
     
     // 1. Xóa tất cả active của tab
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -478,9 +473,7 @@ function renderCurrentTab() {
     const activeTab = document.querySelector(`.tab[data-tab="${currentTab}"]`);
     if (activeTab) {
         activeTab.classList.add('active');
-        console.log('✅ Active tab:', currentTab);
     } else {
-        console.log('❌ Không tìm thấy tab:', currentTab);
         // Fallback về normal
         const normalTab = document.querySelector('.tab[data-tab="normal"]');
         if (normalTab) {
@@ -549,13 +542,10 @@ document.querySelectorAll('.tab').forEach(tab => {
         e.stopPropagation();
         
         const tabName = this.dataset.tab;
-        console.log('🔄 Click tab:', tabName);
-        
         const cu = getCurrentUser();
         const ia = isAdmin(cu);
         const iv = isVip(cu);
         
-        // Kiểm tra quyền
         if (tabName === 'vip' && !ia && !iv) {
             alert('⚠️ Bạn cần VIP để xem!\nLiên hệ zalo: 0325976017');
             return;
@@ -565,11 +555,7 @@ document.querySelectorAll('.tab').forEach(tab => {
             return;
         }
         
-        // Cập nhật tab hiện tại
         currentTab = tabName;
-        console.log('✅ Current tab đã đổi thành:', currentTab);
-        
-        // Render lại
         renderCurrentTab();
     };
 });
@@ -584,7 +570,6 @@ document.getElementById('categorySelect').onchange = function() {
 document.getElementById('openUploadBtn').onclick = function(e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log('📤 Click nút đăng video');
     document.getElementById('uploadModal').classList.add('show');
     resetUpload();
 };
@@ -772,8 +757,8 @@ $('videoGrid').classList.remove('hidden-grid');
 }
 init();
 console.log('🎬 DucAnh đã sẵn sàng!');
-console.log('✅ ĐÃ FIX CHUYỂN TAB - Click tab sẽ đổi nội dung');
-console.log('✅ ĐÃ FIX NÚT ĐĂNG VIDEO - Click sẽ mở modal');
+console.log('✅ ĐÃ FIX CHUYỂN TAB');
+console.log('✅ ĐÃ FIX NÚT ĐĂNG VIDEO');
 console.log('💎 Mua VIP: zalo 0325976017');
 console.log('👑 Admin: Nduc / Ducanh05092008');
 </script>
