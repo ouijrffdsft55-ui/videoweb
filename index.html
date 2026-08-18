@@ -1,301 +1,1644 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc mừng sinh nhật</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: radial-gradient(circle at center, #0b0b2a, #000000);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-            background: transparent;
-            cursor: default;
-        }
-        /* lớp phủ chữ mờ phía trên canvas (không ảnh hưởng đến sao) */
-        .overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-        .overlay h1 {
-            font-size: clamp(2.5rem, 10vw, 5rem);
-            color: rgba(255, 215, 0, 0.7);
-            text-shadow: 0 0 30px #ffaa00, 0 0 60px #ff5500;
-            letter-spacing: 4px;
-            font-weight: bold;
-            text-align: center;
-            background: rgba(0,0,0,0.3);
-            padding: 0.3em 1.2em;
-            border-radius: 60px;
-            backdrop-filter: blur(3px);
-            border: 1px solid rgba(255,200,100,0.3);
-            transform: rotate(-2deg);
-            font-family: 'Segoe UI', cursive, sans-serif;
-        }
-        .overlay small {
-            display: block;
-            font-size: 0.4em;
-            color: #ffdd99;
-            text-shadow: 0 0 20px #ff8800;
-            margin-top: 10px;
-            letter-spacing: 6px;
-        }
-        @media (max-width: 600px) {
-            .overlay h1 { font-size: 2.2rem; padding: 0.2em 0.8em; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kho video · VIP</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
+    body { background: #0a0a0a; min-height: 100vh; padding: 0; display: flex; justify-content: center; }
+    .app-container { max-width: 1400px; width: 100%; padding: 1rem; }
+
+    /* ===== MARQUEE NOTIFICATION ===== */
+    .vip-notification {
+      background: linear-gradient(90deg, #f7971e, #ffd200, #f7971e);
+      background-size: 200% 100%;
+      padding: 10px 0;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 20px rgba(247, 151, 30, 0.4);
+      animation: shimmer 3s linear infinite;
+      position: relative;
+      overflow: hidden;
+    }
+    .vip-notification::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ffd700, #ff6b00, #ffd700, #ff6b00);
+      background-size: 400% 400%;
+      border-radius: 14px;
+      z-index: -1;
+      animation: glowBorder 3s ease infinite;
+    }
+    @keyframes glowBorder {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    .vip-notification .marquee-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      white-space: nowrap;
+      animation: marqueeScroll 20s linear infinite;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #5a3e00;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .vip-notification .marquee-content i {
+      margin: 0 8px;
+      animation: sparkle 1s ease-in-out infinite;
+    }
+    .vip-notification .marquee-content i:nth-child(odd) { animation-delay: 0.2s; }
+    .vip-notification .marquee-content i:nth-child(3n) { animation-delay: 0.5s; }
+    @keyframes sparkle {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+    .vip-notification .marquee-content .highlight {
+      background: rgba(0,0,0,0.1);
+      padding: 4px 16px;
+      border-radius: 30px;
+      font-weight: 800;
+      color: #4a3000;
+      border: 2px solid rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+    .vip-notification .marquee-content .zalo-link {
+      color: #0066cc;
+      font-weight: 900;
+      background: white;
+      padding: 4px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(0, 102, 204, 0.3);
+      transition: 0.3s;
+    }
+    .vip-notification .marquee-content .zalo-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 102, 204, 0.5);
+    }
+    .sparkle-text {
+      background: linear-gradient(90deg, #ff6b00, #ffd700, #ff6b00, #ffd700);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: sparkleText 2s linear infinite;
+      font-weight: 900;
+    }
+    @keyframes sparkleText {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    /* ===== AUTH ===== */
+    .auth-container {
+      background: #1a1a2e; max-width: 440px; margin: 0 auto; padding: 2.5rem 2rem 2rem;
+      border-radius: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid #2a2a4a;
+    }
+    .auth-container h2 { font-size: 1.8rem; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .auth-container h2 i { color: #f39c12; }
+    .subhead { color: #8a8aaa; margin-bottom: 1.5rem; border-bottom: 1px solid #2a2a4a; padding-bottom: 0.8rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-weight: 500; font-size: 0.9rem; color: #ccc; margin-bottom: 5px; }
+    .form-group input {
+      width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #2a2a4a; border-radius: 40px;
+      font-size: 1rem; background: #0d0d1a; color: #fff; outline: none;
+    }
+    .form-group input:focus { border-color: #f39c12; background: #1a1a2e; box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15); }
+    .btn-primary {
+      width: 100%; padding: 0.85rem; background: #f39c12; border: none; border-radius: 40px;
+      font-weight: 600; font-size: 1rem; color: #1a1a2e; cursor: pointer;
+      display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s;
+    }
+    .btn-primary:hover { background: #e67e22; transform: scale(1.01); box-shadow: 0 6px 18px rgba(243, 156, 18, 0.3); }
+    .btn-admin {
+      width: 100%; padding: 0.85rem; background: #2c3e50; border: none; border-radius: 40px;
+      font-weight: 600; font-size: 1rem; color: white; cursor: pointer;
+      display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 0.5rem; transition: 0.2s;
+    }
+    .btn-admin:hover { background: #1a2a3a; transform: scale(1.01); }
+    .auth-switch { text-align: center; margin-top: 1.5rem; font-size: 0.95rem; color: #8a8aaa; }
+    .auth-switch a { color: #f39c12; font-weight: 600; cursor: pointer; text-decoration: none; margin-left: 5px; }
+    .auth-switch a:hover { text-decoration: underline; }
+    .error-msg {
+      background: #2a1a1a; color: #e74c3c; padding: 0.6rem 1rem; border-radius: 30px;
+      font-size: 0.85rem; margin-bottom: 0.8rem; border-left: 4px solid #e74c3c; display: none;
+    }
+    .error-msg.show { display: block; }
+    .hr-divider { margin: 1.5rem 0 1rem; border: 0; height: 1px; background: linear-gradient(to right, transparent, #2a2a4a, transparent); }
+    #registerForm { display: none; }
+
+    /* Admin modal */
+    .admin-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 1000;
+    }
+    .admin-modal.active { display: flex; }
+    .admin-modal-box {
+      background: #1a1a2e; padding: 2rem; border-radius: 32px; max-width: 400px; width: 90%;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid #2a2a4a;
+    }
+    .admin-modal-box h3 { font-size: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .admin-modal-box p { color: #8a8aaa; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .admin-modal-box input {
+      width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #2a2a4a; border-radius: 40px;
+      font-size: 1rem; background: #0d0d1a; color: #fff; outline: none; margin-bottom: 1rem;
+    }
+    .admin-modal-box input:focus { border-color: #f39c12; }
+    .admin-modal-actions { display: flex; gap: 10px; }
+    .admin-modal-actions button { flex: 1; padding: 0.7rem; border: none; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-confirm-admin { background: #f39c12; color: #1a1a2e; }
+    .btn-confirm-admin:hover { background: #e67e22; }
+    .btn-cancel-admin { background: #2a2a4a; color: #fff; }
+    .btn-cancel-admin:hover { background: #3a3a5a; }
+
+    /* ===== APP ===== */
+    .app-wrapper { display: none; width: 100%; }
+    .app-wrapper.active { display: block; }
+    .header {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; gap: 1rem;
+    }
+    .header h1 { font-size: 1.8rem; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .header h1 i { color: #f39c12; }
+    .user-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .user-bar span {
+      background: #1a1a2e; padding: 0.3rem 1.2rem; border-radius: 40px;
+      font-weight: 500; font-size: 0.9rem; color: #ccc; border: 1px solid #2a2a4a;
+    }
+    .user-bar span.vip-badge { background: #2a1a0a; color: #f39c12; border-color: #f39c12; }
+    .user-bar span.muted-badge { background: #2a1a1a; color: #e74c3c; border-color: #e74c3c; }
+    .btn-logout {
+      background: #2a1a1a; border: 1px solid #4a2a2a; padding: 0.4rem 1.2rem; border-radius: 40px;
+      font-weight: 600; color: #e74c3c; cursor: pointer;
+    }
+    .btn-logout:hover { background: #3a1a1a; }
+
+    /* Tabs */
+    .tabs {
+      display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap;
+      border-bottom: 2px solid #1a1a2e; padding-bottom: 0.5rem;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.8rem; border: none; border-radius: 40px;
+      font-weight: 600; font-size: 0.95rem; cursor: pointer;
+      background: #1a1a2e; color: #8a8aaa; transition: 0.2s;
+    }
+    .tab-btn:hover { background: #2a2a4a; }
+    .tab-btn.active { background: #f39c12; color: #1a1a2e; }
+    .tab-btn.vip-tab { display: none; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Upload */
+    .upload-area {
+      background: #1a1a2e; padding: 0.5rem 1rem 0.5rem 1.5rem; border-radius: 60px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      border: 1px solid #2a2a4a;
+    }
+    .upload-area label {
+      display: flex; align-items: center; gap: 8px; background: #2a2a4a;
+      padding: 0.4rem 1.2rem; border-radius: 40px; font-weight: 500; cursor: pointer; font-size: 0.9rem;
+      color: #ccc;
+    }
+    .upload-area label:hover { background: #3a3a5a; }
+    .upload-area label i { color: #f39c12; }
+    #fileInput, #fileInputVip { display: none; }
+
+    /* Video grid */
+    .video-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.8rem 1.2rem; margin-top: 1rem;
+    }
+    .video-card {
+      background: #1a1a2e; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 1px solid #2a2a4a;
+      transition: 0.15s;
+    }
+    .video-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(0,0,0,0.5); }
+    .video-wrapper {
+      background: #0d0d1a; aspect-ratio: 16/9; display: flex;
+      align-items: center; justify-content: center; position: relative;
+      overflow: hidden; cursor: pointer;
+    }
+    .video-wrapper .thumbnail {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .video-wrapper .play-icon {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: rgba(243, 156, 18, 0.9); width: 60px; height: 60px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #1a1a2e; font-size: 1.5rem; transition: 0.3s;
+    }
+    .video-wrapper:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); }
+    .video-wrapper video {
+      width: 100%; height: 100%; object-fit: contain; display: none;
+    }
+    .video-wrapper .view-count-overlay {
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(0,0,0,0.7); color: #fff;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.75rem; display: flex; align-items: center; gap: 5px;
+    }
+    .card-body { padding: 0.8rem 1rem 1rem; }
+    .video-title {
+      font-weight: 600; font-size: 1rem; color: #fff;
+      margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+    }
+    .video-title .vn-tag {
+      background: #e74c3c; color: #fff; font-size: 0.6rem;
+      padding: 2px 8px; border-radius: 4px; font-weight: 700;
+    }
+    .video-description {
+      font-size: 0.85rem; color: #8a8aaa;
+      margin: 6px 0 8px; line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .video-description .views {
+      color: #f39c12; font-weight: 600;
+    }
+    .video-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem; color: #4a4a6a; margin: 4px 0 8px;
+    }
+    .video-views {
+      display: flex; align-items: center; gap: 5px;
+      background: #0d0d1a; padding: 2px 10px; border-radius: 20px;
+      font-weight: 500; color: #ccc;
+    }
+    .video-views i { color: #f39c12; }
+    .card-actions { display: flex; gap: 8px; border-top: 1px solid #2a2a4a; padding-top: 10px; flex-wrap: wrap; }
+    .btn {
+      border: none; padding: 0.3rem 0.9rem; border-radius: 40px;
+      font-size: 0.7rem; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #2a2a4a; color: #ccc; transition: 0.2s;
+    }
+    .btn:hover { background: #3a3a5a; }
+    .btn-download { background: #2a4a2a; color: #7dcea0; }
+    .btn-download:hover { background: #3a5a3a; }
+    .btn-delete { background: #4a2a2a; color: #e74c3c; margin-left: auto; }
+    .btn-delete:hover { background: #5a3a3a; }
+    .btn-admin-delete { background: #4a2a2a; color: #e74c3c; }
+    .btn-admin-delete:hover { background: #5a3a3a; }
+
+    .empty-state {
+      grid-column: 1 / -1; text-align: center; padding: 3rem 1rem;
+      background: #1a1a2e; border-radius: 48px; border: 2px dashed #2a2a4a; color: #4a4a6a;
+    }
+    .empty-state i { font-size: 3rem; color: #2a2a4a; margin-bottom: 0.5rem; }
+    .empty-state h3 { color: #8a8aaa; }
+
+    /* Pagination */
+    .pagination {
+      display: flex; justify-content: center; align-items: center;
+      gap: 8px; margin-top: 2rem; flex-wrap: wrap;
+    }
+    .pagination button {
+      padding: 0.5rem 1.2rem; border: 1px solid #2a2a4a; border-radius: 40px;
+      background: #1a1a2e; color: #8a8aaa; cursor: pointer; transition: 0.2s;
+      font-weight: 600;
+    }
+    .pagination button:hover { background: #2a2a4a; color: #fff; }
+    .pagination button.active { background: #f39c12; color: #1a1a2e; border-color: #f39c12; }
+    .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* ===== VIP ADMIN ===== */
+    .vip-admin-panel {
+      background: #1a1a2e; padding: 1.5rem; border-radius: 24px;
+      border: 1px solid #2a2a4a; margin-bottom: 1.5rem;
+    }
+    .vip-admin-panel h3 { display: flex; align-items: center; gap: 8px; color: #fff; margin-bottom: 1rem; }
+    .vip-admin-panel h3 i { color: #f39c12; }
+    .vip-form-row {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+    }
+    .vip-form-group { flex: 1; min-width: 120px; }
+    .vip-form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #8a8aaa; margin-bottom: 4px; }
+    .vip-form-group input, .vip-form-group select {
+      width: 100%; padding: 0.6rem 1rem; border: 1.5px solid #2a2a4a;
+      border-radius: 40px; font-size: 0.9rem; background: #0d0d1a; color: #fff; outline: none;
+    }
+    .vip-form-group input:focus, .vip-form-group select:focus { border-color: #f39c12; }
+    .btn-vip-create {
+      background: #f39c12; border: none; padding: 0.6rem 1.8rem;
+      border-radius: 40px; font-weight: 600; color: #1a1a2e; cursor: pointer;
+      transition: 0.2s; display: flex; align-items: center; gap: 8px;
+      height: 48px; align-self: flex-end;
+    }
+    .btn-vip-create:hover { background: #e67e22; transform: scale(1.02); }
+
+    .vip-account-list {
+      margin-top: 1.5rem; background: #0d0d1a; border-radius: 16px;
+      padding: 1rem; border: 1px solid #2a2a4a;
+    }
+    .vip-account-list .vip-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.6rem 0.8rem; border-bottom: 1px solid #1a1a2e;
+      font-size: 0.9rem; flex-wrap: wrap; gap: 6px; color: #ccc;
+    }
+    .vip-account-list .vip-item:last-child { border-bottom: none; }
+    .vip-item .vip-info { display: flex; gap: 12px; flex-wrap: wrap; }
+    .vip-item .vip-info strong { color: #fff; }
+    .vip-item .vip-status { font-weight: 600; font-size: 0.8rem; }
+    .vip-status.active { color: #27ae60; }
+    .vip-status.expired { color: #e74c3c; }
+    .vip-status.forever { color: #f39c12; }
+
+    .action-buttons {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0.8rem;
+    }
+    .copy-all-btn, .clear-history-btn {
+      background: #2a2a4a; border: none; padding: 0.4rem 1.2rem;
+      border-radius: 40px; font-weight: 600; color: #ccc; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .copy-all-btn:hover { background: #3a3a5a; color: #fff; }
+    .clear-history-btn { background: #3a2a2a; color: #e74c3c; }
+    .clear-history-btn:hover { background: #4a3a3a; }
+
+    /* ===== MISC ADMIN ===== */
+    .misc-panel {
+      background: #1a1a2e; padding: 1.5rem; border-radius: 24px;
+      border: 1px solid #2a2a4a; margin-bottom: 1.5rem;
+    }
+    .misc-panel h3 { display: flex; align-items: center; gap: 8px; color: #fff; margin-bottom: 1rem; }
+    .misc-panel h3 i { color: #7f8c8d; }
+    .misc-section {
+      background: #0d0d1a; padding: 1.2rem; border-radius: 16px;
+      border: 1px solid #1a1a2e; margin-bottom: 1.2rem;
+    }
+    .misc-section h4 { color: #8a8aaa; margin-bottom: 0.8rem; font-size: 0.95rem; }
+    .misc-row {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;
+    }
+    .misc-row .form-group { flex: 1; min-width: 120px; margin-bottom: 0; }
+    .misc-row .form-group label { font-size: 0.75rem; font-weight: 600; color: #8a8aaa; margin-bottom: 3px; display: block; }
+    .misc-row .form-group input, .misc-row .form-group select {
+      width: 100%; padding: 0.5rem 1rem; border: 1.5px solid #2a2a4a;
+      border-radius: 40px; font-size: 0.9rem; background: #0d0d1a; color: #fff; outline: none;
+    }
+    .misc-row .form-group input:focus, .misc-row .form-group select:focus { border-color: #f39c12; }
+    .btn-misc {
+      border: none; padding: 0.5rem 1.5rem; border-radius: 40px;
+      font-weight: 600; font-size: 0.85rem; cursor: pointer;
+      transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;
+      height: 42px;
+    }
+    .btn-misc-primary { background: #2a7de1; color: #fff; }
+    .btn-misc-primary:hover { background: #1a5bbf; }
+    .btn-misc-danger { background: #e74c3c; color: #fff; }
+    .btn-misc-danger:hover { background: #c0392b; }
+    .btn-misc-success { background: #27ae60; color: #fff; }
+    .btn-misc-success:hover { background: #1e8449; }
+    .btn-misc-warning { background: #f39c12; color: #1a1a2e; }
+    .btn-misc-warning:hover { background: #d68910; }
+
+    .footer-note { margin-top: 2.5rem; text-align: center; font-size: 0.8rem; color: #4a4a6a; border-top: 1px solid #1a1a2e; padding-top: 1.5rem; }
+
+    .auth-container.hidden { display: none; }
+    .app-wrapper.active { display: block; }
+
+    /* Loading */
+    .upload-loading {
+      display: none; align-items: center; gap: 10px;
+      background: #2a2a4a; padding: 0.4rem 1.2rem; border-radius: 40px;
+      color: #f39c12; font-weight: 500; font-size: 0.85rem;
+    }
+    .upload-loading.active { display: flex; }
+    .upload-loading .spinner {
+      width: 18px; height: 18px; border: 2px solid #2a2a4a;
+      border-top: 2px solid #f39c12; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .auth-container { padding: 1.8rem 1.2rem; }
+      .vip-form-row, .misc-row { flex-direction: column; }
+      .vip-form-group, .misc-row .form-group { min-width: 100%; }
+      .btn-vip-create, .btn-misc { width: 100%; justify-content: center; }
+      .vip-notification .marquee-content { font-size: 0.85rem; }
+      .video-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="overlay">
-    <h1>🎂 CHÚC MỪNG SINH NHẬT 🎂<br><small>✨ vạn điều tốt lành ✨</small></h1>
+<div class="app-container">
+
+  <!-- ====== VIP NOTIFICATION MARQUEE ====== -->
+  <div class="vip-notification">
+    <div class="marquee-content">
+      <i class="fas fa-star"></i>
+      <i class="fas fa-crown" style="color:#ff6b00;"></i>
+      <span class="sparkle-text">🌟 MUA TÀI KHOẢN VIP 🌟</span>
+      <i class="fas fa-crown" style="color:#ff6b00;"></i>
+      <i class="fas fa-star"></i>
+      <span>🔥 Giá cực tốt - Uy tín hàng đầu 🔥</span>
+      <i class="fas fa-star"></i>
+      <span>📱 Liên hệ ngay:</span>
+      <a href="https://zalo.me/0325976017" target="_blank" class="zalo-link">
+        <i class="fab fa-whatsapp"></i> Zalo: 0325976017
+      </a>
+      <i class="fas fa-star"></i>
+      <span class="highlight">✨ NHANH TAY SỞ HỮU ✨</span>
+      <i class="fas fa-star"></i>
+      <i class="fas fa-crown" style="color:#ff6b00;"></i>
+      <i class="fas fa-star"></i>
+    </div>
+  </div>
+
+  <!-- ====== AUTH ====== -->
+  <div class="auth-container" id="authContainer">
+    <h2><i class="fas fa-video"></i> Kho video</h2>
+    <div class="subhead"><i class="fas fa-lock"></i> Đăng nhập</div>
+    <div class="error-msg" id="errorMsg"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label><i class="far fa-user"></i> Tài khoản</label>
+        <input type="text" id="loginUser" placeholder="Tên đăng nhập" required>
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-key"></i> Mật khẩu</label>
+        <input type="password" id="loginPass" placeholder="Mật khẩu" required>
+      </div>
+      <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
+    </form>
+
+    <button id="adminLoginBtn" class="btn-admin"><i class="fas fa-shield-alt"></i> Đăng nhập Admin</button>
+
+    <hr class="hr-divider">
+    <div class="auth-switch">
+      <span id="switchText">Chưa có tài khoản?</span>
+      <a id="switchLink">Đăng ký ngay</a>
+    </div>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <label><i class="far fa-user"></i> Tên đăng nhập</label>
+        <input type="text" id="regUser" placeholder="Chọn tên" required>
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-key"></i> Mật khẩu</label>
+        <input type="password" id="regPass" placeholder="Mật khẩu" required>
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-check-circle"></i> Xác nhận</label>
+        <input type="password" id="regPass2" placeholder="Nhập lại mật khẩu" required>
+      </div>
+      <button type="submit" class="btn-primary"><i class="fas fa-user-plus"></i> Đăng ký</button>
+      <div class="auth-switch" style="margin-top:1rem;">
+        <span>Đã có tài khoản? </span>
+        <a id="backToLoginLink">Đăng nhập</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- ====== ADMIN MODAL ====== -->
+  <div class="admin-modal" id="adminModal">
+    <div class="admin-modal-box">
+      <h3><i class="fas fa-shield-alt" style="color:#f39c12;"></i> Admin</h3>
+      <p>Nhập mật khẩu cho tài khoản <strong>Nduc</strong></p>
+      <input type="password" id="adminPasswordInput" placeholder="Mật khẩu admin" autofocus>
+      <div class="admin-modal-actions">
+        <button class="btn-cancel-admin" id="adminModalCancel">Hủy</button>
+        <button class="btn-confirm-admin" id="adminModalConfirm"><i class="fas fa-check"></i> Xác nhận</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== APP ====== -->
+  <div class="app-wrapper" id="appWrapper">
+
+    <!-- Header -->
+    <header class="header">
+      <h1><i class="fas fa-video"></i> Kho video</h1>
+      <div class="user-bar">
+        <span id="greetingUser"><i class="far fa-user-circle"></i> User</span>
+        <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Thoát</button>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tab-normal"><i class="fas fa-user"></i> Thường</button>
+      <button class="tab-btn vip-tab" data-tab="tab-vip"><i class="fas fa-crown" style="color:#f39c12;"></i> VIP</button>
+      <button class="tab-btn admin-tab" data-tab="tab-admin" style="display:none;"><i class="fas fa-shield-alt"></i> Admin VIP</button>
+      <button class="tab-btn admin-tab" data-tab="tab-misc" style="display:none;"><i class="fas fa-tools"></i> Misc</button>
+    </div>
+
+    <!-- Tab Nội dung -->
+    <!-- Tab Thường -->
+    <div class="tab-content active" id="tab-normal">
+      <div class="upload-area">
+        <label for="fileInput"><i class="fas fa-cloud-upload-alt"></i> Tải lên</label>
+        <input type="file" id="fileInput" accept="video/*" multiple>
+        <span id="videoCount" style="font-weight:500; font-size:0.85rem; color:#4a4a6a;">0 video</span>
+        <div class="upload-loading" id="uploadLoading"><div class="spinner"></div> Đang xử lý...</div>
+      </div>
+      <div class="video-grid" id="videoGrid">
+        <div class="empty-state" id="emptyState">
+          <i class="fas fa-film"></i>
+          <h3>Chưa có video</h3>
+          <p>Tải lên video để lưu trữ (tối đa 10GB/video)</p>
+        </div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- Tab VIP -->
+    <div class="tab-content" id="tab-vip">
+      <div class="upload-area">
+        <label for="fileInputVip"><i class="fas fa-cloud-upload-alt"></i> Tải lên</label>
+        <input type="file" id="fileInputVip" accept="video/*" multiple>
+        <span id="videoCountVip" style="font-weight:500; font-size:0.85rem; color:#4a4a6a;">0 video</span>
+        <div class="upload-loading" id="uploadLoadingVip"><div class="spinner"></div> Đang xử lý...</div>
+      </div>
+      <div class="video-grid" id="videoGridVip">
+        <div class="empty-state" id="emptyStateVip">
+          <i class="fas fa-crown" style="color:#f39c12;"></i>
+          <h3>Kho VIP</h3>
+          <p>Video VIP của bạn (tối đa 10GB/video)</p>
+        </div>
+      </div>
+      <div class="pagination" id="paginationVip"></div>
+    </div>
+
+    <!-- Tab Admin (VIP Management) -->
+    <div class="tab-content" id="tab-admin">
+      <div class="vip-admin-panel">
+        <h3><i class="fas fa-crown" style="color:#f39c12;"></i> Quản lý tài khoản VIP</h3>
+        <div class="vip-form-row">
+          <div class="vip-form-group">
+            <label>Số lượng</label>
+            <input type="number" id="vipCount" value="1" min="1" max="50">
+          </div>
+          <div class="vip-form-group">
+            <label>Thời hạn</label>
+            <select id="vipDuration">
+              <option value="1h">1 giờ</option>
+              <option value="3h">3 giờ</option>
+              <option value="1d">1 ngày</option>
+              <option value="3d">3 ngày</option>
+              <option value="7d">7 ngày</option>
+              <option value="1m">1 tháng</option>
+              <option value="forever">Vô hạn</option>
+            </select>
+          </div>
+          <button class="btn-vip-create" id="createVipBtn"><i class="fas fa-plus"></i> Tạo acc VIP</button>
+        </div>
+      </div>
+
+      <div class="vip-account-list" id="vipAccountList">
+        <div class="action-buttons">
+          <button class="copy-all-btn" id="copyAllVip"><i class="fas fa-copy"></i> Sao chép tất cả</button>
+          <button class="clear-history-btn" id="clearHistoryBtn"><i class="fas fa-trash-alt"></i> Xoá lịch sử</button>
+        </div>
+        <div id="vipAccountsContainer">
+          <p style="color:#4a4a6a; font-style:italic;">Chưa có tài khoản VIP nào.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Misc (Admin) -->
+    <div class="tab-content" id="tab-misc">
+      <div class="misc-panel">
+        <h3><i class="fas fa-tools"></i> Quản lý Misc</h3>
+        
+        <!-- Mute/Unmute -->
+        <div class="misc-section">
+          <h4><i class="fas fa-volume-mute"></i> Mute / Unmute tài khoản</h4>
+          <div class="misc-row">
+            <div class="form-group">
+              <label>Tên tài khoản</label>
+              <input type="text" id="muteUsername" placeholder="Nhập tên acc">
+            </div>
+            <div class="form-group">
+              <label>Thời gian mute</label>
+              <select id="muteDuration">
+                <option value="1h">1 giờ</option>
+                <option value="3h">3 giờ</option>
+                <option value="1d">1 ngày</option>
+                <option value="3d">3 ngày</option>
+                <option value="7d">7 ngày</option>
+              </select>
+            </div>
+            <button class="btn-misc btn-misc-danger" id="muteBtn"><i class="fas fa-ban"></i> Mute</button>
+            <button class="btn-misc btn-misc-success" id="unmuteBtn"><i class="fas fa-volume-up"></i> Unmute</button>
+          </div>
+        </div>
+
+        <!-- Cấp thêm thời gian VIP -->
+        <div class="misc-section">
+          <h4><i class="fas fa-clock"></i> Cấp thêm thời gian VIP</h4>
+          <div class="misc-row" style="margin-bottom:10px;">
+            <div class="form-group">
+              <label>Tên tài khoản VIP</label>
+              <input type="text" id="extendUsername" placeholder="Nhập tên acc VIP">
+            </div>
+            <div class="form-group">
+              <label>Thời gian cấp thêm</label>
+              <select id="extendDuration">
+                <option value="1d">1 ngày</option>
+                <option value="3d">3 ngày</option>
+                <option value="7d">7 ngày</option>
+                <option value="1m">1 tháng</option>
+              </select>
+            </div>
+            <button class="btn-misc btn-misc-primary" id="extendBtn"><i class="fas fa-plus-circle"></i> Cấp cho 1 acc</button>
+          </div>
+          <div class="misc-row">
+            <div class="form-group">
+              <label>Cấp cho VIP đang hoạt động</label>
+              <select id="extendAllDuration">
+                <option value="1d">1 ngày</option>
+                <option value="3d">3 ngày</option>
+                <option value="7d">7 ngày</option>
+                <option value="1m">1 tháng</option>
+              </select>
+            </div>
+            <button class="btn-misc btn-misc-warning" id="extendAllBtn"><i class="fas fa-users"></i> Cấp cho VIP đang hoạt động</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note"><i class="fas fa-database"></i> Dữ liệu lưu trên trình duyệt</div>
+  </div>
+
 </div>
 
-<canvas id="birthdayCanvas"></canvas>
-
 <script>
-    (function() {
-        const canvas = document.getElementById('birthdayCanvas');
+  (function() {
+    // ========== AUTH SYSTEM ==========
+    const STORAGE_KEY = 'videoAppUsers';
+    const SESSION_KEY = 'videoAppCurrentUser';
+    const VIP_STORAGE_KEY = 'vipAccounts';
+    const VIP_HISTORY_KEY = 'vipHistory';
+    const MUTED_KEY = 'mutedAccounts';
+
+    function getUsers() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) { try { return JSON.parse(raw); } catch(e) { return {}; } }
+      return {};
+    }
+    function saveUsers(users) { localStorage.setItem(STORAGE_KEY, JSON.stringify(users)); }
+
+    function getCurrentUser() { return localStorage.getItem(SESSION_KEY) || null; }
+    function setCurrentUser(username) {
+      if (username) localStorage.setItem(SESSION_KEY, username);
+      else localStorage.removeItem(SESSION_KEY);
+    }
+
+    function getVipAccounts() {
+      const raw = localStorage.getItem(VIP_STORAGE_KEY);
+      if (raw) { try { return JSON.parse(raw); } catch(e) { return []; } }
+      return [];
+    }
+    function saveVipAccounts(list) { localStorage.setItem(VIP_STORAGE_KEY, JSON.stringify(list)); }
+
+    function getVipHistory() {
+      const raw = localStorage.getItem(VIP_HISTORY_KEY);
+      if (raw) { try { return JSON.parse(raw); } catch(e) { return []; } }
+      return [];
+    }
+    function saveVipHistory(list) { localStorage.setItem(VIP_HISTORY_KEY, JSON.stringify(list)); }
+
+    function getMutedAccounts() {
+      const raw = localStorage.getItem(MUTED_KEY);
+      if (raw) { try { return JSON.parse(raw); } catch(e) { return {}; } }
+      return {};
+    }
+    function saveMutedAccounts(muted) { localStorage.setItem(MUTED_KEY, JSON.stringify(muted)); }
+
+    function isMuted(username) {
+      const muted = getMutedAccounts();
+      if (!muted[username]) return false;
+      if (muted[username] === 'forever') return true;
+      return muted[username] > Date.now();
+    }
+
+    function getMutedTimeLeft(username) {
+      const muted = getMutedAccounts();
+      if (!muted[username]) return null;
+      if (muted[username] === 'forever') return 'Vĩnh viễn';
+      const left = muted[username] - Date.now();
+      if (left <= 0) return null;
+      const hours = Math.floor(left / 3600000);
+      const minutes = Math.floor((left % 3600000) / 60000);
+      return `${hours}h ${minutes}m`;
+    }
+
+    function ensureAdmin() {
+      const users = getUsers();
+      if (!users['Nduc']) { users['Nduc'] = 'Ducanh05092008'; saveUsers(users); }
+    }
+    ensureAdmin();
+
+    // ========== DOM ==========
+    const authContainer = document.getElementById('authContainer');
+    const appWrapper = document.getElementById('appWrapper');
+    const errorMsg = document.getElementById('errorMsg');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const switchLink = document.getElementById('switchLink');
+    const backToLoginLink = document.getElementById('backToLoginLink');
+    const switchText = document.getElementById('switchText');
+    const loginUser = document.getElementById('loginUser');
+    const loginPass = document.getElementById('loginPass');
+    const regUser = document.getElementById('regUser');
+    const regPass = document.getElementById('regPass');
+    const regPass2 = document.getElementById('regPass2');
+
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const adminModal = document.getElementById('adminModal');
+    const adminPasswordInput = document.getElementById('adminPasswordInput');
+    const adminModalConfirm = document.getElementById('adminModalConfirm');
+    const adminModalCancel = document.getElementById('adminModalCancel');
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    const greetingUser = document.getElementById('greetingUser');
+
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = {
+      normal: document.getElementById('tab-normal'),
+      vip: document.getElementById('tab-vip'),
+      admin: document.getElementById('tab-admin'),
+      misc: document.getElementById('tab-misc')
+    };
+    const adminTab = document.querySelector('.admin-tab');
+    const vipTab = document.querySelector('.vip-tab');
+
+    const fileInput = document.getElementById('fileInput');
+    const fileInputVip = document.getElementById('fileInputVip');
+    const videoGrid = document.getElementById('videoGrid');
+    const videoGridVip = document.getElementById('videoGridVip');
+    const emptyState = document.getElementById('emptyState');
+    const emptyStateVip = document.getElementById('emptyStateVip');
+    const videoCountSpan = document.getElementById('videoCount');
+    const videoCountSpanVip = document.getElementById('videoCountVip');
+    const pagination = document.getElementById('pagination');
+    const paginationVip = document.getElementById('paginationVip');
+    const uploadLoading = document.getElementById('uploadLoading');
+    const uploadLoadingVip = document.getElementById('uploadLoadingVip');
+
+    const vipCount = document.getElementById('vipCount');
+    const vipDuration = document.getElementById('vipDuration');
+    const createVipBtn = document.getElementById('createVipBtn');
+    const vipAccountsContainer = document.getElementById('vipAccountsContainer');
+    const copyAllVipBtn = document.getElementById('copyAllVip');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+    const muteUsername = document.getElementById('muteUsername');
+    const muteDuration = document.getElementById('muteDuration');
+    const muteBtn = document.getElementById('muteBtn');
+    const unmuteBtn = document.getElementById('unmuteBtn');
+    const extendUsername = document.getElementById('extendUsername');
+    const extendDuration = document.getElementById('extendDuration');
+    const extendBtn = document.getElementById('extendBtn');
+    const extendAllDuration = document.getElementById('extendAllDuration');
+    const extendAllBtn = document.getElementById('extendAllBtn');
+
+    // ========== HELPERS ==========
+    let currentPage = 1;
+    let currentPageVip = 1;
+    const ITEMS_PER_PAGE = 20;
+    const MAX_FILE_SIZE = 10 * 1024 * 1024 * 1024; // 10GB
+
+    function showError(msg) { errorMsg.textContent = msg; errorMsg.classList.add('show'); }
+    function hideError() { errorMsg.classList.remove('show'); }
+
+    function showLoginForm() {
+      loginForm.style.display = 'block';
+      registerForm.style.display = 'none';
+      switchText.textContent = 'Chưa có tài khoản?';
+      switchLink.textContent = 'Đăng ký ngay';
+      hideError();
+    }
+    function showRegisterForm() {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+      switchText.textContent = 'Đã có tài khoản?';
+      switchLink.textContent = 'Đăng nhập';
+      hideError();
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
+      return (bytes / 1073741824).toFixed(2) + ' GB';
+    }
+
+    function formatViews(views) {
+      if (views >= 1000000) return (views / 1000000).toFixed(1) + 'tr';
+      if (views >= 1000) return (views / 1000).toFixed(1) + 'k';
+      return views;
+    }
+
+    function generateUniqueVipCredentials(existingAccounts) {
+      let username, password;
+      let attempts = 0;
+      const maxAttempts = 1000;
+      do {
+        const num = Math.floor(1000 + Math.random() * 9000);
+        username = 'Vip-' + num;
+        password = 'Vip-' + num;
+        attempts++;
+      } while (existingAccounts.some(a => a.username === username || a.password === password) && attempts < maxAttempts);
+      return { username, password };
+    }
+
+    function getDurationMs(duration) {
+      const map = {
+        '1h': 3600000,
+        '3h': 10800000,
+        '1d': 86400000,
+        '3d': 259200000,
+        '7d': 604800000,
+        '1m': 2592000000,
+        'forever': Infinity
+      };
+      return map[duration] || 86400000;
+    }
+
+    function getDurationLabel(duration) {
+      const map = {
+        '1h': '1 giờ',
+        '3h': '3 giờ',
+        '1d': '1 ngày',
+        '3d': '3 ngày',
+        '7d': '7 ngày',
+        '1m': '1 tháng',
+        'forever': 'Vô hạn'
+      };
+      return map[duration] || duration;
+    }
+
+    function isVipUser(username) {
+      const vipAccounts = getVipAccounts();
+      return vipAccounts.some(v => v.username === username && (v.expiry === 'forever' || v.expiry > Date.now()));
+    }
+
+    function extractThumbnail(videoElement) {
+      return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 320;
+        canvas.height = 180;
         const ctx = canvas.getContext('2d');
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      });
+    }
 
-        let width, height, centerX, centerY;
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            centerX = width / 2;
-            centerY = height / 2;
+    // ========== LOGIN / REGISTER ==========
+    function login(username, password) {
+      const users = getUsers();
+      if (users[username] && users[username] === password) {
+        if (isMuted(username)) {
+          const timeLeft = getMutedTimeLeft(username);
+          showError(`Tài khoản đã bị MUTE${timeLeft ? ' (còn ' + timeLeft + ')' : ''}!`);
+          return false;
         }
-        window.addEventListener('resize', resize);
-        resize();
+        setCurrentUser(username);
+        hideError();
+        renderApp();
+        return true;
+      } else {
+        showError('Sai tài khoản hoặc mật khẩu.');
+        return false;
+      }
+    }
 
-        // ---------- THAM SỐ SAO THỔ (ở giữa) ----------
-        const SATURN_RADIUS = Math.min(width, height) * 0.09;  // tự động co giãn
-        const RING_RADIUS = SATURN_RADIUS * 1.7;
-        const RING_WIDTH = SATURN_RADIUS * 0.5;
-        const RING_TILT = 0.4; // độ nghiêng vành
+    function register(username, password, confirm) {
+      if (password !== confirm) { showError('Mật khẩu xác nhận không khớp.'); return false; }
+      if (password.length < 4) { showError('Mật khẩu tối thiểu 4 ký tự.'); return false; }
+      const users = getUsers();
+      if (users[username]) { showError('Tên đăng nhập đã tồn tại.'); return false; }
+      users[username] = password;
+      saveUsers(users);
+      setCurrentUser(username);
+      hideError();
+      renderApp();
+      return true;
+    }
 
-        // ---------- QUỸ ĐẠO CÁC NGÔI SAO MÀU ----------
-        const NUM_STARS = 160;
-        const stars = [];
+    function logout() {
+      setCurrentUser(null);
+      authContainer.classList.remove('hidden');
+      appWrapper.classList.remove('active');
+      showLoginForm();
+    }
 
-        // Tạo các ngôi sao màu sắc bay xung quanh
-        function initStars() {
-            for (let i = 0; i < NUM_STARS; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const radius = Math.min(width, height) * (0.25 + Math.random() * 0.45);
-                const speed = 0.002 + Math.random() * 0.008;
-                const size = 3 + Math.random() * 8;
-                // màu sắc rực rỡ (HSL)
-                const hue = Math.random() * 360;
-                const sat = 80 + Math.random() * 20;
-                const lig = 60 + Math.random() * 35;
-                stars.push({
-                    angle: angle,
-                    radius: radius,
-                    speed: speed,
-                    size: size,
-                    hue: hue,
-                    sat: sat,
-                    lig: lig,
-                    phase: Math.random() * 100,
-                });
-            }
+    // ========== RENDER APP ==========
+    function renderApp() {
+      const user = getCurrentUser();
+      if (!user) {
+        authContainer.classList.remove('hidden');
+        appWrapper.classList.remove('active');
+        return;
+      }
+      authContainer.classList.add('hidden');
+      appWrapper.classList.add('active');
+
+      const isAdmin = user === 'Nduc';
+      const hasVip = isVipUser(user);
+      const isMutedUser = isMuted(user);
+
+      let badge = '';
+      if (isAdmin) badge = '<i class="fas fa-shield-alt"></i> ';
+      else if (hasVip) badge = '<i class="fas fa-crown" style="color:#f39c12;"></i> ';
+      greetingUser.innerHTML = badge + user;
+      if (hasVip) greetingUser.classList.add('vip-badge');
+      else greetingUser.classList.remove('vip-badge');
+      
+      if (isMutedUser) {
+        greetingUser.innerHTML += ' <span style="color:#e67e22;font-size:0.7rem;">(MUTED)</span>';
+        greetingUser.classList.add('muted-badge');
+      } else {
+        greetingUser.classList.remove('muted-badge');
+      }
+
+      if (hasVip || isAdmin) {
+        vipTab.style.display = 'inline-block';
+      } else {
+        vipTab.style.display = 'none';
+      }
+
+      if (isAdmin) {
+        document.querySelectorAll('.admin-tab').forEach(el => el.style.display = 'inline-block');
+      } else {
+        document.querySelectorAll('.admin-tab').forEach(el => el.style.display = 'none');
+        if (document.querySelector('.tab-btn.active')?.dataset.tab === 'tab-admin' || 
+            document.querySelector('.tab-btn.active')?.dataset.tab === 'tab-misc') {
+          document.querySelector('[data-tab="tab-normal"]').click();
         }
-        initStars();
+      }
 
-        // Hàm vẽ sao thổ (phong cách đơn giản nhưng rõ vành)
-        function drawSaturn(cx, cy, radius) {
-            const tilt = RING_TILT;
-            const ringR = radius * 1.7;
-            const ringW = radius * 0.5;
+      loadUserVideos(user);
+      renderVideoGrid(user);
 
-            // ---- Vành đai chính (ellipse nghiêng) ----
-            ctx.save();
-            ctx.translate(cx, cy);
-            // Vẽ vành trước (phần trước của sao)
-            ctx.beginPath();
-            ctx.ellipse(0, 0, ringR, ringR * (1 - tilt * 0.4), 0, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(210, 180, 140, 0.25)';
-            ctx.fill();
-            ctx.strokeStyle = '#d4b68a';
-            ctx.lineWidth = ringW * 0.5;
-            ctx.stroke();
+      if (isAdmin) {
+        renderVipAccounts();
+      }
 
-            // Vành trong (sáng hơn)
-            ctx.beginPath();
-            ctx.ellipse(0, 0, ringR * 0.85, ringR * 0.85 * (1 - tilt * 0.35), 0, 0, Math.PI * 2);
-            ctx.strokeStyle = '#e8c9a0';
-            ctx.lineWidth = ringW * 0.3;
-            ctx.stroke();
+      const activeTab = document.querySelector('.tab-btn.active');
+      if (activeTab && activeTab.dataset.tab === 'tab-vip' && !hasVip && !isAdmin) {
+        document.querySelector('[data-tab="tab-normal"]').click();
+      }
 
-            // Vành ngoài mờ
-            ctx.beginPath();
-            ctx.ellipse(0, 0, ringR * 1.1, ringR * 1.1 * (1 - tilt * 0.45), 0, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(200, 170, 130, 0.3)';
-            ctx.lineWidth = ringW * 0.4;
-            ctx.stroke();
+      if (!document.querySelector('.tab-btn.active')) {
+        document.querySelector('[data-tab="tab-normal"]').click();
+      }
+    }
 
-            // ---- Thân sao Thổ (hình cầu) ----
-            const grad = ctx.createRadialGradient(-radius*0.3, -radius*0.3, radius*0.1, 0, 0, radius);
-            grad.addColorStop(0, '#f5e6c4');
-            grad.addColorStop(0.5, '#d4b48c');
-            grad.addColorStop(0.9, '#8b6b4a');
-            grad.addColorStop(1, '#4d3a2a');
-            ctx.beginPath();
-            ctx.arc(0, 0, radius, 0, Math.PI * 2);
-            ctx.fillStyle = grad;
-            ctx.shadowColor = '#ffbb77';
-            ctx.shadowBlur = 35;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-            // viền sáng
-            ctx.strokeStyle = '#ffe0b0';
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
+    // ========== VIDEO STORAGE ==========
+    function getUserVideoKey(username) { return 'videoLibrary_' + username; }
 
-            // ---- Vành đai phía trước (chồng lên) ----
-            ctx.beginPath();
-            ctx.ellipse(0, 0, ringR, ringR * (1 - tilt * 0.4), 0, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(220, 190, 150, 0.6)';
-            ctx.lineWidth = ringW * 0.6;
-            ctx.stroke();
+    function loadUserVideos(username) {
+      const key = getUserVideoKey(username);
+      const stored = localStorage.getItem(key);
+      if (stored) {
+        try { window._videoLibrary = JSON.parse(stored); }
+        catch(e) { window._videoLibrary = []; }
+      } else { window._videoLibrary = []; }
+      if (!Array.isArray(window._videoLibrary)) window._videoLibrary = [];
+      
+      const keyVip = getUserVideoKey(username) + '_vip';
+      const storedVip = localStorage.getItem(keyVip);
+      if (storedVip) {
+        try { window._vipVideoLibrary = JSON.parse(storedVip); }
+        catch(e) { window._vipVideoLibrary = []; }
+      } else { window._vipVideoLibrary = []; }
+      if (!Array.isArray(window._vipVideoLibrary)) window._vipVideoLibrary = [];
+    }
 
-            // thêm ánh sáng lấp lánh cho vành
-            for (let i = 0; i < 12; i++) {
-                const a = (i / 12) * Math.PI * 2;
-                const x = Math.cos(a) * ringR * 0.9;
-                const y = Math.sin(a) * ringR * 0.9 * (1 - tilt * 0.4);
-                ctx.beginPath();
-                ctx.arc(x, y, 3 + Math.sin(a*3)*2, 0, Math.PI*2);
-                ctx.fillStyle = `hsla(${40 + i*10}, 80%, 70%, 0.5)`;
-                ctx.fill();
-            }
-            ctx.restore();
+    function saveUserVideos(username) {
+      const key = getUserVideoKey(username);
+      localStorage.setItem(key, JSON.stringify(window._videoLibrary || []));
+      const keyVip = getUserVideoKey(username) + '_vip';
+      localStorage.setItem(keyVip, JSON.stringify(window._vipVideoLibrary || []));
+    }
+
+    function renderVideoGrid(user) {
+      const library = window._videoLibrary || [];
+      const vipLib = window._vipVideoLibrary || [];
+      
+      renderGrid(videoGrid, emptyState, videoCountSpan, library, pagination, currentPage, false);
+      renderGrid(videoGridVip, emptyStateVip, videoCountSpanVip, vipLib, paginationVip, currentPageVip, true);
+    }
+
+    function renderGrid(grid, empty, countSpan, library, paginationEl, page, isVip) {
+      const start = (page - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      const pageItems = library.slice(start, end);
+      const totalPages = Math.ceil(library.length / ITEMS_PER_PAGE);
+
+      const children = grid.children;
+      for (let i = children.length - 1; i >= 0; i--) {
+        if (children[i].id !== empty.id) grid.removeChild(children[i]);
+      }
+
+      if (library.length === 0) {
+        empty.style.display = 'block';
+        countSpan.textContent = '0 video';
+        paginationEl.innerHTML = '';
+        return;
+      }
+
+      empty.style.display = 'none';
+      countSpan.textContent = library.length + ' video';
+
+      for (const video of pageItems) {
+        const card = createVideoCard(video, isVip);
+        grid.appendChild(card);
+      }
+
+      // Pagination
+      paginationEl.innerHTML = '';
+      if (totalPages > 1) {
+        const prevBtn = document.createElement('button');
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevBtn.disabled = page <= 1;
+        prevBtn.onclick = () => {
+          if (isVip) { currentPageVip--; renderVideoGrid(getCurrentUser()); }
+          else { currentPage--; renderVideoGrid(getCurrentUser()); }
+        };
+        paginationEl.appendChild(prevBtn);
+
+        const maxShow = Math.min(totalPages, 10);
+        let startPage = Math.max(1, page - 5);
+        let endPage = Math.min(totalPages, startPage + 9);
+        if (endPage - startPage < 9) startPage = Math.max(1, endPage - 9);
+
+        for (let i = startPage; i <= endPage; i++) {
+          const btn = document.createElement('button');
+          btn.textContent = i;
+          if (i === page) btn.classList.add('active');
+          btn.onclick = () => {
+            if (isVip) { currentPageVip = i; renderVideoGrid(getCurrentUser()); }
+            else { currentPage = i; renderVideoGrid(getCurrentUser()); }
+          };
+          paginationEl.appendChild(btn);
         }
 
-        // Vẽ các ngôi sao màu sắc (xung quanh)
-        function drawColorfulStars(time) {
-            for (let s of stars) {
-                // cập nhật góc
-                s.angle += s.speed;
-                // tính vị trí
-                const x = centerX + Math.cos(s.angle) * s.radius;
-                const y = centerY + Math.sin(s.angle) * s.radius * 0.85; // hơi dẹt để tạo chiều sâu
-                // dao động kích thước nhẹ
-                const pulse = 1 + 0.2 * Math.sin(time * 0.02 + s.phase);
-                const size = s.size * pulse;
+        const nextBtn = document.createElement('button');
+        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextBtn.disabled = page >= totalPages;
+        nextBtn.onclick = () => {
+          if (isVip) { currentPageVip++; renderVideoGrid(getCurrentUser()); }
+          else { currentPage++; renderVideoGrid(getCurrentUser()); }
+        };
+        paginationEl.appendChild(nextBtn);
+      }
+    }
 
-                // vẽ tia sáng (glow)
-                const grad = ctx.createRadialGradient(x, y, 1, x, y, size * 2.5);
-                grad.addColorStop(0, `hsla(${s.hue}, ${s.sat}%, ${s.lig}%, 1)`);
-                grad.addColorStop(0.4, `hsla(${s.hue}, ${s.sat}%, ${s.lig}%, 0.7)`);
-                grad.addColorStop(1, `hsla(${s.hue}, ${s.sat}%, ${s.lig}%, 0)`);
-                ctx.beginPath();
-                ctx.arc(x, y, size * 2.5, 0, Math.PI * 2);
-                ctx.fillStyle = grad;
-                ctx.fill();
+    function createVideoCard(video, isVip) {
+      const card = document.createElement('div');
+      card.className = 'video-card';
 
-                // nhân sao chính (sáng)
-                ctx.shadowColor = `hsl(${s.hue}, 100%, 70%)`;
-                ctx.shadowBlur = 25;
-                ctx.beginPath();
-                ctx.arc(x, y, size * 0.5, 0, Math.PI * 2);
-                ctx.fillStyle = `hsl(${s.hue}, ${s.sat}%, ${s.lig}%)`;
-                ctx.fill();
-                ctx.shadowBlur = 0;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'video-wrapper';
 
-                // vẽ thêm tia nhỏ (hiệu ứng lấp lánh)
-                for (let i = 0; i < 4; i++) {
-                    const ang = i * Math.PI/2 + time * 0.01;
-                    const dx = Math.cos(ang) * size * 1.2;
-                    const dy = Math.sin(ang) * size * 1.2;
-                    ctx.beginPath();
-                    ctx.arc(x + dx, y + dy, size * 0.2, 0, Math.PI*2);
-                    ctx.fillStyle = `hsla(${s.hue + 30}, 100%, 80%, 0.7)`;
-                    ctx.fill();
+      // Thumbnail
+      const thumbImg = document.createElement('img');
+      thumbImg.className = 'thumbnail';
+      thumbImg.src = video.thumbnail || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="180"%3E%3Crect width="320" height="180" fill="%231a1a2e"/%3E%3Ctext x="160" y="90" font-family="Arial" font-size="20" fill="%23333" text-anchor="middle"%3E🎬%3C/text%3E%3C/svg%3E';
+      thumbImg.alt = video.name;
+      wrapper.appendChild(thumbImg);
+
+      // Play icon
+      const playIcon = document.createElement('div');
+      playIcon.className = 'play-icon';
+      playIcon.innerHTML = '<i class="fas fa-play"></i>';
+      wrapper.appendChild(playIcon);
+
+      // Video element
+      const videoEl = document.createElement('video');
+      videoEl.src = video.dataURL;
+      videoEl.preload = 'metadata';
+      videoEl.setAttribute('playsinline', 'true');
+      videoEl.style.display = 'none';
+      wrapper.appendChild(videoEl);
+
+      // View count overlay
+      const viewOverlay = document.createElement('div');
+      viewOverlay.className = 'view-count-overlay';
+      viewOverlay.innerHTML = `<i class="fas fa-eye"></i> ${formatViews(video.views || 0)}`;
+      wrapper.appendChild(viewOverlay);
+
+      // Click to play
+      let isPlaying = false;
+      let viewsUpdated = false;
+      wrapper.addEventListener('click', function() {
+        if (!isPlaying) {
+          videoEl.style.display = 'block';
+          thumbImg.style.display = 'none';
+          playIcon.style.display = 'none';
+          videoEl.play();
+          isPlaying = true;
+          
+          // Update view count after 1 second of playing
+          if (!viewsUpdated) {
+            setTimeout(() => {
+              if (videoEl.currentTime > 0.5) {
+                video.views = (video.views || 0) + 1;
+                viewOverlay.innerHTML = `<i class="fas fa-eye"></i> ${formatViews(video.views)}`;
+                // Save to storage
+                const user = getCurrentUser();
+                if (user) {
+                  const library = isVip ? window._vipVideoLibrary : window._videoLibrary;
+                  const idx = library.findIndex(v => v.id === video.id);
+                  if (idx !== -1) {
+                    library[idx].views = video.views;
+                    saveUserVideos(user);
+                  }
                 }
-            }
+                viewsUpdated = true;
+              }
+            }, 1000);
+          }
         }
+      });
 
-        // Vẽ thêm các hạt nhỏ li ti (nền)
-        function drawDust(time) {
-            for (let i = 0; i < 80; i++) {
-                const a = i * 1.7 + time * 0.003;
-                const r = Math.min(width, height) * (0.1 + 0.45 * Math.sin(i * 0.7 + 1));
-                const x = centerX + Math.cos(a) * r;
-                const y = centerY + Math.sin(a * 0.9) * r * 0.7;
-                const s = 1 + Math.sin(i + time*0.01) * 1.2;
-                ctx.beginPath();
-                ctx.arc(x, y, s, 0, Math.PI*2);
-                ctx.fillStyle = `hsla(${i*50 % 360}, 70%, 70%, 0.25)`;
-                ctx.fill();
+      videoEl.addEventListener('ended', function() {
+        videoEl.style.display = 'none';
+        thumbImg.style.display = 'block';
+        playIcon.style.display = 'flex';
+        isPlaying = false;
+      });
+
+      const body = document.createElement('div');
+      body.className = 'card-body';
+
+      const title = document.createElement('div');
+      title.className = 'video-title';
+      title.innerHTML = `<span>${video.name}</span><span class="vn-tag">VN</span>`;
+      
+      const description = document.createElement('div');
+      description.className = 'video-description';
+      description.innerHTML = video.description || 'Phim heo Trần Hà Linh với bạn trai mới';
+      description.innerHTML += ` <span class="views">${formatViews(video.views || 0)} lượt xem</span>`;
+
+      const meta = document.createElement('div');
+      meta.className = 'video-meta';
+      const sizeSpan = document.createElement('span');
+      sizeSpan.textContent = formatBytes(video.size);
+      meta.appendChild(sizeSpan);
+
+      const actions = document.createElement('div');
+      actions.className = 'card-actions';
+
+      const downloadBtn = document.createElement('button');
+      downloadBtn.className = 'btn btn-download';
+      downloadBtn.innerHTML = '<i class="fas fa-download"></i> Tải';
+      downloadBtn.onclick = () => {
+        const a = document.createElement('a');
+        a.href = video.dataURL;
+        a.download = video.name;
+        a.click();
+      };
+      actions.appendChild(downloadBtn);
+
+      // Admin delete button
+      const user = getCurrentUser();
+      if (user === 'Nduc') {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-admin-delete';
+        deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Xóa';
+        deleteBtn.onclick = (e) => {
+          e.stopPropagation();
+          if (confirm(`Xóa video "${video.name}"?`)) {
+            const library = isVip ? window._vipVideoLibrary : window._videoLibrary;
+            const idx = library.findIndex(v => v.id === video.id);
+            if (idx !== -1) {
+              library.splice(idx, 1);
+              if (isVip) window._vipVideoLibrary = library;
+              else window._videoLibrary = library;
+              saveUserVideos(user);
+              renderVideoGrid(user);
             }
+          }
+        };
+        actions.appendChild(deleteBtn);
+      }
+
+      body.appendChild(title);
+      body.appendChild(description);
+      body.appendChild(meta);
+      body.appendChild(actions);
+      card.appendChild(wrapper);
+      card.appendChild(body);
+      return card;
+    }
+
+    // ========== UPLOAD VIDEO ==========
+    function addVideoToLibrary(file, isVip = false) {
+      if (!file.type.startsWith('video/')) { alert('Vui lòng chọn file video.'); return; }
+      if (file.size > MAX_FILE_SIZE) {
+        alert(`Video quá lớn (tối đa 10GB). File này: ${formatBytes(file.size)}`);
+        return;
+      }
+
+      const loading = isVip ? uploadLoadingVip : uploadLoading;
+      loading.classList.add('active');
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        try {
+          const dataURL = e.target.result;
+          
+          // Extract thumbnail
+          const video = document.createElement('video');
+          video.src = dataURL;
+          await new Promise((resolve) => {
+            video.onloadedmetadata = () => {
+              video.currentTime = 0.1;
+              resolve();
+            };
+          });
+          await new Promise((resolve) => {
+            video.onseeked = () => {
+              resolve();
+            };
+            setTimeout(resolve, 500);
+          });
+          
+          const thumbnail = await extractThumbnail(video);
+          
+          const id = 'vid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+          const entry = {
+            id,
+            name: file.name,
+            size: file.size,
+            lastModified: file.lastModified,
+            dataURL: dataURL,
+            thumbnail: thumbnail,
+            description: prompt('Nhập mô tả cho video:', 'Phim heo Trần Hà Linh với bạn trai mới') || 'Không có mô tả',
+            views: 0,
+            createdAt: Date.now()
+          };
+          
+          if (isVip) {
+            if (!window._vipVideoLibrary) window._vipVideoLibrary = [];
+            window._vipVideoLibrary.push(entry);
+          } else {
+            if (!window._videoLibrary) window._videoLibrary = [];
+            window._videoLibrary.push(entry);
+          }
+          
+          const user = getCurrentUser();
+          if (user) saveUserVideos(user);
+          renderVideoGrid(user);
+          loading.classList.remove('active');
+          if (isVip) fileInputVip.value = '';
+          else fileInput.value = '';
+        } catch(err) {
+          loading.classList.remove('active');
+          alert('Lỗi xử lý video: ' + err.message);
         }
+      };
+      reader.onerror = function() {
+        loading.classList.remove('active');
+        alert('Lỗi đọc file.');
+      };
+      reader.readAsDataURL(file);
+    }
 
-        // Animation loop
-        let time = 0;
-        function animate() {
-            time++;
-            ctx.clearRect(0, 0, width, height);
+    // ========== VIP MANAGEMENT ==========
+    function renderVipAccounts() {
+      const accounts = getVipAccounts();
+      if (accounts.length === 0) {
+        vipAccountsContainer.innerHTML = '<p style="color:#4a4a6a; font-style:italic;">Chưa có tài khoản VIP nào.</p>';
+        return;
+      }
+      let html = '';
+      for (const acc of accounts) {
+        const isExpired = acc.expiry !== 'forever' && acc.expiry < Date.now();
+        const statusText = isExpired ? 'Hết hạn' : (acc.expiry === 'forever' ? 'Vô hạn' : 'Còn hiệu lực');
+        const statusClass = isExpired ? 'expired' : (acc.expiry === 'forever' ? 'forever' : 'active');
+        const isMutedAcc = isMuted(acc.username);
+        html += `
+          <div class="vip-item">
+            <div class="vip-info">
+              <strong>${acc.username}</strong>
+              <span style="color:#4a4a6a;">pass: ${acc.password}</span>
+              <span style="color:#4a4a6a; font-size:0.8rem;">${acc.durationLabel}</span>
+              ${isMutedAcc ? '<span style="color:#e67e22;font-size:0.7rem;">(MUTED)</span>' : ''}
+            </div>
+            <span class="vip-status ${statusClass}">${statusText}</span>
+          </div>
+        `;
+      }
+      vipAccountsContainer.innerHTML = html;
+    }
 
-            // vẽ các sao màu trước (nền)
-            drawDust(time);
-            drawColorfulStars(time);
+    function createVipAccounts() {
+      const count = parseInt(vipCount.value) || 1;
+      const duration = vipDuration.value;
+      const durationLabel = vipDuration.options[vipDuration.selectedIndex].text;
+      const expiry = duration === 'forever' ? 'forever' : Date.now() + getDurationMs(duration);
 
-            // vẽ sao Thổ ở giữa (chồng lên trên)
-            const satRad = Math.min(width, height) * 0.09;
-            drawSaturn(centerX, centerY, satRad);
+      const accounts = getVipAccounts();
+      const newAccounts = [];
 
-            // vẽ thêm hiệu ứng ánh sáng xung quanh sao Thổ
-            const grad = ctx.createRadialGradient(centerX, centerY, satRad*0.8, centerX, centerY, satRad*2.5);
-            grad.addColorStop(0, 'rgba(255, 200, 100, 0)');
-            grad.addColorStop(0.5, 'rgba(255, 180, 80, 0.05)');
-            grad.addColorStop(1, 'rgba(255, 100, 20, 0)');
-            ctx.fillStyle = grad;
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, satRad*2.5, 0, Math.PI*2);
-            ctx.fill();
-
-            // vẽ các tia sáng xoay quanh sao Thổ (thêm sinh động)
-            for (let i = 0; i < 20; i++) {
-                const ang = i / 20 * Math.PI*2 + time * 0.005;
-                const r = satRad * 1.1 + 20 * Math.sin(time*0.02 + i);
-                const x = centerX + Math.cos(ang) * r;
-                const y = centerY + Math.sin(ang) * r * 0.7;
-                ctx.beginPath();
-                ctx.arc(x, y, 3 + Math.sin(time*0.05 + i)*1.5, 0, Math.PI*2);
-                ctx.fillStyle = `hsla(${i*18 + 200}, 90%, 70%, 0.5)`;
-                ctx.fill();
-            }
-
-            requestAnimationFrame(animate);
+      for (let i = 0; i < Math.min(count, 50); i++) {
+        const cred = generateUniqueVipCredentials(accounts);
+        const acc = {
+          username: cred.username,
+          password: cred.password,
+          expiry: expiry,
+          durationLabel: durationLabel,
+          createdAt: Date.now()
+        };
+        accounts.push(acc);
+        newAccounts.push(acc);
+        const users = getUsers();
+        if (!users[cred.username]) {
+          users[cred.username] = cred.password;
+          saveUsers(users);
         }
-        animate();
+      }
 
-        // Xử lý resize lại các tham số sao (đơn giản hóa)
-        window.addEventListener('resize', () => {
-            resize();
-            // cập nhật lại bán kính cho các ngôi sao màu (không làm mới hoàn toàn, nhưng tạm ổn)
-            // do đã dùng % nên không cần cập nhật lại mảng, chỉ cần centerX, centerY mới
-        });
+      saveVipAccounts(accounts);
+      
+      const history = getVipHistory();
+      history.push({
+        timestamp: Date.now(),
+        accounts: newAccounts.map(a => ({ username: a.username, password: a.password, durationLabel: a.durationLabel }))
+      });
+      saveVipHistory(history);
 
-    })();
+      renderVipAccounts();
+      alert(`Đã tạo ${newAccounts.length} tài khoản VIP thành công!`);
+    }
+
+    function copyAllVipAccounts() {
+      const accounts = getVipAccounts();
+      if (accounts.length === 0) { alert('Chưa có tài khoản VIP nào.'); return; }
+      let text = '=== TÀI KHOẢN VIP ===\n';
+      for (const acc of accounts) {
+        const status = acc.expiry === 'forever' ? 'Vô hạn' : (acc.expiry < Date.now() ? 'Hết hạn' : 'Còn hiệu lực');
+        text += `${acc.username} | pass: ${acc.password} | ${acc.durationLabel} | ${status}\n`;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Đã sao chép ' + accounts.length + ' tài khoản VIP!');
+      }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Đã sao chép!');
+      });
+    }
+
+    function clearVipHistory() {
+      if (!confirm('Xoá lịch sử tạo tài khoản VIP? (Chỉ xoá lịch sử, không xoá tài khoản)')) return;
+      saveVipHistory([]);
+      alert('Đã xoá lịch sử tạo VIP.');
+    }
+
+    // ========== MISC FUNCTIONS ==========
+    function muteAccount() {
+      const username = muteUsername.value.trim();
+      if (!username) { alert('Vui lòng nhập tên tài khoản.'); return; }
+      if (username === 'Nduc') { alert('Không thể mute Admin!'); return; }
+      
+      const users = getUsers();
+      if (!users[username]) { alert('Tài khoản không tồn tại.'); return; }
+
+      const duration = muteDuration.value;
+      const expiry = duration === 'forever' ? 'forever' : Date.now() + getDurationMs(duration);
+      
+      const muted = getMutedAccounts();
+      muted[username] = expiry;
+      saveMutedAccounts(muted);
+      
+      alert(`Đã mute tài khoản ${username} thành công!`);
+      muteUsername.value = '';
+      renderVipAccounts();
+    }
+
+    function unmuteAccount() {
+      const username = muteUsername.value.trim();
+      if (!username) { alert('Vui lòng nhập tên tài khoản.'); return; }
+      
+      const muted = getMutedAccounts();
+      if (!muted[username]) { alert('Tài khoản này không bị mute.'); return; }
+      
+      delete muted[username];
+      saveMutedAccounts(muted);
+      
+      alert(`Đã unmute tài khoản ${username} thành công!`);
+      muteUsername.value = '';
+      renderVipAccounts();
+    }
+
+    function extendVipTime() {
+      const username = extendUsername.value.trim();
+      if (!username) { alert('Vui lòng nhập tên tài khoản VIP.'); return; }
+      
+      const vipAccounts = getVipAccounts();
+      const index = vipAccounts.findIndex(acc => acc.username === username);
+      if (index === -1) { alert('Tài khoản VIP không tồn tại.'); return; }
+      
+      const duration = extendDuration.value;
+      const addMs = getDurationMs(duration);
+      
+      if (vipAccounts[index].expiry === 'forever') {
+        alert('Tài khoản này đã là Vô hạn!');
+        return;
+      }
+      
+      const currentExpiry = vipAccounts[index].expiry;
+      const newExpiry = Math.max(currentExpiry, Date.now()) + addMs;
+      vipAccounts[index].expiry = newExpiry;
+      
+      const durationLabel = extendDuration.options[extendDuration.selectedIndex].text;
+      vipAccounts[index].durationLabel = vipAccounts[index].durationLabel + ' (+' + durationLabel + ')';
+      
+      saveVipAccounts(vipAccounts);
+      renderVipAccounts();
+      alert(`Đã cấp thêm ${durationLabel} cho tài khoản ${username}!`);
+      extendUsername.value = '';
+    }
+
+    function extendAllVip() {
+      const duration = extendAllDuration.value;
+      const durationLabel = extendAllDuration.options[extendAllDuration.selectedIndex].text;
+      const addMs = getDurationMs(duration);
+      
+      const vipAccounts = getVipAccounts();
+      if (vipAccounts.length === 0) { alert('Chưa có tài khoản VIP nào.'); return; }
+      
+      let count = 0;
+      for (const acc of vipAccounts) {
+        // Chỉ cấp cho VIP đang hoạt động (chưa hết hạn)
+        const isActive = acc.expiry === 'forever' || acc.expiry > Date.now();
+        if (isActive && acc.expiry !== 'forever') {
+          const currentExpiry = acc.expiry;
+          acc.expiry = Math.max(currentExpiry, Date.now()) + addMs;
+          acc.durationLabel = acc.durationLabel + ' (+' + durationLabel + ')';
+          count++;
+        }
+      }
+      
+      saveVipAccounts(vipAccounts);
+      renderVipAccounts();
+      alert(`Đã cấp thêm ${durationLabel} cho ${count} tài khoản VIP đang hoạt động!`);
+    }
+
+    // ========== EVENTS ==========
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = loginUser.value.trim();
+      const pass = loginPass.value.trim();
+      if (!user || !pass) { showError('Vui lòng nhập đầy đủ.'); return; }
+      login(user, pass);
+    });
+
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = regUser.value.trim();
+      const pass = regPass.value.trim();
+      const confirm = regPass2.value.trim();
+      if (!user || !pass || !confirm) { showError('Vui lòng nhập đầy đủ.'); return; }
+      register(user, pass, confirm);
+    });
+
+    switchLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (loginForm.style.display !== 'none') showRegisterForm();
+      else showLoginForm();
+    });
+    backToLoginLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      showLoginForm();
+    });
+
+    adminLoginBtn.addEventListener('click', function() {
+      adminModal.classList.add('active');
+      adminPasswordInput.value = '';
+      adminPasswordInput.focus();
+      hideError();
+    });
+    adminModalConfirm.addEventListener('click', function() {
+      const pass = adminPasswordInput.value.trim();
+      if (!pass) { showError('Vui lòng nhập mật khẩu.'); return; }
+      const users = getUsers();
+      if (users['Nduc'] && users['Nduc'] === pass) {
+        login('Nduc', pass);
+        closeAdminModal();
+      } else {
+        showError('Mật khẩu admin không đúng.');
+        adminPasswordInput.value = '';
+        adminPasswordInput.focus();
+      }
+    });
+    adminModalCancel.addEventListener('click', closeAdminModal);
+    adminPasswordInput.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') adminModalConfirm.click();
+    });
+    adminModal.addEventListener('click', function(e) {
+      if (e.target === adminModal) closeAdminModal();
+    });
+    function closeAdminModal() { adminModal.classList.remove('active'); }
+
+    logoutBtn.addEventListener('click', logout);
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const tabId = this.dataset.tab;
+        Object.values(tabContents).forEach(el => el.classList.remove('active'));
+        if (tabId === 'tab-normal') tabContents.normal.classList.add('active');
+        else if (tabId === 'tab-vip') tabContents.vip.classList.add('active');
+        else if (tabId === 'tab-admin') tabContents.admin.classList.add('active');
+        else if (tabId === 'tab-misc') tabContents.misc.classList.add('active');
+      });
+    });
+
+    fileInput.addEventListener('change', function(e) {
+      const files = e.target.files;
+      if (files) {
+        for (let f of files) {
+          addVideoToLibrary(f, false);
+        }
+      }
+      this.value = '';
+    });
+    fileInputVip.addEventListener('change', function(e) {
+      const files = e.target.files;
+      if (files) {
+        for (let f of files) {
+          addVideoToLibrary(f, true);
+        }
+      }
+      this.value = '';
+    });
+
+    // Drag and drop
+    document.addEventListener('dragover', function(e) { e.preventDefault(); });
+    document.addEventListener('drop', function(e) {
+      e.preventDefault();
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0 && getCurrentUser()) {
+        const activeTab = document.querySelector('.tab-btn.active');
+        const isVip = activeTab && activeTab.dataset.tab === 'tab-vip';
+        for (let f of files) {
+          addVideoToLibrary(f, isVip);
+        }
+      }
+    });
+
+    createVipBtn.addEventListener('click', createVipAccounts);
+    copyAllVipBtn.addEventListener('click', copyAllVipAccounts);
+    clearHistoryBtn.addEventListener('click', clearVipHistory);
+
+    muteBtn.addEventListener('click', muteAccount);
+    unmuteBtn.addEventListener('click', unmuteAccount);
+    extendBtn.addEventListener('click', extendVipTime);
+    extendAllBtn.addEventListener('click', extendAllVip);
+
+    muteUsername.addEventListener('keyup', function(e) { if (e.key === 'Enter') muteBtn.click(); });
+    extendUsername.addEventListener('keyup', function(e) { if (e.key === 'Enter') extendBtn.click(); });
+
+    // ========== INIT ==========
+    const current = getCurrentUser();
+    if (current) {
+      renderApp();
+    } else {
+      authContainer.classList.remove('hidden');
+      appWrapper.classList.remove('active');
+      showLoginForm();
+    }
+    ensureAdmin();
+
+  })();
 </script>
 </body>
 </html>
